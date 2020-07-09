@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.utils;
+package me.giverplay.minecraft2D.graphics;
 
 public class Cores
 {

@@ -7,6 +7,7 @@ public interface Inventory
 	
 	public int firstEmpty();
 	public int items();
+	public int size();
 	
 	public boolean hasItem(ItemEnum type);
 	public boolean addItem(Item item);

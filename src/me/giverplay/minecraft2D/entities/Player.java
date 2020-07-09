@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.graphics.Camera;
+import me.giverplay.minecraft2D.inventory.Inventory;
+import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.sound.Sound;
 
 public class Player extends Entity
@@ -37,12 +39,14 @@ public class Player extends Entity
 	
 	private Game game;
 	private Camera camera;
+	private Inventory inv;
 	
 	public Player(int x, int y, int width, int height)
 	{
 		super(x, y, width, height, 1, null);
 		game = Game.getGame();
 		camera = game.getCamera();
+		inv = new PlayerInventory(36);
 		
 		setDepth(2);
 	}
@@ -273,5 +277,10 @@ public class Player extends Entity
 	public boolean fallingRelative()
 	{
 		return canMove(getX(), getY() + 1) && vspd >= 0;
+	}
+	
+	public Inventory getInventory()
+	{
+		return this.inv;
 	}
 }
