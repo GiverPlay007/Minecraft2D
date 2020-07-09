@@ -75,7 +75,7 @@ public class Player extends Entity
 			
 			if(!canMove(getX(), (int) (y + 1)) && canMove(getX(), (int) (y -1)))
 			{
-				vspd = -6;
+				vspd = -3;
 				Sound.jump.play();
 			}
 		}
@@ -143,7 +143,7 @@ public class Player extends Entity
 				else
 					anim--;
 				
-				if (anim >= Entity.SPRITE_PLAYER_RIGHT.length - 1)
+				if (anim >= Entity.SPRITE_PLAYER_RIGHT.length)
 				{
 					anim--;
 					animChangeStage = !animChangeStage;
@@ -167,7 +167,7 @@ public class Player extends Entity
 	@Override
 	public void render(Graphics g)
 	{
-		BufferedImage image = (dir == DIR_RIGHT ? SPRITE_PLAYER_RIGHT : SPRITE_PLAYER_LEFT)[vspd == 0 ? anim : 2]
+		BufferedImage image = (dir == DIR_RIGHT ? SPRITE_PLAYER_RIGHT : SPRITE_PLAYER_LEFT)[anim]
 				.getSubimage(0, 0, 16, 16);
 		
 		g.drawImage(image, getX() - camera.getX(), getY() - camera.getY(), null);

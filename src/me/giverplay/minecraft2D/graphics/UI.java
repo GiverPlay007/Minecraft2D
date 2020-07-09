@@ -32,5 +32,12 @@ public class UI
 		{
 			g.drawImage(i < cur ? Entity.SPRITE_LIFE_FULL : Entity.SPRITE_LIFE_NON_FULL, i * (coe + 5) + 5, HEIGHT * SCALE - coe -5, coe, coe, null);
 		}
+		
+		renderInventory(g);
+	}
+	
+	private void renderInventory(Graphics g)
+	{
+		
 	}
 }

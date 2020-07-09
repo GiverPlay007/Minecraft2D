@@ -47,7 +47,7 @@ public class World
 		int xs = camera.getX() >> 4;
 		int ys = camera.getY() >> 4;
 		int xf = (camera.getX() + Game.WIDTH) >> 4;
-		int yf = (camera.getX() + Game.HEIGHT) >> 4;
+		int yf = (camera.getY() + Game.HEIGHT) >> 4;
 		
 		
 		for(int xx = xs; xx <= xf; xx++)

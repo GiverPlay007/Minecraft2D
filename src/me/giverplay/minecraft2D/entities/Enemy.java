@@ -74,7 +74,7 @@ public class Enemy extends Entity
 			}
 		}
 		
-		g.drawImage(SPRITE_ENEMY[anim], getX() - game.getCamera().getX(), getY() - game.getCamera().getY(), null);
+		//g.drawImage(SPRITE_ENEMY[anim], getX() - game.getCamera().getX(), getY() - game.getCamera().getY(), null);
 	}
 	
 	@Override

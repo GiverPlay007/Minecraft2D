@@ -19,8 +19,7 @@ public class Entity
 {
 	public static final BufferedImage[] SPRITE_PLAYER_RIGHT;
 	public static final BufferedImage[] SPRITE_PLAYER_LEFT;
-	public static final BufferedImage[] SPRITE_ENEMY;
-	
+
 	public static final BufferedImage SPRITE_LIFE_FULL;
 	public static final BufferedImage SPRITE_LIFE_NON_FULL;
 	
@@ -30,16 +29,11 @@ public class Entity
 		
 		SPRITE_PLAYER_RIGHT = new BufferedImage[3];
 		SPRITE_PLAYER_LEFT = new BufferedImage[3];
-		SPRITE_ENEMY = new BufferedImage[6];
 		
 		for(int i = 0; i < 3; i++)
 		{
-			SPRITE_PLAYER_RIGHT[i] = sprites.getSprite(i * TILE_SIZE, 1 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			SPRITE_PLAYER_RIGHT[i] = sprites.getSprite(i * TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			SPRITE_PLAYER_LEFT[i] = sprites.getSprite(i * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-			
-			SPRITE_ENEMY[i] = sprites.getSprite(i * TILE_SIZE, TILE_SIZE * 3, TILE_SIZE, TILE_SIZE);
-			SPRITE_ENEMY[i + 2] = sprites.getSprite((i + 2) * TILE_SIZE, TILE_SIZE * 3, TILE_SIZE, TILE_SIZE);
-			SPRITE_ENEMY[i + 3] = sprites.getSprite((i + 3) * TILE_SIZE, TILE_SIZE * 3, TILE_SIZE, TILE_SIZE);
 		}
 		
 		SPRITE_LIFE_FULL = sprites.getSprite(TILE_SIZE * 4, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);
