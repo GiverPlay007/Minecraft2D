@@ -49,6 +49,15 @@ public class PlayerInventory implements Inventory
 	@Override
 	public boolean addItem(Item item)
 	{
+		for(int i = 0; i < items.length; i++)
+		{
+			if(items[i] == null)
+			{
+				items[i] = item;
+				return true;
+			}
+		}
+		
 		return false;
 	}
 

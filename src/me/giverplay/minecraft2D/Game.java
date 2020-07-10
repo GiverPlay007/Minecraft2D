@@ -14,6 +14,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import me.giverplay.minecraft2D.command.CommandManager;
+import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.events.Listeners;
@@ -39,6 +41,8 @@ public class Game extends Canvas implements Runnable
 	private static Game game;
 	private static int FPS = 0;
 	
+	private CommandTask cmdTask;
+	private CommandManager commandManager;
 	private Camera camera;
 	private Spritesheet sprite;
 	private World world;
@@ -49,6 +53,7 @@ public class Game extends Canvas implements Runnable
 	private Thread thread;
 	private JFrame frame;
 	
+	private boolean isRunningRelative = false;
 	private boolean isRunning = false;
 	private boolean showGameOver = true;
 	private boolean morreu = false;
@@ -92,7 +97,13 @@ public class Game extends Canvas implements Runnable
 	
 	private void setupAssets()
 	{
+		isRunningRelative = true;
+		
 		game = this;
+		cmdTask = new CommandTask(this);
+		cmdTask.start();
+		
+		commandManager = new CommandManager();
 		
 		entities = new ArrayList<>();
 		smoothRenders = new ArrayList<>();
@@ -320,5 +331,20 @@ public class Game extends Canvas implements Runnable
 	public void addSmoothRender(FutureRender run)
 	{
 		smoothRenders.add(run);
+	}
+	
+	public CommandTask getCommandTask()
+	{
+		return this.cmdTask;
+	}
+	
+	public CommandManager getCommandManager()
+	{
+		return this.commandManager;
+	}
+	
+	public boolean isRunning()
+	{
+		return this.isRunningRelative;
 	}
 }

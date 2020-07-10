@@ -1,6 +1,7 @@
 package me.giverplay.minecraft2D.inventory;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Constructor;
 
 public class Item
 {
@@ -48,5 +49,21 @@ public class Item
 	public void setAmount(int amount)
 	{
 		this.amount = amount;
+	}
+
+	public static Item fromName(String name, int amount)
+	{
+		try
+		{
+			Class<?> clazz = ItemEnum.valueOf(name.toUpperCase()).getItemClass();
+			Constructor<?> cons = clazz.getConstructor(Integer.class);
+			Object obj = cons.newInstance(amount);
+			
+			return (Item) obj;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 }
