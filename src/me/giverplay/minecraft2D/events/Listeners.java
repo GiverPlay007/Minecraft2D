@@ -87,8 +87,9 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0)
+	public void mousePressed(MouseEvent e)
 	{
+		((PlayerInventory) game.getPlayer().getInventory()).handleClick(e.getX() / Game.SCALE, e.getY() / Game.SCALE, e.getButton());
 	}
 
 	@Override

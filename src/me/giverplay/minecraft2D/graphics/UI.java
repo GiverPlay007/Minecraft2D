@@ -30,7 +30,7 @@ public class UI
 	private int toastFrames = 0;
 	private int maxToastFrames = 0;
 	private int time = 0;
-	
+	private int heartSize = 24;
 	private int slotSize = 32;
 	private int xs = (WIDTH * SCALE) / 2 - 9 * slotSize / SCALE;
 	private int ys = (HEIGHT * SCALE) - slotSize - 5;
@@ -47,11 +47,12 @@ public class UI
 		
 		int max = game.getPlayer().getMaxLife();
 		int cur = game.getPlayer().getLife();
-		int coe = 24;
+		
+		heartSize = 16;
 		
 		for(int i = 0; i < max; i++)
 		{
-			g.drawImage(i < cur ? Entity.SPRITE_LIFE_FULL : Entity.SPRITE_LIFE_NON_FULL, i * (coe + 5) + 5, HEIGHT * SCALE - coe -5, coe, coe, null);
+			g.drawImage(i < cur ? Entity.SPRITE_LIFE_FULL : Entity.SPRITE_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
 		}
 		
 		renderInventory(g, game.getPlayer().getInventory());
@@ -63,7 +64,7 @@ public class UI
 		g.setColor(new Color(0, 0, 0, 144));
 		g.fillRect(xs, ys, 9 * slotSize, slotSize);
 		g.setFont(new Font("arial", Font.BOLD, 16));
-		g.setColor(Color.RED);
+		g.setColor(Color.WHITE);
 		g.drawRect(xs + inv.getFocusedSlot() * slotSize + 1, ys + 1, slotSize -2, slotSize -2);
 		
 		for(int i = 0; i < 9; i++)

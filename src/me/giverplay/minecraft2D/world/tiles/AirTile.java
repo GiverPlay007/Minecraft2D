@@ -2,18 +2,19 @@ package me.giverplay.minecraft2D.world.tiles;
 
 import java.awt.Graphics;
 
+import me.giverplay.minecraft2D.inventory.Material;
 import me.giverplay.minecraft2D.world.Tile;
 
 public class AirTile extends Tile
 {
-	public AirTile(int x, int y)
+	public AirTile(Integer x, Integer y)
 	{
-		super(x, y, false, false, null);
+		super(Material.AIR, x, y, false, false, null);
 	}
 	
 	public AirTile(int x, int y, boolean isFinal)
 	{
-		super(x, y, false, isFinal, null);
+		super(Material.AIR, x, y, false, isFinal, null);
 	}
 	
 	@Override

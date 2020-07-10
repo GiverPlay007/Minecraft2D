@@ -31,8 +31,8 @@ public class Player extends Entity
 	private double vspd = 0;
 	
 	private int undamageable = 0;
-	private int maxVida = 5;
-	private int vida = 5;
+	private int maxVida = 10;
+	private int vida = 10;
 	private int anim = 0;
 	private int anim_frames = 0;
 	private int dir = 0;
@@ -46,7 +46,7 @@ public class Player extends Entity
 		super(x, y, width, height, 1, null);
 		game = Game.getGame();
 		camera = game.getCamera();
-		inv = new PlayerInventory(36);
+		inv = new PlayerInventory(36, this);
 		
 		setDepth(2);
 	}
@@ -79,8 +79,7 @@ public class Player extends Entity
 			
 			if(!canMove(getX(), (int) (y + 1)) && canMove(getX(), (int) (y -1)))
 			{
-				vspd = -3;
-				Sound.jump.play();
+				vspd = -4;
 			}
 		}
 		

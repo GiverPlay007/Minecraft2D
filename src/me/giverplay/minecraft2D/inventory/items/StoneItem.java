@@ -8,6 +8,6 @@ public class StoneItem extends Item
 {
 	public StoneItem(Integer amount)
 	{
-		super("Stone", Material.STONE, amount, 8, Tile.TILE_STONE);
+		super("Stone", Material.STONE, amount, 64, Tile.TILE_STONE);
 	}
 }

@@ -8,6 +8,6 @@ public class DirtItem extends Item
 {
 	public DirtItem(Integer amount)
 	{
-		super("Dirt", Material.DIRT, amount, 8, Tile.TILE_DIRT);
+		super("Dirt", Material.DIRT, amount, 64, Tile.TILE_DIRT);
 	}
 }

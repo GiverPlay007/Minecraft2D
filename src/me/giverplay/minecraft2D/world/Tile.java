@@ -4,8 +4,10 @@ import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Constructor;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.inventory.Material;
 
 public class Tile
 {
@@ -17,24 +19,31 @@ public class Tile
 	public static BufferedImage TILE_SAND = game.getSpritesheet().getSprite(TILE_SIZE * 3, 0, TILE_SIZE, TILE_SIZE);
 	
 	private BufferedImage sprite;
+	private Material type;
 	
 	private boolean isRigid;
 	private boolean isFinal;
 	
 	private int x, y;
 	
-	public Tile(int x, int y, boolean isRigid, boolean isFinal, BufferedImage sprite)
+	public Tile(Material type, int x, int y, boolean isRigid, boolean isFinal, BufferedImage sprite)
 	{
 		this.x = x;
 		this.y = y;
 		this.sprite = sprite;
 		this.isRigid = isRigid;
 		this.isFinal = isFinal;
+		this.type = type;
 	}
 	
 	public void render(Graphics g)
 	{
 		g.drawImage(sprite, x - game.getCamera().getX(), y - game.getCamera().getY(), null);
+	}
+	
+	public Material getType()
+	{
+		return this.type;
 	}
 	
 	public boolean isRigid()
@@ -45,5 +54,22 @@ public class Tile
 	public boolean isFinal()
 	{
 		return this.isFinal;
+	}
+	
+	public static Tile forMaterial(Material mat, int x, int y)
+	{
+		try
+		{
+			Class<?> clazz = mat.getTileClass();
+			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class);
+			Object obj = cons.newInstance(x, y);
+			
+			return (Tile) obj;
+		}
+		catch(Exception e)
+		{ System.out.println(e.getMessage());
+			return null;
+		}
+	
 	}
 }

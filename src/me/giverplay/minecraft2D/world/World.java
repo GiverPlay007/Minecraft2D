@@ -13,7 +13,7 @@ public class World
 	
 	private static Tile[] tiles;
 	
-	private Game game;
+	private static Game game;
 	private Camera camera;
 	
 	private int width;
@@ -38,10 +38,18 @@ public class World
 			for(int yy = 0; yy < height; yy++)
 			{
 				int index = xx + yy * width;
+				int x = xx * TILE_SIZE;
+				int y = yy * TILE_SIZE;
 				
-				tiles[index] = yy > 10 ? new GrassTile(xx * 16, yy * 16, true) : new AirTile(xx * 16, yy * 16);
+				tiles[index] = yy > height - 2 ? new GrassTile(x, y, validateBonds(xx, yy)) : new AirTile(x, y, validateBonds(xx, yy));
+				
 			}
 		}
+	}
+	
+	private boolean validateBonds(int x, int y)
+	{
+		return x == width - 1 || x == 0 || y == 0 || y == height -1;
 	}
 	
 	public void render(Graphics g)
@@ -85,6 +93,9 @@ public class World
 	
 	public static boolean canMove(int xn, int yn)
 	{
+		if(yn < 0 || yn >= game.getWorld().getHeight() * TILE_SIZE || xn < 0 || xn >= game.getWorld().getWidth() * TILE_SIZE)
+			return false;
+		
 		try
 		{
 			int x1 = xn / TILE_SIZE;

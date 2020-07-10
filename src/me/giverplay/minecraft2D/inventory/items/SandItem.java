@@ -8,6 +8,6 @@ public class SandItem extends Item
 {
 	public SandItem(Integer amount)
 	{
-		super("Sand", Material.SAND, amount, 8, Tile.TILE_SAND);
+		super("Sand", Material.SAND, amount, 64, Tile.TILE_SAND);
 	}
 }

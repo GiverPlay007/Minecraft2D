@@ -110,7 +110,7 @@ public class Game extends Canvas implements Runnable
 		
 		camera = new Camera(0, 0);
 		sprite = new Spritesheet("/Spritesheet.png");
-		player = new Player(50, 1, 16, 16);
+		player = new Player(50, 190 * 16, 16, 16);
 		world = new World(200, 200);
 		
 		ui = new UI();
@@ -282,7 +282,7 @@ public class Game extends Canvas implements Runnable
 		// FPS
 		g.setColor(Color.WHITE);
 		g.setFont(FontUtils.getFont(11, Font.PLAIN));
-		g.drawString("FPS: " + FPS, 2, 12);
+		g.drawString("FPS: " + FPS, 0, HEIGHT * SCALE - 2);
 	}
 	
 	// Getters e Setters | TODO
