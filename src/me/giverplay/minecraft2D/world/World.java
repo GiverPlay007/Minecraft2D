@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.graphics.Camera;
+import me.giverplay.minecraft2D.world.tiles.AirTile;
+import me.giverplay.minecraft2D.world.tiles.GrassTile;
 
 public class World
 {
@@ -37,7 +39,7 @@ public class World
 			{
 				int index = xx + yy * width;
 				
-				tiles[index] = yy > 10 ? new FloorTile(xx * 16, yy * 16, true) : new AirTile(xx * 16, yy * 16);
+				tiles[index] = yy > 10 ? new GrassTile(xx * 16, yy * 16, true) : new AirTile(xx * 16, yy * 16);
 			}
 		}
 	}

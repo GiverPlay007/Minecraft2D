@@ -8,11 +8,12 @@ public interface Inventory
 	public int firstEmpty();
 	public int items();
 	public int size();
+	public int getFocusedSlot();
 	
-	public boolean hasItem(ItemEnum type);
+	public boolean hasItem(Material type);
 	public boolean addItem(Item item);
 	
-	public void removeItem(ItemEnum type, int amount);
+	public void removeItem(Material type, int amount);
 	public void removeItem(int slot);
 	public void setItem(int slot, Item item);
 }

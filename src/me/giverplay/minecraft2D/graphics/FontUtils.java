@@ -32,6 +32,11 @@ public class FontUtils
 		return (font != null ? font.deriveFont((float) size).deriveFont(style) : new Font("arial", style, size));
 	}
 	
+	public static Font getFont(String name, int size, int style)
+	{
+		return new Font(name, style, size);
+	}
+	
 	public static int stringWidth(Graphics g, String txt)
 	{
 		return g.getFontMetrics().stringWidth(txt);

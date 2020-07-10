@@ -7,12 +7,12 @@ public class Item
 {
 	private String name;
 	private BufferedImage sprite;
-	private ItemEnum type;
+	private Material type;
 	
 	private int amount;
 	private int maxStack;
 	
-	public Item(String name, ItemEnum type, int amount, int maxStack, BufferedImage sprite)
+	public Item(String name, Material type, int amount, int maxStack, BufferedImage sprite)
 	{
 		this.name = name;
 		this.type = type;
@@ -26,7 +26,7 @@ public class Item
 		return this.name;
 	}
 	
-	public ItemEnum getType()
+	public Material getType()
 	{
 		return this.type;
 	}
@@ -51,18 +51,18 @@ public class Item
 		this.amount = amount;
 	}
 
-	public static Item fromName(String name, int amount)
+	public static Item forName(String name, int amount)
 	{
 		try
 		{
-			Class<?> clazz = ItemEnum.valueOf(name.toUpperCase()).getItemClass();
+			Class<?> clazz = Material.valueOf(name.toUpperCase()).getItemClass();
 			Constructor<?> cons = clazz.getConstructor(Integer.class);
 			Object obj = cons.newInstance(amount);
 			
 			return (Item) obj;
 		}
 		catch(Exception e)
-		{
+		{ System.out.println(e.getMessage());
 			return null;
 		}
 	}

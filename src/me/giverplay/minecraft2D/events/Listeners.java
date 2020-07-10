@@ -2,10 +2,15 @@ package me.giverplay.minecraft2D.events;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.inventory.PlayerInventory;
 
-public class Listeners implements KeyListener
+public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 {
 	private Game game;
 	
@@ -13,6 +18,8 @@ public class Listeners implements KeyListener
 	{
 		this.game = game;
 		this.game.addKeyListener(this);
+		this.game.addMouseWheelListener(this);
+		this.game.addMouseListener(this);
 	}
 	
 	@Override
@@ -61,7 +68,37 @@ public class Listeners implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent arg0)
 	{
-		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0)
+	{
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0)
+	{
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0)
+	{
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0)
+	{
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0)
+	{
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e)
+	{
+		((PlayerInventory) game.getPlayer().getInventory()).updateFocus(e.getWheelRotation());
 	}
 }

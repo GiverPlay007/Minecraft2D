@@ -1,7 +1,11 @@
 package me.giverplay.minecraft2D.graphics;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -31,5 +35,20 @@ public class GraphicsUtils
 		g2d.dispose();
 		
 		return rotated;
+	}
+	
+	public static void drawOutline(Graphics g, String txt, int x, int y, float stroke, Color shapeColor, Color stringColor)
+	{
+		Graphics2D g2d = (Graphics2D) g.create();
+    AffineTransform transform = g2d.getTransform();
+    transform.translate(x, y);
+    g2d.transform(transform);
+    g2d.setColor(shapeColor);
+    Shape shape = new TextLayout(txt, g.getFont(), g2d.getFontRenderContext()).getOutline(null);
+    g2d.setStroke(new BasicStroke(stroke));
+    g2d.draw(shape);
+    g2d.setColor(stringColor);
+    g2d.fill(shape);
+    g2d.dispose();
 	}
 }

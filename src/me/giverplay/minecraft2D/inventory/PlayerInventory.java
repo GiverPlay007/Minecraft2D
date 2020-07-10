@@ -1,16 +1,23 @@
 package me.giverplay.minecraft2D.inventory;
 
+import me.giverplay.minecraft2D.inventory.items.AirItem;
+
 public class PlayerInventory implements Inventory
 {
 	private Item[] items;
 	
 	private int size;
+	private int focusedSlot = 0;
 	
 	public PlayerInventory(int size)
 	{
 		this.size = size;
-		
 		this.items = new Item[size];
+		
+		for(int i = 0; i < size; i++)
+		{
+			items[i] = new AirItem(1);
+		}
 	}
 	
 	@Override
@@ -45,7 +52,7 @@ public class PlayerInventory implements Inventory
 	}
 
 	@Override
-	public boolean hasItem(ItemEnum type)
+	public boolean hasItem(Material type)
 	{
 		return false;
 	}
@@ -55,7 +62,7 @@ public class PlayerInventory implements Inventory
 	{
 		for(int i = 0; i < items.length; i++)
 		{
-			if(items[i] == null)
+			if(items[i].getType() == Material.AIR)
 			{
 				items[i] = item;
 				return true;
@@ -66,7 +73,7 @@ public class PlayerInventory implements Inventory
 	}
 
 	@Override
-	public void removeItem(ItemEnum type, int amount)
+	public void removeItem(Material type, int amount)
 	{
 		// TODO
 	}
@@ -77,7 +84,7 @@ public class PlayerInventory implements Inventory
 		if(slot < 0 || slot >= items.length)
 			throw new ArrayIndexOutOfBoundsException("Slot inválido");
 		
-		items[slot] = null;
+		items[slot] = new AirItem(1);
 	}
 
 	@Override
@@ -93,5 +100,16 @@ public class PlayerInventory implements Inventory
 	public int size()
 	{
 		return size;
+	}
+
+	@Override
+	public int getFocusedSlot()
+	{
+		return focusedSlot;
+	}
+	
+	public void updateFocus(int toUpdate)
+	{
+		focusedSlot = toUpdate + focusedSlot < 0 ? 8 : toUpdate + focusedSlot > 8 ? 0 : focusedSlot + toUpdate;
 	}
 }

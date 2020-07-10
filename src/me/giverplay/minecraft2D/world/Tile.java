@@ -19,15 +19,17 @@ public class Tile
 	private BufferedImage sprite;
 	
 	private boolean isRigid;
+	private boolean isFinal;
 	
 	private int x, y;
 	
-	public Tile(int x, int y, boolean isRigid, BufferedImage sprite)
+	public Tile(int x, int y, boolean isRigid, boolean isFinal, BufferedImage sprite)
 	{
 		this.x = x;
 		this.y = y;
 		this.sprite = sprite;
 		this.isRigid = isRigid;
+		this.isFinal = isFinal;
 	}
 	
 	public void render(Graphics g)
@@ -38,5 +40,10 @@ public class Tile
 	public boolean isRigid()
 	{
 		return this.isRigid;
+	}
+	
+	public boolean isFinal()
+	{
+		return this.isFinal;
 	}
 }

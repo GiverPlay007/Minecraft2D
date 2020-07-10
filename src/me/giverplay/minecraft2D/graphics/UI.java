@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Entity;
+import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
+import me.giverplay.minecraft2D.inventory.Material;
 
 public class UI
 {
@@ -52,24 +54,37 @@ public class UI
 			g.drawImage(i < cur ? Entity.SPRITE_LIFE_FULL : Entity.SPRITE_LIFE_NON_FULL, i * (coe + 5) + 5, HEIGHT * SCALE - coe -5, coe, coe, null);
 		}
 		
-		renderInventory(g);
+		renderInventory(g, game.getPlayer().getInventory());
 		advanceToast(g);
 	}
 	
-	private void renderInventory(Graphics g)
+	private void renderInventory(Graphics g, Inventory inv)
 	{
 		g.setColor(new Color(0, 0, 0, 144));
 		g.fillRect(xs, ys, 9 * slotSize, slotSize);
-		g.setColor(Color.BLACK);
+		g.setFont(new Font("arial", Font.BOLD, 16));
+		g.setColor(Color.RED);
+		g.drawRect(xs + inv.getFocusedSlot() * slotSize + 1, ys + 1, slotSize -2, slotSize -2);
 		
 		for(int i = 0; i < 9; i++)
 		{
-			g.drawRect(xs + i * slotSize, ys, slotSize, slotSize);
+			int n = xs + i * slotSize;
+			g.setColor(Color.BLACK);
+			g.drawRect(n, ys, slotSize, slotSize);
+			g.setColor(Color.yellow);
 			
-			Item item = game.getPlayer().getInventory().getItem(i);
+			Item item = inv.getItem(i);
 			
-			if(item != null)
-				g.drawImage(item.getSprite(), xs + i * slotSize + 4, ys + 4, 24, 24, null);
+			if(item.getType() != Material.AIR)
+			{
+				g.drawImage(item.getSprite(), n + 4, ys + 4, 24, 24, null);
+				
+				if(item.getAmount() >= 2)
+				{
+					String txt = String.valueOf(item.getAmount());
+					GraphicsUtils.drawOutline(g, txt, n + 30 - FontUtils.stringWidth(g, txt), ys + 30, 4f, Color.BLACK, Color.WHITE);
+				}
+			}
 		}
 	}
 	

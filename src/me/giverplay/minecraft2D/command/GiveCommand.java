@@ -37,7 +37,7 @@ public class GiveCommand extends Command
 			return;
 		}
 		
-		Item item = Item.fromName(args[0], amount);
+		Item item = Item.forName(args[0], amount);
 		
 		if(item == null)
 		{
@@ -48,6 +48,7 @@ public class GiveCommand extends Command
 		if(!game.getPlayer().getInventory().addItem(item))
 		{
 			System.out.println("Inventário lotado...");
+			return;
 		}
 		
 		System.out.println("Item adicionado com sucesso: " + args[1] + "x " + StringUtils.capitalize(args[0]));
