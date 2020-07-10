@@ -31,13 +31,17 @@ public class PlayerInventory implements Inventory
 	@Override
 	public int firstEmpty()
 	{
-		return 0;
+		for(int i = 0; i < items.length; i++)
+			if(items[i] == null)
+				return i;
+		
+		return -1;
 	}
 
 	@Override
 	public int items()
 	{
-		return 0;
+		return 0; // TODO
 	}
 
 	@Override
@@ -64,6 +68,7 @@ public class PlayerInventory implements Inventory
 	@Override
 	public void removeItem(ItemEnum type, int amount)
 	{
+		// TODO
 	}
 
 	@Override

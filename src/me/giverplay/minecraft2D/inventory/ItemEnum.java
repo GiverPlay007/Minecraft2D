@@ -1,13 +1,16 @@
 package me.giverplay.minecraft2D.inventory;
 
+import me.giverplay.minecraft2D.inventory.items.DirtItem;
 import me.giverplay.minecraft2D.inventory.items.GrassItem;
+import me.giverplay.minecraft2D.inventory.items.SandItem;
+import me.giverplay.minecraft2D.inventory.items.StoneItem;
 
 public enum ItemEnum
 {
-	STONE(GrassItem.class), 
+	STONE(StoneItem.class), 
 	GRASS(GrassItem.class), 
-	DIRT(GrassItem.class), 
-	SAND(GrassItem.class);
+	DIRT(DirtItem.class), 
+	SAND(SandItem.class);
 	
 	private Class<?> clazz;
 	
