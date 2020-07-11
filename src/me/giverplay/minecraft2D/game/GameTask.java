@@ -14,7 +14,7 @@ public class GameTask extends Thread implements Runnable
 	@Override
 	public void run()
 	{
-		game.requestFocus();
+		game.getWindow().requestFocus();
 		
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();

@@ -17,9 +17,10 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	public Listeners(Game game)
 	{
 		this.game = game;
-		this.game.addKeyListener(this);
-		this.game.addMouseWheelListener(this);
-		this.game.addMouseListener(this);
+		
+		game.getWindow().addKeyListener(this);
+		game.getWindow().addMouseWheelListener(this);
+		game.getWindow().addMouseListener(this);
 	}
 	
 	@Override

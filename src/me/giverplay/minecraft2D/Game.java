@@ -1,10 +1,6 @@
 package me.giverplay.minecraft2D;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
 import java.util.List;
-
-import javax.swing.JFrame;
 
 import me.giverplay.minecraft2D.command.CommandManager;
 import me.giverplay.minecraft2D.command.CommandTask;
@@ -15,14 +11,15 @@ import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.Listeners;
 import me.giverplay.minecraft2D.game.Services;
 import me.giverplay.minecraft2D.game.State;
+import me.giverplay.minecraft2D.game.Window;
 import me.giverplay.minecraft2D.graphics.FutureRender;
 import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.sound.Sound;
 import me.giverplay.minecraft2D.world.World;
 
-public class Game extends Canvas
+public class Game
 {
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 	
 	public static final int WIDTH = 320;
 	public static final int HEIGHT = 240;
@@ -33,6 +30,7 @@ public class Game extends Canvas
 	private static Game game;
 			
 	private State state = State.PAUSED;
+	private Window window;
 	private GameTask thread;
 	private Services services;
 	private CommandTask cmdTask;
@@ -42,8 +40,6 @@ public class Game extends Canvas
 	private World world;
 	private Player player;
 	
-	private JFrame frame;
-	
 	private boolean isRunningRelative = false;
 	private boolean isRunning = false;
 	
@@ -52,11 +48,8 @@ public class Game extends Canvas
 		return game;
 	}
 	
-	// Métodos Startup | TODO
 	public Game()
 	{
-		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		
 		setupFrame();
 		setupAssets();
 	}
@@ -69,14 +62,7 @@ public class Game extends Canvas
 	
 	private void setupFrame()
 	{
-		frame = new JFrame("Game 06 - Minecraft 2D Clone");
-		frame.add(this);
-		frame.setResizable(false);
-		frame.setUndecorated(false);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		window = new Window(this);
 		new Listeners(this);
 	}
 	
@@ -100,8 +86,6 @@ public class Game extends Canvas
 		
 		setState(State.NORMAL);
 	}
-	
-	// Metodos de Controle do Fluxo | TODO
 	
 	public synchronized void start()
 	{
@@ -144,8 +128,6 @@ public class Game extends Canvas
 			services.render();
 		}
 	}
-	
-	// Getters e Setters | TODO
 	
 	public Player getPlayer()
 	{
@@ -211,5 +193,10 @@ public class Game extends Canvas
 	public void setState(State state)
 	{
 		this.state = state;
+	}
+	
+	public Window getWindow()
+	{
+		return this.window;
 	}
 }

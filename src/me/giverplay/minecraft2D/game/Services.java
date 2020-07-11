@@ -59,12 +59,11 @@ public class Services
 	
 	public void render()
 	{
-
-		BufferStrategy bs = game.getBufferStrategy();
+		BufferStrategy bs = game.getWindow().getBufferStrategy();
 		
 		if(bs == null)
 		{
-			game.createBufferStrategy(3);
+			game.getWindow().createBufferStrategy(3);
 			return;
 		}
 		
