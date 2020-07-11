@@ -9,10 +9,14 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.graphics.Camera;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
+import me.giverplay.minecraft2D.inventory.items.BedrockItem;
+import me.giverplay.minecraft2D.inventory.items.BricksItem;
 import me.giverplay.minecraft2D.inventory.items.DirtItem;
 import me.giverplay.minecraft2D.inventory.items.GrassItem;
 import me.giverplay.minecraft2D.inventory.items.SandItem;
+import me.giverplay.minecraft2D.inventory.items.StoneBricksItem;
 import me.giverplay.minecraft2D.inventory.items.StoneItem;
+import me.giverplay.minecraft2D.inventory.items.WoodItem;
 import me.giverplay.minecraft2D.sound.Sound;
 
 public class Player extends Entity
@@ -56,6 +60,10 @@ public class Player extends Entity
 		inv.addItem(new GrassItem(64));
 		inv.addItem(new DirtItem(64));
 		inv.addItem(new SandItem(64));
+		inv.addItem(new BedrockItem(64));
+		inv.addItem(new StoneBricksItem(64));
+		inv.addItem(new WoodItem(64));
+		inv.addItem(new BricksItem(64));
 		
 		setDepth(2);
 	}
