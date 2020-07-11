@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.Camera;
+import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.inventory.items.BedrockItem;
@@ -46,12 +47,14 @@ public class Player extends LivingEntity
 	private Game game;
 	private Camera camera;
 	private Inventory inv;
+	private GameMode mode;
 	
 	public Player(int x, int y, int width, int height)
 	{
 		super(x, y, width, height, 1, null);
 		game = Game.getGame();
 		camera = game.getCamera();
+		setGamemode(GameMode.SURVIVAL);
 		inv = new PlayerInventory(36, this);
 		
 		inv.addItem(new StoneItem(64));
@@ -276,5 +279,15 @@ public class Player extends LivingEntity
 	public Inventory getInventory()
 	{
 		return this.inv;
+	}
+
+	public GameMode getGamemode()
+	{
+		return mode;
+	}
+
+	public void setGamemode(GameMode mode)
+	{
+		this.mode = mode;
 	}
 }
