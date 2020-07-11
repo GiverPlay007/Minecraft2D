@@ -59,36 +59,83 @@ public class PlayerInventory implements Inventory
 	}
 
 	@Override
-	public int items()
-	{
-		return 0; // TODO
-	}
-
-	@Override
 	public boolean hasItem(Material type)
 	{
-		return false;
-	}
-
-	@Override
-	public boolean addItem(Item item)
-	{
-		for(int i = 0; i < items.length; i++)
+		for(int i = 0; i < size; i++)
 		{
-			if(items[i].getType() == Material.AIR)
-			{
-				items[i] = item;
+			if(getItem(i).getType() == type)
 				return true;
-			}
 		}
 		
 		return false;
 	}
 
 	@Override
+	public boolean addItem(Item item)
+	{
+		int rest = item.getAmount(), buffer = 0;
+		boolean next = false;
+		
+		for(int i = 0; i < items.length; i++)
+		{
+			Item now = items[i];
+			
+			if(now.getType() == Material.AIR)
+			{
+				items[i] = !next ? item : item.setAmount(rest);
+				return true;
+			}
+			
+			if(now.getType() != item.getType() || now.getAmount() >= now.getMaxStack())
+				continue;
+			
+			if(now.getAmount() + rest <= now.getMaxStack())
+			{
+				now.setAmount(now.getAmount() + rest);
+				return true;
+			}
+			
+			buffer = now.getMaxStack() - now.getAmount();
+			rest -= buffer;
+			now.setAmount(now.getMaxStack());
+			next = true;
+		}
+		
+		if(rest != 0)
+			System.out.println("O inventário estava parcialmente cheio, " + rest + " itens se perderam...");
+		
+		return next;
+	}
+
+	@Override
 	public void removeItem(Material type, int amount)
 	{
-		// TODO
+		if(amount <= 0)
+			throw new IllegalArgumentException("O número deve ser maior que um");
+		
+		int buffer = amount;
+		
+		for(int i = 0; i < size; i++)
+		{			
+			if(buffer <= 0)
+				break;
+			
+			Item item = getItem(i);
+			
+			if(item.getType() != type)
+				continue;
+			
+			if(item.getAmount() - buffer <= 0)
+			{
+				buffer -= item.getAmount();
+				removeItem(i);
+			}
+			else
+			{
+				item.setAmount(item.getAmount() - buffer);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -160,7 +207,11 @@ public class PlayerInventory implements Inventory
 		tiles[index] = Tile.forMaterial(item.getType(), x * TILE_SIZE, y * TILE_SIZE);
 		
 		if(!canMove(player.getX(), player.getY()))
+		{
 			tiles[index] = Tile.forMaterial(mat, x * TILE_SIZE, y * TILE_SIZE);
+		}
+		
+		removeItem(item.getType(), 1);
 	}
 	
 	private void removeTile(int x, int y)
@@ -170,6 +221,9 @@ public class PlayerInventory implements Inventory
 		
 		if(tiles[index].isFinal())
 			return;
+		
+		Material mat = tiles[index].getType();
+		addItem(Item.forMaterial(mat, 1));
 		
 		tiles[index] = new AirTile(x, y);
 	}

@@ -16,8 +16,16 @@ public class Item
 	{
 		this.name = name;
 		this.type = type;
-		this.amount = amount;
+		
+		if(maxStack < 1 || maxStack > 64)
+		  throw new IllegalArgumentException("Stack máximo deve ser entre 1 e 64");
+		
 		this.maxStack = maxStack;
+		
+		if(amount > maxStack || amount < 1)
+			throw new IllegalArgumentException("A quantidade deve ser entre 1 e o stackSize");
+		
+		this.amount = amount;
 		this.sprite = sprite;
 	}
 	
@@ -46,9 +54,10 @@ public class Item
 		return this.maxStack;
 	}
 	
-	public void setAmount(int amount)
+	public Item setAmount(int amount)
 	{
 		this.amount = amount;
+		return this;
 	}
 
 	public static Item forName(String name, int amount)
@@ -62,7 +71,25 @@ public class Item
 			return (Item) obj;
 		}
 		catch(Exception e)
-		{ System.out.println(e.getMessage());
+		{
+			System.out.println(e.getCause().getMessage());
+			return null;
+		}
+	}
+	
+	public static Item forMaterial(Material mat, int amount)
+	{
+		try
+		{
+			Class<?> clazz = mat.getItemClass();
+			Constructor<?> cons = clazz.getConstructor(Integer.class);
+			Object obj = cons.newInstance(amount);
+			
+			return (Item) obj;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getCause().getMessage());
 			return null;
 		}
 	}

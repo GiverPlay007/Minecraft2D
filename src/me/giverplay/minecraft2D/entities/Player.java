@@ -9,6 +9,10 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.graphics.Camera;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
+import me.giverplay.minecraft2D.inventory.items.DirtItem;
+import me.giverplay.minecraft2D.inventory.items.GrassItem;
+import me.giverplay.minecraft2D.inventory.items.SandItem;
+import me.giverplay.minecraft2D.inventory.items.StoneItem;
 import me.giverplay.minecraft2D.sound.Sound;
 
 public class Player extends Entity
@@ -47,6 +51,11 @@ public class Player extends Entity
 		game = Game.getGame();
 		camera = game.getCamera();
 		inv = new PlayerInventory(36, this);
+		
+		inv.addItem(new StoneItem(64));
+		inv.addItem(new GrassItem(64));
+		inv.addItem(new DirtItem(64));
+		inv.addItem(new SandItem(64));
 		
 		setDepth(2);
 	}

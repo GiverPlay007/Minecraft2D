@@ -14,6 +14,7 @@ public class CommandManager
 	private void registerCommands()
 	{
 		commands.put("give", new GiveCommand());
+		commands.put("remove", new RemoveCommand());
 	}
 	
 	public void dispatchCommand(String cmd, String[] args)

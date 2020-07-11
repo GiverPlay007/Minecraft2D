@@ -6,7 +6,6 @@ public interface Inventory
 	public Item getItem(int slot);
 	
 	public int firstEmpty();
-	public int items();
 	public int size();
 	public int getFocusedSlot();
 	

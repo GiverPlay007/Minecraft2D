@@ -17,6 +17,10 @@ public class Tile
 	public static BufferedImage TILE_GRASS = game.getSpritesheet().getSprite(TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
 	public static BufferedImage TILE_DIRT = game.getSpritesheet().getSprite(TILE_SIZE * 2, 0, TILE_SIZE, TILE_SIZE);
 	public static BufferedImage TILE_SAND = game.getSpritesheet().getSprite(TILE_SIZE * 3, 0, TILE_SIZE, TILE_SIZE);
+	public static BufferedImage TILE_BEDROCK = game.getSpritesheet().getSprite(TILE_SIZE * 4, 0, TILE_SIZE, TILE_SIZE);
+	public static BufferedImage TILE_STONE_BRICK = game.getSpritesheet().getSprite(TILE_SIZE * 5, 0, TILE_SIZE, TILE_SIZE);
+	public static BufferedImage TILE_WOOD = game.getSpritesheet().getSprite(TILE_SIZE * 6, 0, TILE_SIZE, TILE_SIZE);
+	public static BufferedImage TILE_BRICKS = game.getSpritesheet().getSprite(TILE_SIZE * 7, 0, TILE_SIZE, TILE_SIZE);
 	
 	private BufferedImage sprite;
 	private Material type;

@@ -37,11 +37,21 @@ public class GiveCommand extends Command
 			return;
 		}
 		
-		Item item = Item.forName(args[0], amount);
+		Item item;
+		
+		try
+		{
+		  item = Item.forName(args[0], amount);
+		}
+		catch(IllegalArgumentException e)
+		{
+			System.out.println("A quantidade não pode ser maior que o limite do stack");
+			return;
+		}
 		
 		if(item == null)
 		{
-			System.out.println("Item " + args[0] + " não existe...");
+			System.out.println("Item " + args[0] + " não existe ou atingiu o limite do stack...");
 			return;
 		}
 		
