@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.events;
+package me.giverplay.minecraft2D.game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,7 +25,7 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if(!game.morreu() && !game.venceu())
+		if(game.getState() != State.GAME_OVER)
 		{
 			if(event.getKeyCode() == KeyEvent.VK_SPACE || event.getKeyCode() == KeyEvent.VK_W || event.getKeyCode() == KeyEvent.VK_UP)
 			{

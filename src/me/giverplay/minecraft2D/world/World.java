@@ -3,7 +3,7 @@ package me.giverplay.minecraft2D.world;
 import java.awt.Graphics;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.graphics.Camera;
+import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.world.tiles.AirTile;
 import me.giverplay.minecraft2D.world.tiles.GrassTile;
 
@@ -73,6 +73,45 @@ public class World
 				if(tile != null)
 					tile.render(g);
 			}
+		}
+	}
+	
+	public static boolean moveAllowed(int xn, int yn, int width, int height)
+	{
+		if(yn -1 + height < 0 || yn -1 + height >= game.getWorld().getHeight() * TILE_SIZE || xn -1 + width < 0 || xn -1 + width >= game.getWorld().getWidth() * TILE_SIZE)
+			return false;
+		
+		try
+		{
+			int x1 = xn / TILE_SIZE;
+			int y1 = yn / TILE_SIZE;
+			
+			int x2 = (xn + width -1) / TILE_SIZE;
+			int y2 = yn / TILE_SIZE;
+			
+			int x3 = xn / TILE_SIZE;
+			int y3 = (yn + height -1) / TILE_SIZE;
+			
+			int x4 = (xn + width -1) / TILE_SIZE;
+			int y4 = (yn + height -1) / TILE_SIZE;
+			
+			World world = Game.getGame().getWorld();
+			Tile[] tiles = world.getTiles();
+			
+			int index1 = x1 + (y1 * world.getWidth());
+			int index2 = x2 + (y2 * world.getWidth());
+			int index3 = x3 + (y3 * world.getWidth());
+			int index4 = x4 + (y4 * world.getWidth());
+			
+			return !(tiles[index1].isRigid()
+					|| tiles[index2].isRigid()
+					|| tiles[index3].isRigid()
+					|| tiles[index4].isRigid());
+			
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			return false;
 		}
 	}
 	

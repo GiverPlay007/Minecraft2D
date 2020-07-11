@@ -37,6 +37,17 @@ public class CommandTask extends Thread implements Runnable
 		String[] data = command.split(" ");
 		String[] args = Arrays.copyOfRange(data, 1, data.length);
 		
-		game.getCommandManager().dispatchCommand(data[0], args);
+		try
+		{
+			game.getCommandManager().dispatchCommand(data[0], args);
+		}
+		catch(Exception e)
+		{
+			System.out.println(" ");
+			System.out.println("Falha ao executar o comando '" + data[0] + "'.");
+			System.out.println("Causa: " + e.getCause());
+			System.out.println("Erro: " + e.getMessage());
+			System.out.println(" ");
+		}
 	}
 }

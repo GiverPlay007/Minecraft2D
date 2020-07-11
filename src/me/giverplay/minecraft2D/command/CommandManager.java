@@ -2,6 +2,10 @@ package me.giverplay.minecraft2D.command;
 
 import java.util.HashMap;
 
+import me.giverplay.minecraft2D.command.commands.GamemodeCommand;
+import me.giverplay.minecraft2D.command.commands.GiveCommand;
+import me.giverplay.minecraft2D.command.commands.RemoveCommand;
+
 public class CommandManager
 {
 	private HashMap<String, Command> commands = new HashMap<>();
@@ -15,6 +19,7 @@ public class CommandManager
 	{
 		commands.put("give", new GiveCommand());
 		commands.put("remove", new RemoveCommand());
+		commands.put("gamemode", new GamemodeCommand());
 	}
 	
 	public void dispatchCommand(String cmd, String[] args)

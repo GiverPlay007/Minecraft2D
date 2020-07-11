@@ -14,5 +14,6 @@ public interface Inventory
 	
 	public void removeItem(Material type, int amount);
 	public void removeItem(int slot);
+	public void removeItem(int slot, int amount);
 	public void setItem(int slot, Item item);
 }

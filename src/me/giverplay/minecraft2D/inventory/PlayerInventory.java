@@ -1,7 +1,7 @@
 package me.giverplay.minecraft2D.inventory;
 
 import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
-import static me.giverplay.minecraft2D.world.World.canMove;
+import static me.giverplay.minecraft2D.world.World.moveAllowed;
 
 import java.awt.event.MouseEvent;
 
@@ -70,6 +70,23 @@ public class PlayerInventory implements Inventory
 		return false;
 	}
 
+	@Override
+	public void removeItem(int slot, int amount)
+	{
+		Item item = getItem(slot);
+		
+		if(item.getType() == Material.AIR)
+			return;
+		
+		if(item.getAmount() - amount <= 0)
+		{
+			removeItem(slot);
+			return;
+		}
+		
+		item.setAmount(item.getAmount() - amount);
+	}
+	
 	@Override
 	public boolean addItem(Item item)
 	{
@@ -204,14 +221,18 @@ public class PlayerInventory implements Inventory
 		if(item.getType() == Material.AIR)
 			return;
 		
+		if(tiles[index].getType() != Material.AIR)
+			return;
+		
 		tiles[index] = Tile.forMaterial(item.getType(), x * TILE_SIZE, y * TILE_SIZE);
 		
-		if(!canMove(player.getX(), player.getY()))
+		if(!moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight()))
 		{
 			tiles[index] = Tile.forMaterial(mat, x * TILE_SIZE, y * TILE_SIZE);
+			return;
 		}
 		
-		removeItem(item.getType(), 1);
+		removeItem(getFocusedSlot(), 1);
 	}
 	
 	private void removeTile(int x, int y)

@@ -1,8 +1,9 @@
-package me.giverplay.minecraft2D.command;
+package me.giverplay.minecraft2D.command.commands;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Item;
 
 public class GiveCommand extends Command

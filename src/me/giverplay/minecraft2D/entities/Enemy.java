@@ -8,7 +8,7 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.sound.Sound;
 import me.giverplay.minecraft2D.world.World;
 
-public class Enemy extends Entity
+public class Enemy extends LivingEntity
 {
 	private Game game;
 	

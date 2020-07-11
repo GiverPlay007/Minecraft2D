@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.game;
 
 public class Camera
 {

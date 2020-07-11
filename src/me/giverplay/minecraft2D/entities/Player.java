@@ -1,12 +1,12 @@
 package me.giverplay.minecraft2D.entities;
 
-import static me.giverplay.minecraft2D.world.World.canMove;
+import static me.giverplay.minecraft2D.world.World.moveAllowed;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.graphics.Camera;
+import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.inventory.items.BedrockItem;
@@ -19,7 +19,7 @@ import me.giverplay.minecraft2D.inventory.items.StoneItem;
 import me.giverplay.minecraft2D.inventory.items.WoodItem;
 import me.giverplay.minecraft2D.sound.Sound;
 
-public class Player extends Entity
+public class Player extends LivingEntity
 {
 	private static final int DIR_RIGHT = 0;
 	private static final int DIR_LEFT = 1;
@@ -39,8 +39,6 @@ public class Player extends Entity
 	private double vspd = 0;
 	
 	private int undamageable = 0;
-	private int maxVida = 10;
-	private int vida = 10;
 	private int anim = 0;
 	private int anim_frames = 0;
 	private int dir = 0;
@@ -94,13 +92,13 @@ public class Player extends Entity
 		{
 			jump = false;
 			
-			if(!canMove(getX(), (int) (y + 1)) && canMove(getX(), (int) (y -1)))
+			if(!moveAllowed(getX() + mx, (int) (y + 1) + my, mw, mh) && moveAllowed(getX() + mx, (int) (y -1) + my, mw, mh))
 			{
 				vspd = -4;
 			}
 		}
 		
-		if (!canMove((int) x, (int) (y + vspd)))
+		if (!moveAllowed((int) x + mx, (int) (y + vspd) + my, mw, mh))
 		{
 			
 			int signVsp = 0;
@@ -113,7 +111,7 @@ public class Player extends Entity
 				signVsp = -1;
 			}
 			
-			while (canMove((int) x, (int) (y + signVsp)))
+			while (moveAllowed((int) x + mx, (int) (y + signVsp) + my, mw, mh))
 			{
 				y = y + signVsp;
 			}
@@ -129,7 +127,7 @@ public class Player extends Entity
 		{
 			if (right)
 			{
-				if (canMove((int) (x + speed), getY()))
+				if (moveAllowed((int) (x + speed) + mx, getY() + my, mw, mh))
 				{
 					moveX(speed);
 					if (!isJumping)
@@ -138,7 +136,7 @@ public class Player extends Entity
 				
 			} else if (left)
 			{
-				if (canMove((int) (x - speed), getY()))
+				if (moveAllowed((int) (x - speed) + mx, getY() + my, mw, mh))
 				{
 					moveX(-speed);
 					if (!isJumping)
@@ -231,26 +229,6 @@ public class Player extends Entity
 			dir = DIR_RIGHT;
 	}
 	
-	public int getLife()
-	{
-		return vida;
-	}
-	
-	public void modifyLife(int toModify)
-	{
-		vida += toModify;
-		
-		if (vida < 0)
-			vida = 0;
-		if (vida > maxVida)
-			vida = maxVida;
-	}
-	
-	public int getMaxLife()
-	{
-		return this.maxVida;
-	}
-	
 	public boolean isDamaged()
 	{
 		return this.damaged;
@@ -266,7 +244,7 @@ public class Player extends Entity
 	
 	public void handleJump()
 	{
-		if (!canMove(getX(), (int) (y + 1)))
+		if (!moveAllowed(getX() + mx, (int) (y + 1) + my, mw, mh))
 			jump = true;
 	}
 	
@@ -292,7 +270,7 @@ public class Player extends Entity
 	
 	public boolean fallingRelative()
 	{
-		return canMove(getX(), getY() + 1) && vspd >= 0;
+		return moveAllowed(getX() + mx, getY() + 1 + my, mw, mh) && vspd >= 0;
 	}
 	
 	public Inventory getInventory()
