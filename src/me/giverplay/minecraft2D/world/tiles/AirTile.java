@@ -7,14 +7,14 @@ import me.giverplay.minecraft2D.world.Tile;
 
 public class AirTile extends Tile
 {
-	public AirTile(Integer x, Integer y)
-	{
-		super(Material.AIR, x, y, false, false, null);
-	}
-	
 	public AirTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.AIR, x, y, false, isFinal, null);
+	}
+	
+	public AirTile(Integer x, Integer y)
+	{
+		super(Material.AIR, x, y, false, false, null);
 	}
 	
 	@Override

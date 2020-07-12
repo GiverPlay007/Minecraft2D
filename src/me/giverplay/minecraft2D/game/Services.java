@@ -154,4 +154,9 @@ public class Services
 	{
 		
 	}
+
+	public void setEntities(List<Entity> entities)
+	{
+		this.entities = entities;
+	}
 }

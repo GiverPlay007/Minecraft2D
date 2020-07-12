@@ -28,6 +28,8 @@ public class Game
 	public static final int HEIGHT = 240;
 	public static final int SCALE = 2;
 	
+	private static boolean allReady = false;
+	
 	public static int FPS = 0;
 	
 	private static Game game;
@@ -45,6 +47,7 @@ public class Game
 	
 	private boolean isRunningRelative = false;
 	private boolean isRunning = false;
+	
 	
 	public static Game getGame()
 	{
@@ -89,7 +92,14 @@ public class Game
 		
 		setState(State.NORMAL);
 		
-		SaveWrapper.getDataFolder();
+		try
+		{
+			load(SaveWrapper.loadGame("Save"));
+		} catch (IOException e)
+		{
+			System.out.println("Erro");
+			e.printStackTrace();
+		}
 	}
 	
 	public synchronized void start()
@@ -124,6 +134,9 @@ public class Game
 	
 	public synchronized void runService(int s)
 	{
+		if(!allReady)
+			return;
+		
 		if(s == Services.TICK)
 		{
 			services.tick();
@@ -205,9 +218,18 @@ public class Game
 		return this.window;
 	}
 	
+	public void load(GameData data)
+	{
+		this.player = data.getPlayer();
+		this.world = data.getWorld();
+		services.setEntities(data.getEntities());
+		allReady = true;
+	}
+	
 	public void save()
 	{
 		GameData data = new GameData("Save", getPlayer(), getWorld(), getEntities());
+		
 		try
 		{
 			SaveWrapper.saveGame(data);
@@ -215,5 +237,10 @@ public class Game
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean allReady()
+	{
+		return allReady;
 	}
 }

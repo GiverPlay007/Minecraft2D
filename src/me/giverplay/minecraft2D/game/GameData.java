@@ -42,7 +42,7 @@ public class GameData
 		return this.player;
 	}
 	
-	public List<Entity> getEtities()
+	public List<Entity> getEntities()
 	{
 		return this.entities;
 	}
@@ -107,9 +107,6 @@ public class GameData
 			JSONObject tileJ = new JSONObject();
 			
 			tileJ.put("id", tile.getType().name());
-			tileJ.put("x", tile.getX());
-			tileJ.put("y", tile.getY());
-			tileJ.put("final", tile.isFinal());
 			tiles.put(String.valueOf(i), tileJ);
 		}
 		
@@ -152,8 +149,27 @@ public class GameData
 		JSONObject entity = json.getJSONObject("entities");
 		JSONObject enemy = entity.getJSONObject("enemies");
 		
+		Tile[] til = new Tile[world.getInt("width") * world.getInt("height")];
+		
+		for(String key : tiles.keySet())
+		{
+			JSONObject obj = tiles.getJSONObject(key);
+			
+			til[Integer.parseInt(key)] = Tile.forMaterial(Material.valueOf(obj.getString("id")));
+		}
+		
+		this.world = new World(world.getInt("width"), world.getInt("height"), til);
+		this.entities = new ArrayList<>();
 		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
+		this.entities.add(player);
 		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
+		
+		for(String key : enemy.keySet())
+		{
+			JSONObject ene = enemy.getJSONObject(key);
+			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
+			entities.add(en);
+		}
 		
 		for(String key : items.keySet())
 		{
@@ -161,25 +177,6 @@ public class GameData
 			Item item = Item.forMaterial(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
 			
 			inv.setItem(Integer.parseInt(key), item);
-		}
-		
-		Tile[] til = new Tile[world.getInt("width") * world.getInt("height")];
-		
-		for(String key : tiles.keySet())
-		{
-			JSONObject obj = tiles.getJSONObject(key);
-			
-			til[Integer.parseInt(key)] = Tile.forMaterial(Material.valueOf(obj.getString("id")), obj.getInt("x"), obj.getInt("y"), obj.getBoolean("final"));
-		}
-		
-		this.world = new World(world.getInt("width"), world.getInt("height"), til);
-		this.entities = new ArrayList<>();
-		
-		for(String key : enemy.keySet())
-		{
-			JSONObject ene = enemy.getJSONObject(key);
-			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
-			entities.add(en);
 		}
 	}
 

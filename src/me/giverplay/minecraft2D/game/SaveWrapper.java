@@ -51,7 +51,15 @@ public class SaveWrapper
 	
 	public static GameData loadGame(String worldName) throws IOException
 	{
-		BufferedReader br = new BufferedReader(new FileReader(new File(getSaveFolder(), worldName + ".dat")));
+		File file = new File(getSaveFolder(), worldName + ".dat");
+		
+		if(!file.exists())
+		{
+			System.out.println("Arquivo de save não existe.");
+			return null;
+		}
+		
+		BufferedReader br = new BufferedReader(new FileReader(file));
 		GameData data = new GameData();
 		data.setName(worldName);
 		
@@ -74,6 +82,11 @@ public class SaveWrapper
 	
 	public static void saveGame(GameData data) throws IOException
 	{
+		File file = new File(saveFolder, data.getName() + ".dat");
+		
+		if(file.exists())
+			file.delete();
+		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(saveFolder, data.getName() + ".dat")));
 		
 		try

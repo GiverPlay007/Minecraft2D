@@ -14,5 +14,4 @@ public class SandTile extends Tile
 	{
 		super(Material.SAND, x, y, true, false, Tile.TILE_SAND);
 	}
-	
 }

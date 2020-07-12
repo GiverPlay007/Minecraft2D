@@ -84,16 +84,16 @@ public class Tile
 		{
 			return null;
 		}
-	
+		
 	}
 	
-	public static Tile forMaterial(Material mat, int x, int y, Boolean b)
+	public static Tile forMaterial(Material mat)
 	{
 		try
 		{
 			Class<?> clazz = mat.getTileClass();
-			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class, Boolean.class);
-			Object obj = cons.newInstance(x, y, b);
+			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class);
+			Object obj = cons.newInstance(0, 0);
 			
 			return (Tile) obj;
 		}
@@ -101,6 +101,23 @@ public class Tile
 		{
 			return null;
 		}
+	}
 	
+	public static Tile forMaterial(Material mat, int x, int y, boolean b)
+	{
+		try
+		{
+			Class<?> clazz = mat.getTileClass();
+			//Constructor<?> cons = clazz.getDeclaredConstructor(Integer.class, Integer.class, Boolean.class);
+			Constructor<?> cons = clazz.getConstructors()[0];
+			Object obj = cons.newInstance(x, y, b);
+			
+			return (Tile) obj;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

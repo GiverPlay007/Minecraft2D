@@ -29,6 +29,9 @@ public class World
 	
 	public World(int width, int height, Tile[] tiles)
 	{
+		game = Game.getGame();
+		camera = game.getCamera();
+		
 		this.width = width;
 		this.height = height;
 		
@@ -41,12 +44,11 @@ public class World
 				int index = xx + yy * width;
 				int x = xx * TILE_SIZE;
 				int y = yy * TILE_SIZE;
+				Tile til = tiles[index];
 				
-				World.tiles[index] = tiles[index] == null ? new AirTile(x, y, validateBonds(x, y)) : null; 
-				
+				World.tiles[index] = til == null ? new AirTile(x, y, validateBonds(xx, yy)) : Tile.forMaterial(til.getType(), x, y, validateBonds(xx, yy)); 
 			}
 		}
-		
 	}
 
 	private void initializeWorld(int width, int height)
