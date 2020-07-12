@@ -81,7 +81,24 @@ public class Tile
 			return (Tile) obj;
 		}
 		catch(Exception e)
-		{ System.out.println(e.getMessage());
+		{
+			return null;
+		}
+	
+	}
+	
+	public static Tile forMaterial(Material mat, int x, int y, Boolean b)
+	{
+		try
+		{
+			Class<?> clazz = mat.getTileClass();
+			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class, Boolean.class);
+			Object obj = cons.newInstance(x, y, b);
+			
+			return (Tile) obj;
+		}
+		catch(Exception e)
+		{
 			return null;
 		}
 	

@@ -5,7 +5,7 @@ import me.giverplay.minecraft2D.world.Tile;
 
 public class StoneBricksTile extends Tile
 {
-	public StoneBricksTile(int x, int y, boolean isFinal)
+	public StoneBricksTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.STONE_BRICKS, x, y, true, isFinal, Tile.TILE_STONE_BRICKS);
 	}

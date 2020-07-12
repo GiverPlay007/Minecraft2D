@@ -2,10 +2,12 @@ package me.giverplay.minecraft2D.game;
 
 import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
+import me.giverplay.minecraft2D.entities.Enemy;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.inventory.Inventory;
@@ -67,6 +69,8 @@ public class GameData
 		JSONObject worldJ = new JSONObject();
 		JSONObject tiles = new JSONObject();
 		JSONObject items = new JSONObject();
+		JSONObject entity = new JSONObject();
+		JSONObject enemy = new JSONObject();
 		
 		user.put("life", player.getLife());
 		user.put("max_life", player.getMaxLife());
@@ -106,13 +110,35 @@ public class GameData
 			
 			JSONObject tileJ = new JSONObject();
 			
+			tileJ.put("id", tile.getType().name());
 			tileJ.put("x", tile.getX());
 			tileJ.put("y", tile.getY());
 			tileJ.put("final", tile.isFinal());
-			tileJ.put("rigid", tile.isRigid());
 			tiles.put(String.valueOf(i), tileJ);
 		}
 		
+		for(int i = 0; i < entities.size(); i++)
+		{
+			Entity ent = entities.get(i);
+			
+			if(ent instanceof Player)
+				continue;
+			
+			if(ent instanceof Enemy)
+			{
+				Enemy lent = (Enemy) ent;
+				JSONObject entJ = new JSONObject();
+				
+				entJ.put("x", lent.getX());
+				entJ.put("y", lent.getY());
+				entJ.put("life", lent.getMaxLife());
+				entJ.put("max_life", lent.getMaxLife());
+				enemy.put("enemies", "entJ");
+			}
+		}
+		
+		entity.put("enemies", enemy);
+		save.put("entities", entity);
 		worldJ.put("tiles", tiles);
 		save.put("world", worldJ);
 		
@@ -127,6 +153,8 @@ public class GameData
 		JSONObject inventory = user.getJSONObject("inventory");
 		JSONObject tiles = world.getJSONObject("tiles");
 		JSONObject items = inventory.getJSONObject("items");
+		JSONObject entity = json.getJSONObject("entities");
+		JSONObject enemy = entity.getJSONObject("enemies");
 		
 		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
 		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
@@ -139,6 +167,23 @@ public class GameData
 			inv.setItem(Integer.parseInt(key), item);
 		}
 		
-		this.world = new World(world.getInt("width"), world.getInt("height"));
+		Tile[] til = new Tile[world.getInt("width") * world.getInt("height")];
+		
+		for(String key : tiles.keySet())
+		{
+			JSONObject obj = tiles.getJSONObject(key);
+			
+			til[Integer.parseInt(key)] = Tile.forMaterial(Material.valueOf(obj.getString("id")), obj.getInt("x"), obj.getInt("y"), obj.getBoolean("final"));
+		}
+		
+		this.world = new World(world.getInt("width"), world.getInt("height"), til);
+		this.entities = new ArrayList<>();
+		
+		for(String key : enemy.keySet())
+		{
+			JSONObject ene = enemy.getJSONObject(key);
+			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
+			entities.add(en);
+		}
 	}
 }

@@ -10,7 +10,7 @@ public class GrassTile extends Tile
 		super(Material.GRASS, x, y, true, false, Tile.TILE_GRASS);
 	}
 	
-	public GrassTile(int x, int y, boolean isFinal)
+	public GrassTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.GRASS, x, y, true, isFinal, Tile.TILE_GRASS);
 	}

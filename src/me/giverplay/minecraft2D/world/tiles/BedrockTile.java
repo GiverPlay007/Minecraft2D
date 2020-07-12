@@ -5,7 +5,7 @@ import me.giverplay.minecraft2D.world.Tile;
 
 public class BedrockTile extends Tile
 {
-	public BedrockTile(int x, int y, boolean isFinal)
+	public BedrockTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.BEDROCK, x, y, true, isFinal, Tile.TILE_BEDROCK);
 	}

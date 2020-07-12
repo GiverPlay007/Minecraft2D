@@ -5,7 +5,7 @@ import me.giverplay.minecraft2D.world.Tile;
 
 public class WoodTile extends Tile
 {
-	public WoodTile(int x, int y, boolean isFinal)
+	public WoodTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.WOOD, x, y, true, isFinal, Tile.TILE_WOOD);
 	}

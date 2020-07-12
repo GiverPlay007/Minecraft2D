@@ -12,7 +12,7 @@ public class AirTile extends Tile
 		super(Material.AIR, x, y, false, false, null);
 	}
 	
-	public AirTile(int x, int y, boolean isFinal)
+	public AirTile(int x, int y, Boolean isFinal)
 	{
 		super(Material.AIR, x, y, false, isFinal, null);
 	}
