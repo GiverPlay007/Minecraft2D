@@ -24,17 +24,13 @@ public class GameData
 	private World world;
 	private List<Entity> entities;
 	
-	private boolean load;
-	
 	public GameData()
 	{
-		load = true;
+		
 	}
 	
 	public GameData(String save, Player player, World world, List<Entity> entities)
 	{
-		load = false;
-		
 		this.name = save;
 		this.player = player;
 		this.world = world;
@@ -185,5 +181,10 @@ public class GameData
 			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
 			entities.add(en);
 		}
+	}
+
+	public void setName(String worldName)
+	{
+		this.name = worldName;
 	}
 }

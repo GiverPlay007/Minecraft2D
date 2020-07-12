@@ -62,12 +62,12 @@ public class Tile
 	
 	public int getX()
 	{
-		return this.getX();
+		return this.x;
 	}
 	
 	public int getY()
 	{
-		return this.getY();
+		return this.y;
 	}
 	
 	public static Tile forMaterial(Material mat, int x, int y)

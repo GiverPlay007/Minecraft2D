@@ -1,5 +1,6 @@
 package me.giverplay.minecraft2D;
 
+import java.io.IOException;
 import java.util.List;
 
 import me.giverplay.minecraft2D.command.CommandManager;
@@ -7,6 +8,7 @@ import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.game.Camera;
+import me.giverplay.minecraft2D.game.GameData;
 import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.Listeners;
 import me.giverplay.minecraft2D.game.SaveWrapper;
@@ -201,5 +203,17 @@ public class Game
 	public Window getWindow()
 	{
 		return this.window;
+	}
+	
+	public void save()
+	{
+		GameData data = new GameData("Save", getPlayer(), getWorld(), getEntities());
+		try
+		{
+			SaveWrapper.saveGame(data);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

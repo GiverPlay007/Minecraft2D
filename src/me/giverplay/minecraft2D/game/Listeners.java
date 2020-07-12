@@ -26,6 +26,11 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
+		if(event.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			game.save();
+		}
+			
 		if(game.getState() != State.GAME_OVER)
 		{
 			if(event.getKeyCode() == KeyEvent.VK_SPACE || event.getKeyCode() == KeyEvent.VK_W || event.getKeyCode() == KeyEvent.VK_UP)
