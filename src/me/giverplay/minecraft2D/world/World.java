@@ -27,6 +27,28 @@ public class World
 		initializeWorld(width, height);
 	}
 	
+	public World(int width, int height, Tile[] tiles)
+	{
+		this.width = width;
+		this.height = height;
+		
+		World.tiles = new Tile[width * height];
+		
+		for(int xx = 0; xx < width; xx++)
+		{
+			for(int yy = 0; yy < height; yy++)
+			{
+				int index = xx + yy * width;
+				int x = xx * TILE_SIZE;
+				int y = yy * TILE_SIZE;
+				
+				World.tiles[index] = tiles[index] == null ? new AirTile(x, y, validateBonds(x, y)) : null; 
+				
+			}
+		}
+		
+	}
+
 	private void initializeWorld(int width, int height)
 	{
 		this.width = width;

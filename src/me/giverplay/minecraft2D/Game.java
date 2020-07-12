@@ -9,6 +9,7 @@ import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.Listeners;
+import me.giverplay.minecraft2D.game.SaveWrapper;
 import me.giverplay.minecraft2D.game.Services;
 import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.game.Window;
@@ -85,6 +86,8 @@ public class Game
 		services.getEntities().add(player);
 		
 		setState(State.NORMAL);
+		
+		SaveWrapper.getDataFolder();
 	}
 	
 	public synchronized void start()

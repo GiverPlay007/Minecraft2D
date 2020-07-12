@@ -60,6 +60,16 @@ public class Tile
 		return this.isFinal;
 	}
 	
+	public int getX()
+	{
+		return this.getX();
+	}
+	
+	public int getY()
+	{
+		return this.getY();
+	}
+	
 	public static Tile forMaterial(Material mat, int x, int y)
 	{
 		try

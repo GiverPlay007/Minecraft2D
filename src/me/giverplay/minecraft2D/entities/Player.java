@@ -10,14 +10,6 @@ import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
-import me.giverplay.minecraft2D.inventory.items.BedrockItem;
-import me.giverplay.minecraft2D.inventory.items.BricksItem;
-import me.giverplay.minecraft2D.inventory.items.DirtItem;
-import me.giverplay.minecraft2D.inventory.items.GrassItem;
-import me.giverplay.minecraft2D.inventory.items.SandItem;
-import me.giverplay.minecraft2D.inventory.items.StoneBricksItem;
-import me.giverplay.minecraft2D.inventory.items.StoneItem;
-import me.giverplay.minecraft2D.inventory.items.WoodItem;
 import me.giverplay.minecraft2D.sound.Sound;
 
 public class Player extends LivingEntity
@@ -56,15 +48,6 @@ public class Player extends LivingEntity
 		camera = game.getCamera();
 		setGamemode(GameMode.SURVIVAL);
 		inv = new PlayerInventory(36, this);
-		
-		inv.addItem(new StoneItem(64));
-		inv.addItem(new GrassItem(64));
-		inv.addItem(new DirtItem(64));
-		inv.addItem(new SandItem(64));
-		inv.addItem(new BedrockItem(64));
-		inv.addItem(new StoneBricksItem(64));
-		inv.addItem(new WoodItem(64));
-		inv.addItem(new BricksItem(64));
 		
 		setDepth(2);
 	}
@@ -289,5 +272,10 @@ public class Player extends LivingEntity
 	public void setGamemode(GameMode mode)
 	{
 		this.mode = mode;
+	}
+	
+	public void setInventory(PlayerInventory inv)
+	{
+		this.inv = inv;
 	}
 }
