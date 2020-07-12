@@ -45,10 +45,14 @@ public class Player extends LivingEntity
 	public Player(int x, int y, int width, int height)
 	{
 		super(x, y, width, height, 1, null);
+		
+		setGamemode(GameMode.SURVIVAL);
+		
 		game = Game.getGame();
 		camera = game.getCamera();
-		setGamemode(GameMode.SURVIVAL);
 		inv = new PlayerInventory(36, this);
+		
+		((PlayerInventory) inv).resetDefaults();
 		
 		setDepth(2);
 	}

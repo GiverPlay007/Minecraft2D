@@ -28,6 +28,11 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
+		if(game.getState() == State.NORMAL)
+		{
+			updateSlot(event);
+		}
+		
 		if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
 			if(game.getState() == State.NORMAL)
@@ -113,8 +118,6 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 			default:
 				break;
 		}
-		
-		
 	}
 	
 	@Override
@@ -139,5 +142,52 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	public void mouseMoved(MouseEvent e)
 	{
 		game.getMenu().updateLoc(e.getX(), e.getY());
+	}
+	
+	private void updateSlot(KeyEvent event)
+	{
+		PlayerInventory inv = (PlayerInventory) game.getPlayer().getInventory();
+		
+		switch (event.getKeyCode())
+		{
+			case KeyEvent.VK_1:
+				inv.setFocus(0);
+				break;
+			
+			case KeyEvent.VK_2:
+				inv.setFocus(1);
+				break;
+				
+			case KeyEvent.VK_3:
+				inv.setFocus(2);
+				break;
+				
+			case KeyEvent.VK_4:
+				inv.setFocus(3);
+				break;
+				
+			case KeyEvent.VK_5:
+				inv.setFocus(4);
+				break;
+				
+			case KeyEvent.VK_6:
+				inv.setFocus(5);
+				break;
+				
+			case KeyEvent.VK_7:
+				inv.setFocus(6);
+				break;
+				
+			case KeyEvent.VK_8:
+				inv.setFocus(7);
+				break;
+				
+			case KeyEvent.VK_9:
+				inv.setFocus(8);
+				break;
+				
+			default:
+				break;
+		}
 	}
 }

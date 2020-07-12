@@ -8,6 +8,14 @@ import java.awt.event.MouseEvent;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.inventory.items.AirItem;
+import me.giverplay.minecraft2D.inventory.items.BedrockItem;
+import me.giverplay.minecraft2D.inventory.items.BricksItem;
+import me.giverplay.minecraft2D.inventory.items.DirtItem;
+import me.giverplay.minecraft2D.inventory.items.GrassItem;
+import me.giverplay.minecraft2D.inventory.items.SandItem;
+import me.giverplay.minecraft2D.inventory.items.StoneBricksItem;
+import me.giverplay.minecraft2D.inventory.items.StoneItem;
+import me.giverplay.minecraft2D.inventory.items.WoodItem;
 import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.tiles.AirTile;
 
@@ -190,6 +198,14 @@ public class PlayerInventory implements Inventory
 		focusedSlot = toUpdate + focusedSlot < 0 ? 8 : toUpdate + focusedSlot > 8 ? 0 : focusedSlot + toUpdate;
 	}
 	
+	public void setFocus(int set)
+	{
+		if(focusedSlot < 0 || focusedSlot > 8)
+			throw new IllegalArgumentException("Slot deve ser entre 0 e 8");
+		
+		focusedSlot = set;
+	}
+	
 	public void handleClick(int x, int y, int button)
 	{
 		int xx = (x + game.getCamera().getX()) / TILE_SIZE;
@@ -247,5 +263,17 @@ public class PlayerInventory implements Inventory
 		addItem(Item.forMaterial(mat, 1));
 		
 		tiles[index] = new AirTile(x, y);
+	}
+	
+	public void resetDefaults()
+	{
+		setItem(0, new StoneItem(64));
+		setItem(1, new BedrockItem(64));
+		setItem(2, new StoneBricksItem(64));
+		setItem(3, new BricksItem(64));
+		setItem(4, new GrassItem(64));
+		setItem(5, new DirtItem(64));
+		setItem(6, new SandItem(64));
+		setItem(7, new WoodItem(64));
 	}
 }
