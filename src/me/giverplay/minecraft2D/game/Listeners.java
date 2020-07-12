@@ -4,13 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 
-public class Listeners implements KeyListener, MouseListener, MouseWheelListener
+public class Listeners implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
 {
 	private Game game;
 	
@@ -21,16 +22,20 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 		game.getWindow().addKeyListener(this);
 		game.getWindow().addMouseWheelListener(this);
 		game.getWindow().addMouseListener(this);
+		game.getWindow().addMouseMotionListener(this);
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if(event.getKeyCode() == KeyEvent.VK_ENTER)
+		if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
-			game.save();
+			if(game.getState() == State.NORMAL)
+			{
+				game.setState(State.PAUSED);
+			}
 		}
-			
+		
 		if(game.getState() != State.GAME_OVER)
 		{
 			if(event.getKeyCode() == KeyEvent.VK_SPACE || event.getKeyCode() == KeyEvent.VK_W || event.getKeyCode() == KeyEvent.VK_UP)
@@ -70,42 +75,69 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 			game.getPlayer().setWalkingLeft(false);
 		}
 	}
-
+	
 	@Override
 	public void keyTyped(KeyEvent arg0)
 	{
 		
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0)
 	{
 	}
-
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0)
 	{
 	}
-
+	
 	@Override
 	public void mouseExited(MouseEvent arg0)
 	{
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		((PlayerInventory) game.getPlayer().getInventory()).handleClick(e.getX() / Game.SCALE, e.getY() / Game.SCALE, e.getButton());
+		switch (game.getState())
+		{
+			case NORMAL:
+				((PlayerInventory) game.getPlayer().getInventory()).handleClick(e.getX() / Game.SCALE, e.getY() / Game.SCALE, e.getButton());
+				break;
+				
+			case PAUSED:
+				game.getMenu().click();
+				break;
+				
+			default:
+				break;
+		}
+		
+		
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent arg0)
 	{
+		
 	}
-
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
-		((PlayerInventory) game.getPlayer().getInventory()).updateFocus(e.getWheelRotation());
+		if(game.getState() == State.NORMAL)
+			((PlayerInventory) game.getPlayer().getInventory()).updateFocus(e.getWheelRotation());
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0)
+	{
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		game.getMenu().updateLoc(e.getX(), e.getY());
 	}
 }

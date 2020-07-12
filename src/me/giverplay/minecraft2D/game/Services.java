@@ -1,8 +1,8 @@
 package me.giverplay.minecraft2D.game;
 
-import static me.giverplay.minecraft2D.Game.WIDTH;
 import static me.giverplay.minecraft2D.Game.HEIGHT;
 import static me.giverplay.minecraft2D.Game.SCALE;
+import static me.giverplay.minecraft2D.Game.WIDTH;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,6 +18,7 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.graphics.FontUtils;
 import me.giverplay.minecraft2D.graphics.FutureRender;
+import me.giverplay.minecraft2D.graphics.Menu;
 import me.giverplay.minecraft2D.graphics.UI;
 
 public class Services
@@ -29,6 +30,7 @@ public class Services
 	private List<FutureRender> smoothRenders;
 	
 	private Game game;
+	private Menu menu;
 	private UI ui;
 	
 	private BufferedImage image;
@@ -46,14 +48,29 @@ public class Services
 		smoothRenders = new ArrayList<>();
 		
 		ui = new UI();
+		menu = new Menu(game);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
 	}
 	
 	public void tick()
 	{
-		if(game.getState() == State.NORMAL)
+		switch (game.getState())
 		{
-			for(int i = 0; i < entities.size(); i++) entities.get(i).tick();
+			case NORMAL:
+			case INVENTORY:
+			case CRAFT:
+				
+				for(int i = 0; i < entities.size(); i++) entities.get(i).tick();
+				
+				break;
+			
+			case PAUSED:
+				
+				menu.tick();
+				break;
+				
+			default:
+				break;
 		}
 	}
 	
@@ -88,31 +105,44 @@ public class Services
 		
 		renderSmooth(g);
 		
-		if(game.getState() == State.GAME_OVER)
+		switch (game.getState())
 		{
-			Graphics2D g2 = (Graphics2D) g;
+			case GAME_OVER:
+
+				Graphics2D g2 = (Graphics2D) g;
+				
+				g2.setColor(new Color(0, 0, 0, 100));
+				g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+				
+				String txt = "Game Over";
+				g.setColor(Color.WHITE);
+				g.setFont(FontUtils.getFont(32, Font.BOLD));
+				g.drawString(txt, (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth(txt)) / 2, HEIGHT * SCALE / 2);
+				
+				gameOverFrames++;
+				
+				if(gameOverFrames > maxGameOverFrames)
+				{
+					gameOverFrames = 0;
+					showGameOver = !showGameOver;
+				}
+				
+				if(showGameOver)
+				{
+					g.setFont(FontUtils.getFont(24, Font.BOLD));
+					g.drawString("> Aperte ENTER para reiniciar <", (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth("> Aperte ENTER para reiniciar <")) / 2, HEIGHT * SCALE / 2 + 28);
+				}
 			
-			g2.setColor(new Color(0, 0, 0, 100));
-			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+				break;
 			
-			String txt = "Game Over";
-			g.setColor(Color.WHITE);
-			g.setFont(FontUtils.getFont(32, Font.BOLD));
-			g.drawString(txt, (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth(txt)) / 2, HEIGHT * SCALE / 2);
-			
-			gameOverFrames++;
-			
-			if(gameOverFrames > maxGameOverFrames)
-			{
-				gameOverFrames = 0;
-				showGameOver = !showGameOver;
-			}
-			
-			if(showGameOver)
-			{
-				g.setFont(FontUtils.getFont(24, Font.BOLD));
-				g.drawString("> Aperte ENTER para reiniciar <", (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth("> Aperte ENTER para reiniciar <")) / 2, HEIGHT * SCALE / 2 + 28);
-			}
+			case PAUSED:
+				
+				menu.render(g);
+				
+				break;
+				
+			default:
+				break;
 		}
 		
 		bs.show();
@@ -155,8 +185,18 @@ public class Services
 		
 	}
 
+	public UI getUI()
+	{
+		return this.ui;
+	}
+	
 	public void setEntities(List<Entity> entities)
 	{
 		this.entities = entities;
+	}
+	
+	public Menu getMenu()
+	{
+		return this.menu;
 	}
 }

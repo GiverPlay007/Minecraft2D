@@ -1,7 +1,5 @@
 package me.giverplay.minecraft2D.entities;
 
-import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -12,34 +10,10 @@ import java.util.Random;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.algorithms.Node;
 import me.giverplay.minecraft2D.algorithms.Vector2i;
-import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.world.World;
 
 public class Entity
 {
-	public static final BufferedImage[] SPRITE_PLAYER_RIGHT;
-	public static final BufferedImage[] SPRITE_PLAYER_LEFT;
-
-	public static final BufferedImage SPRITE_LIFE_FULL;
-	public static final BufferedImage SPRITE_LIFE_NON_FULL;
-	
-	static
-	{
-		Spritesheet sprites = Game.getGame().getSpritesheet();
-		
-		SPRITE_PLAYER_RIGHT = new BufferedImage[3];
-		SPRITE_PLAYER_LEFT = new BufferedImage[3];
-		
-		for(int i = 0; i < 3; i++)
-		{
-			SPRITE_PLAYER_RIGHT[i] = sprites.getSprite(i * TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
-			SPRITE_PLAYER_LEFT[i] = sprites.getSprite(i * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		}
-		
-		SPRITE_LIFE_FULL = sprites.getSprite(TILE_SIZE * 4, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);
-		SPRITE_LIFE_NON_FULL = sprites.getSprite(TILE_SIZE * 5, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);
-	}
-	
 	private static Game game = Game.getGame();
 	
 	protected List<Node> path;

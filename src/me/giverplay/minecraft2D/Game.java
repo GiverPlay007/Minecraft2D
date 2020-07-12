@@ -16,7 +16,9 @@ import me.giverplay.minecraft2D.game.Services;
 import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.game.Window;
 import me.giverplay.minecraft2D.graphics.FutureRender;
+import me.giverplay.minecraft2D.graphics.Menu;
 import me.giverplay.minecraft2D.graphics.Spritesheet;
+import me.giverplay.minecraft2D.graphics.UI;
 import me.giverplay.minecraft2D.sound.Sound;
 import me.giverplay.minecraft2D.world.World;
 
@@ -34,7 +36,7 @@ public class Game
 	
 	private static Game game;
 			
-	private State state = State.PAUSED;
+	private State state = State.NORMAL;
 	private Window window;
 	private GameTask thread;
 	private Services services;
@@ -47,7 +49,6 @@ public class Game
 	
 	private boolean isRunningRelative = false;
 	private boolean isRunning = false;
-	
 	
 	public static Game getGame()
 	{
@@ -90,16 +91,7 @@ public class Game
 		
 		services.getEntities().add(player);
 		
-		setState(State.NORMAL);
-		
-		try
-		{
-			load(SaveWrapper.loadGame("Save"));
-		} catch (IOException e)
-		{
-			System.out.println("Erro");
-			e.printStackTrace();
-		}
+		setState(State.PAUSED);
 	}
 	
 	public synchronized void start()
@@ -134,8 +126,7 @@ public class Game
 	
 	public synchronized void runService(int s)
 	{
-		if(!allReady)
-			return;
+
 		
 		if(s == Services.TICK)
 		{
@@ -221,6 +212,7 @@ public class Game
 	public void load(GameData data)
 	{
 		this.player = data.getPlayer();
+		player.updateCamera();
 		this.world = data.getWorld();
 		services.setEntities(data.getEntities());
 		allReady = true;
@@ -237,10 +229,34 @@ public class Game
 		{
 			e.printStackTrace();
 		}
+		
+		setState(State.NORMAL);
 	}
 	
 	public static boolean allReady()
 	{
 		return allReady;
+	}
+	
+	public UI getUI()
+	{
+		return services.getUI();
+	}
+	
+	public Menu getMenu()
+	{
+		return services.getMenu();
+	}
+
+	public void handleLoad()
+	{
+		try
+		{
+			load(SaveWrapper.loadGame("Save"));
+		} catch (IOException e)
+		{
+			System.out.println("Erro");
+			e.printStackTrace();
+		}
 	}
 }

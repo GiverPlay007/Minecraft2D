@@ -161,6 +161,8 @@ public class GameData
 		this.world = new World(world.getInt("width"), world.getInt("height"), til);
 		this.entities = new ArrayList<>();
 		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
+		player.setLife(user.getInt("life"));
+		player.setMaxLife(user.getInt("max_life"));
 		this.entities.add(player);
 		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
 		

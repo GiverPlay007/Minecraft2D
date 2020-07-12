@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameMode;
+import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.sound.Sound;
@@ -147,7 +148,7 @@ public class Player extends LivingEntity
 				else
 					anim--;
 				
-				if (anim >= Entity.SPRITE_PLAYER_RIGHT.length)
+				if (anim >= Spritesheet.SPRITE_PLAYER_RIGHT.length)
 				{
 					anim--;
 					animChangeStage = !animChangeStage;
@@ -162,7 +163,7 @@ public class Player extends LivingEntity
 		updateCamera();
 	}
 	
-	private void updateCamera()
+	public void updateCamera()
 	{
 		camera.setX(Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, game.getWorld().getWidth() * 16 - Game.WIDTH));
 		camera.setY(Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, game.getWorld().getHeight() * 16 - Game.HEIGHT));
@@ -171,7 +172,7 @@ public class Player extends LivingEntity
 	@Override
 	public void render(Graphics g)
 	{
-		BufferedImage image = (dir == DIR_RIGHT ? SPRITE_PLAYER_RIGHT : SPRITE_PLAYER_LEFT)[anim]
+		BufferedImage image = (dir == DIR_RIGHT ? Spritesheet.SPRITE_PLAYER_RIGHT : Spritesheet.SPRITE_PLAYER_LEFT)[anim]
 				.getSubimage(0, 0, 16, 16);
 		
 		g.drawImage(image, getX() - camera.getX(), getY() - camera.getY(), null);
@@ -277,5 +278,15 @@ public class Player extends LivingEntity
 	public void setInventory(PlayerInventory inv)
 	{
 		this.inv = inv;
+	}
+	
+	public void setLife(int life)
+	{
+		this.vida = life;
+	}
+	
+	public void setMaxLife(int life)
+	{
+		this.maxVida = life;
 	}
 }

@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.inventory.Material;
@@ -29,7 +28,7 @@ public class UI
 	private int toastFadeOut = 0;
 	private int toastFrames = 0;
 	private int maxToastFrames = 0;
-	private int time = 0;
+	private int time = 50;
 	private int heartSize = 24;
 	private int slotSize = 32;
 	private int xs = (WIDTH * SCALE) / 2 - 9 * slotSize / SCALE;
@@ -52,7 +51,7 @@ public class UI
 		
 		for(int i = 0; i < max; i++)
 		{
-			g.drawImage(i < cur ? Entity.SPRITE_LIFE_FULL : Entity.SPRITE_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
+			g.drawImage(i < cur ? Spritesheet.ICON_LIFE_FULL : Spritesheet.ICON_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
 		}
 		
 		renderInventory(g, game.getPlayer().getInventory());
@@ -132,7 +131,7 @@ public class UI
 		g.setFont(FontUtils.getFont(32, Font.BOLD));
 		int width = FontUtils.stringWidth(g, toast.getText());
 		
-		g.drawString(toast.getText(), (Game.WIDTH - width) / 2, Game.HEIGHT / 2);
+		g.drawString(toast.getText(), (WIDTH * SCALE - width) / 2, HEIGHT * SCALE/ 2);
 	}
 	
 	public void addToast(Toast toast)
