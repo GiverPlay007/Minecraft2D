@@ -87,7 +87,6 @@ public class GameData
 			
 			itemJ.put("id", item.getType().name());
 			itemJ.put("amount", item.getAmount());
-			itemJ.put("name", item.getName());
 			items.put(String.valueOf(i), itemJ);
 		}
 		
@@ -165,6 +164,7 @@ public class GameData
 		player.setMaxLife(user.getInt("max_life"));
 		this.entities.add(player);
 		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
+		player.setInventory(inv);
 		
 		for(String key : enemy.keySet())
 		{
@@ -177,7 +177,6 @@ public class GameData
 		{
 			JSONObject obj = items.getJSONObject(key);
 			Item item = Item.forMaterial(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
-			
 			inv.setItem(Integer.parseInt(key), item);
 		}
 	}
