@@ -190,4 +190,9 @@ public class World
 			return false;
 		}
 	}
+	
+	public static double calcFallDamage(int time, double coefficient)
+	{
+		return (coefficient * ((time / 60) ^ 2 / 2) * 5);
+	}
 }
