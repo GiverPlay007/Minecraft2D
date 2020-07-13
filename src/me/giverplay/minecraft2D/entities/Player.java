@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameMode;
+import me.giverplay.minecraft2D.game.Listeners;
 import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
@@ -20,18 +21,22 @@ public class Player extends LivingEntity
 	
 	private static final int MAX_FRAMES_ANIM = 5;
 	
-	private boolean up, down, left, right;
-	
 	private boolean damaged = false;
 	private boolean isJumping = false;
 	private boolean jump = false;
 	private boolean animChangeStage = false;
 	private boolean canDamage = false;
 	private boolean moving = false;
+	private boolean right, left;
+	private boolean caiu = false;
 	
 	private double gravity = 0.4;
 	private double vspd = 0;
+	private double fallingCoefficient = 0.15;
+	private double take = 0D;
 	
+	private int fallingFrames = 0;
+	private int maxFallingFrames = 20;
 	private int undamageable = 0;
 	private int anim = 0;
 	private int anim_frames = 0;
@@ -41,6 +46,7 @@ public class Player extends LivingEntity
 	private Camera camera;
 	private Inventory inv;
 	private GameMode mode;
+	private Listeners input;
 	
 	public Player(int x, int y, int width, int height)
 	{
@@ -50,6 +56,7 @@ public class Player extends LivingEntity
 		
 		game = Game.getGame();
 		camera = game.getCamera();
+		input = game.getListeners();
 		inv = new PlayerInventory(36, this);
 		
 		((PlayerInventory) inv).resetDefaults();
@@ -110,36 +117,61 @@ public class Player extends LivingEntity
 			vspd = 0;
 		}
 		
-		y = y + vspd;
-		
-		moving = false;
-		
-		if (!(right && left))
+		if(vspd > 0)
 		{
-			if (right)
+			fallingFrames++;
+			
+			if(fallingFrames >= maxFallingFrames)
 			{
-				if (moveAllowed((int) (x + speed) + mx, getY() + my, mw, mh))
-				{
-					moveX(speed);
-					if (!isJumping)
-						moving = true;
-				}
-				
-			} else if (left)
+				caiu = true;
+				take = Math.floor(fallingFrames * fallingCoefficient);
+			}
+		}
+		else
+		{
+			fallingFrames = 0;
+			
+			if(caiu)
 			{
-				if (moveAllowed((int) (x - speed) + mx, getY() + my, mw, mh))
-				{
-					moveX(-speed);
-					if (!isJumping)
-						moving = true;
-				}
+				caiu = false;
+				modifyLife( -((int) take));
 			}
 		}
 		
-		if (isJumping)
+		y = y + vspd;
+		
+		short xa = 0;
+		
+		if(input.right.down)
+			xa++;
+		
+		if(input.left.down)
+			xa--;
+		
+		right = xa > 0;
+		left = xa < 0;
+		
+		moving = right || left;
+		jump = input.jump.down;
+		
+		if (right)
 		{
-			
-		} else if (moving)
+			if (moveAllowed((int) (x + speed) + mx, getY() + my, mw, mh))
+			{
+				moveX(speed);
+				dir = DIR_RIGHT;
+			}
+		} 
+		else if (left)
+		{
+			if (moveAllowed((int) (x - speed) + mx, getY() + my, mw, mh))
+			{
+				moveX(-speed);
+				dir = DIR_LEFT;
+			}
+		}
+		
+		if (moving)
 		{
 			anim_frames++;
 			
@@ -182,44 +214,6 @@ public class Player extends LivingEntity
 		g.drawImage(image, getX() - camera.getX(), getY() - camera.getY(), null);
 	}
 	
-	public boolean walkingRight()
-	{
-		return this.right;
-	}
-	
-	public boolean walkingLeft()
-	{
-		return this.left;
-	}
-	
-	public boolean walkingDown()
-	{
-		return this.down;
-	}
-	
-	public boolean walkingUp()
-	{
-		return this.up;
-	}
-	
-	public void setWalkingRight(boolean walking)
-	{
-		this.right = walking;
-		this.dir = DIR_RIGHT;
-		
-		if (!walking && left)
-			dir = DIR_LEFT;
-	}
-	
-	public void setWalkingLeft(boolean walking)
-	{
-		this.left = walking;
-		this.dir = DIR_LEFT;
-		
-		if (!walking && right)
-			dir = DIR_RIGHT;
-	}
-	
 	public boolean isDamaged()
 	{
 		return this.damaged;
@@ -231,12 +225,6 @@ public class Player extends LivingEntity
 			return;
 		
 		this.damaged = toDamage;
-	}
-	
-	public void handleJump()
-	{
-		if (!moveAllowed(getX() + mx, (int) (y + 1) + my, mw, mh))
-			jump = true;
 	}
 	
 	public void damage()
@@ -268,12 +256,12 @@ public class Player extends LivingEntity
 	{
 		return this.inv;
 	}
-
+	
 	public GameMode getGamemode()
 	{
 		return mode;
 	}
-
+	
 	public void setGamemode(GameMode mode)
 	{
 		this.mode = mode;

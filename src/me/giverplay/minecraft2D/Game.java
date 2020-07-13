@@ -48,6 +48,7 @@ public class Game
 	private Spritesheet sprite;
 	private World world;
 	private Player player;
+	private Listeners listeners;
 	
 	private boolean isRunningRelative = false;
 	private boolean isRunning = false;
@@ -59,8 +60,8 @@ public class Game
 	
 	public Game()
 	{
-		setupAssets();
 		setupFrame();
+		setupAssets();
 	}
 	
 	public static void main(String[] args)
@@ -74,7 +75,7 @@ public class Game
 	private void setupFrame()
 	{
 		window = new Window(this);
-		new Listeners(this);
+		listeners = new Listeners(this);
 	}
 	
 	private void setupAssets()
@@ -90,12 +91,13 @@ public class Game
 		
 		camera = new Camera(0, 0);
 		sprite = new Spritesheet("/Spritesheet.png");
-		player = new Player(50, 190 * 16, 16, 16);
+		player = new Player(50, 195 * 16, 16, 16);
 		world = new World(200, 200);
 		
 		services.getEntities().add(player);
 		
 		setState(State.PAUSED);
+		allReady = true;
 	}
 	
 	public synchronized void start()
@@ -261,5 +263,10 @@ public class Game
 			System.out.println("Erro");
 			e.printStackTrace();
 		}
+	}
+
+	public Listeners getListeners()
+	{
+		return listeners;
 	}
 }

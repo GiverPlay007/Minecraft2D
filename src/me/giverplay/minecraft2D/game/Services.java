@@ -16,6 +16,7 @@ import java.util.List;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Entity;
+import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.graphics.FontUtils;
 import me.giverplay.minecraft2D.graphics.FutureRender;
 import me.giverplay.minecraft2D.graphics.Menu;
@@ -54,6 +55,9 @@ public class Services
 	
 	public void tick()
 	{
+		game.getListeners().tick();
+		menu.tick();
+		
 		switch (game.getState())
 		{
 			case NORMAL:
@@ -65,8 +69,13 @@ public class Services
 				break;
 			
 			case PAUSED:
+				break;
 				
-				menu.tick();
+			case GAME_OVER:
+				
+				if(game.getListeners().select.down)
+					Game.handleRestart();
+				
 				break;
 				
 			default:
@@ -182,7 +191,13 @@ public class Services
 	
 	public void restart()
 	{
+		entities.clear();
 		
+		Player pl = new Player(50, 195 * 16, 16, 16);
+		entities.add(pl);
+		GameData data = new GameData("Save", pl, game.getWorld(), entities);
+		game.load(data);
+		game.setState(State.NORMAL);
 	}
 
 	public UI getUI()

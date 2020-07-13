@@ -22,6 +22,8 @@ public class Menu
 	
 	private List<Button> buttons;
 	
+	private Game game;
+	
 	private Button focusedButton = null;
 	
 	private Button start;
@@ -36,6 +38,8 @@ public class Menu
 	
 	public Menu(Game game)
 	{
+		this.game = game;
+		
 		start = new Button(this, "Novo Jogo", xButton - dw / 2, yButton, dw, dh);
 		exit = new Button(this, "Sair", xButton - dw / 2, yButton + dh * 2 + 10, dw, dh);
 		
@@ -81,6 +85,9 @@ public class Menu
 	
 	public void tick()
 	{
+		if(game.getListeners().menu.down)
+			game.setState(State.PAUSED);
+			
 		if(press)
 		{
 			press = false;
