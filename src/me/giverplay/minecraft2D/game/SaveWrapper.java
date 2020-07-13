@@ -14,6 +14,8 @@ public class SaveWrapper
 	private static File dataFolder;
 	private static File saveFolder;
 	
+	private static boolean canLoad = false;
+	
 	static
 	{
 		dataFolder = new File(System.getProperty("user.home") + "\\AppData\\Roaming\\.outroMinecraft");
@@ -37,6 +39,11 @@ public class SaveWrapper
 				System.exit(-1);
 			}
 		}
+		
+		File file = new File(saveFolder, "Save.dat");
+		
+		if(file.exists())
+			canLoad = true;
 	}
 	
 	public static File getDataFolder()
@@ -100,6 +107,12 @@ public class SaveWrapper
 		finally
 		{
 			writer.close();
+			canLoad = true;
 		}
+	}
+
+	public static boolean canLoad()
+	{
+		return canLoad;
 	}
 }

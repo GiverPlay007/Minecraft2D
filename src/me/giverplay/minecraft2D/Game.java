@@ -26,9 +26,11 @@ public class Game
 {
 	public static final long serialVersionUID = 1L;
 	
-	public static final int WIDTH = 320;
-	public static final int HEIGHT = 240;
+	public static final int WIDTH = 512;
+	public static final int HEIGHT = 320;
 	public static final int SCALE = 2;
+	
+	public static DiscordRP rich;
 	
 	private static boolean allReady = false;
 	
@@ -57,12 +59,14 @@ public class Game
 	
 	public Game()
 	{
-		setupFrame();
 		setupAssets();
+		setupFrame();
 	}
 	
 	public static void main(String[] args)
 	{
+		rich = new DiscordRP();
+		rich.start();
 		Game game = new Game();
 		game.start();
 	}
@@ -99,6 +103,7 @@ public class Game
 		isRunning = true;
 		thread = new GameTask(this);
 		thread.start();
+		rich.update("No menu", "");
 	}
 	
 	public synchronized void stop()
@@ -126,8 +131,6 @@ public class Game
 	
 	public synchronized void runService(int s)
 	{
-
-		
 		if(s == Services.TICK)
 		{
 			services.tick();

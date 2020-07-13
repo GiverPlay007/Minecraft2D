@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.SaveWrapper;
 import me.giverplay.minecraft2D.game.State;
 
 public class Menu
@@ -43,6 +44,7 @@ public class Menu
 		
 		exit.setClickHandler(() -> {
 			
+			Game.rich.shutdown();
 			System.out.println("Saindo");
 			System.exit(0);
 			
@@ -50,7 +52,9 @@ public class Menu
 		
 		start.setClickHandler(() -> {
 			
+			Game.rich.update("Em jogo", "Sobrevivendo");
 			game.setState(State.NORMAL);
+			start.setText("Continuar");
 			
 		});
 		
@@ -63,10 +67,13 @@ public class Menu
 		
 		load.setClickHandler(() -> {
 			
-			game.handleLoad();
-			game.setState(State.NORMAL);
-			game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
-			
+			if(SaveWrapper.canLoad())
+			{
+				game.handleLoad();
+				game.setState(State.NORMAL);
+				game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
+			}
+				
 		});
 		
 		buttons = Arrays.asList(start, exit, save, load);

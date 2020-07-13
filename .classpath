@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Herobrine/Desktop/Desenvolvimento/Jars/json-20200518.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Herobrine/Desktop/Desenvolvimento/Jars/discord-rpc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

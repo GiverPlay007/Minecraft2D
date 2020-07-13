@@ -38,6 +38,7 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 			if(game.getState() == State.NORMAL)
 			{
 				game.setState(State.PAUSED);
+				Game.rich.update("No Menu", "");
 			}
 		}
 		
