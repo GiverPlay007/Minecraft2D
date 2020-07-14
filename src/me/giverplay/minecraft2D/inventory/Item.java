@@ -1,7 +1,6 @@
 package me.giverplay.minecraft2D.inventory;
 
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Constructor;
 
 public class Item
 {
@@ -12,26 +11,31 @@ public class Item
 	private int amount;
 	private int maxStack;
 	
-	public Item(String name, Material type, int amount, int maxStack, BufferedImage sprite)
+	public Item(Material type, int amount)
 	{
-		this.name = name;
 		this.type = type;
+		this.name = type.getName();
+		
+		this.maxStack = type.maxStackSize();
 		
 		if(maxStack < 1 || maxStack > 64)
 		  throw new IllegalArgumentException("Stack máximo deve ser entre 1 e 64");
-		
-		this.maxStack = maxStack;
 		
 		if(amount > maxStack || amount < 1)
 			throw new IllegalArgumentException("A quantidade deve ser entre 1 e o stackSize");
 		
 		this.amount = amount;
-		this.sprite = sprite;
+		this.sprite = type.getSprite();
 	}
 	
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public void setName(String customName)
+	{
+		this.name = customName;
 	}
 	
 	public Material getType()
@@ -56,41 +60,15 @@ public class Item
 	
 	public Item setAmount(int amount)
 	{
-		this.amount = amount;
+		if(amount > maxStack || amount < 1)
+		{
+			throw new IllegalArgumentException("Quantidade inválida.");
+		}
+		else
+		{
+			this.amount = amount;
+		}
+		
 		return this;
-	}
-
-	public static Item forName(String name, int amount)
-	{
-		try
-		{
-			Class<?> clazz = Material.valueOf(name.toUpperCase()).getItemClass();
-			Constructor<?> cons = clazz.getConstructor(Integer.class);
-			Object obj = cons.newInstance(amount);
-			
-			return (Item) obj;
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getCause().getMessage());
-			return null;
-		}
-	}
-	
-	public static Item forMaterial(Material mat, int amount)
-	{
-		try
-		{
-			Class<?> clazz = mat.getItemClass();
-			Constructor<?> cons = clazz.getConstructor(Integer.class);
-			Object obj = cons.newInstance(amount);
-			
-			return (Item) obj;
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getCause().getMessage());
-			return null;
-		}
 	}
 }

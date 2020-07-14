@@ -2,7 +2,6 @@ package me.giverplay.minecraft2D.world;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Constructor;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.inventory.Material;
@@ -11,27 +10,64 @@ public class Tile
 {
 	private static Game game = Game.getGame();
 	
+	private String name;
 	private BufferedImage sprite;
 	private Material type;
 	
 	private boolean isRigid;
 	private boolean isFinal;
+	private boolean creativeOnly;
 	
 	private int x, y;
 	
-	public Tile(Material type, int x, int y, boolean isRigid, boolean isFinal, BufferedImage sprite)
+	public Tile(Material type, int x, int y, boolean isFinal)
 	{
+		setType(type);
+		
+		this.isFinal = isFinal;
 		this.x = x;
 		this.y = y;
-		this.sprite = sprite;
-		this.isRigid = isRigid;
-		this.isFinal = isFinal;
+	}
+	
+	public Tile(Material type, int x, int y)
+	{
+		setType(type);
+		
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Tile(Material type)
+	{
+		setType(type);
+		
+		this.x = 0;
+		this.y = 0;
+	}
+	
+	public void setType(Material type)
+	{
 		this.type = type;
+		this.name = type.getName();
+		this.sprite = type.getSprite();
+		this.isRigid = type.isRigid();
+		this.isFinal = false;
+		this.creativeOnly = type.isCreativeOnly();
 	}
 	
 	public void render(Graphics g)
 	{
 		g.drawImage(sprite, x - game.getCamera().getX(), y - game.getCamera().getY(), null);
+	}
+	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 	
 	public Material getType()
@@ -42,6 +78,11 @@ public class Tile
 	public boolean isRigid()
 	{
 		return this.isRigid;
+	}
+	
+	public void setFinal(boolean set)
+	{
+		this.isFinal = set;
 	}
 	
 	public boolean isFinal()
@@ -59,54 +100,8 @@ public class Tile
 		return this.y;
 	}
 	
-	public static Tile forMaterial(Material mat, int x, int y)
+	public boolean creativeOnly()
 	{
-		try
-		{
-			Class<?> clazz = mat.getTileClass();
-			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class);
-			Object obj = cons.newInstance(x, y);
-			
-			return (Tile) obj;
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-		
-	}
-	
-	public static Tile forMaterial(Material mat)
-	{
-		try
-		{
-			Class<?> clazz = mat.getTileClass();
-			Constructor<?> cons = clazz.getConstructor(Integer.class, Integer.class);
-			Object obj = cons.newInstance(0, 0);
-			
-			return (Tile) obj;
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
-	
-	public static Tile forMaterial(Material mat, int x, int y, boolean b)
-	{
-		try
-		{
-			Class<?> clazz = mat.getTileClass();
-			//Constructor<?> cons = clazz.getDeclaredConstructor(Integer.class, Integer.class, Boolean.class);
-			Constructor<?> cons = clazz.getConstructors()[0];
-			Object obj = cons.newInstance(x, y, b);
-			
-			return (Tile) obj;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		return this.creativeOnly;
 	}
 }

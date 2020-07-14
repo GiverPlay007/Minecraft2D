@@ -7,17 +7,7 @@ import java.awt.event.MouseEvent;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Player;
-import me.giverplay.minecraft2D.inventory.items.AirItem;
-import me.giverplay.minecraft2D.inventory.items.BedrockItem;
-import me.giverplay.minecraft2D.inventory.items.BricksItem;
-import me.giverplay.minecraft2D.inventory.items.DirtItem;
-import me.giverplay.minecraft2D.inventory.items.GrassItem;
-import me.giverplay.minecraft2D.inventory.items.SandItem;
-import me.giverplay.minecraft2D.inventory.items.StoneBricksItem;
-import me.giverplay.minecraft2D.inventory.items.StoneItem;
-import me.giverplay.minecraft2D.inventory.items.WoodItem;
 import me.giverplay.minecraft2D.world.Tile;
-import me.giverplay.minecraft2D.world.tiles.AirTile;
 
 public class PlayerInventory implements Inventory
 {
@@ -37,7 +27,7 @@ public class PlayerInventory implements Inventory
 		
 		for(int i = 0; i < size; i++)
 		{
-			items[i] = new AirItem(1);
+			items[i] = new Item(Material.AIR, 1);
 		}
 	}
 	
@@ -169,7 +159,7 @@ public class PlayerInventory implements Inventory
 		if(slot < 0 || slot >= items.length)
 			throw new ArrayIndexOutOfBoundsException("Slot inválido");
 		
-		items[slot] = new AirItem(1);
+		items[slot] = new Item(Material.AIR, 1);
 	}
 
 	@Override
@@ -240,11 +230,11 @@ public class PlayerInventory implements Inventory
 		if(tiles[index].getType() != Material.AIR)
 			return;
 		
-		tiles[index] = Tile.forMaterial(item.getType(), x * TILE_SIZE, y * TILE_SIZE);
+		tiles[index] = new Tile(item.getType(), x * TILE_SIZE, y * TILE_SIZE);
 		
 		if(!moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight()))
 		{
-			tiles[index] = Tile.forMaterial(mat, x * TILE_SIZE, y * TILE_SIZE);
+			tiles[index] = new Tile(mat, x * TILE_SIZE, y * TILE_SIZE);
 			return;
 		}
 		
@@ -260,20 +250,20 @@ public class PlayerInventory implements Inventory
 			return;
 		
 		Material mat = tiles[index].getType();
-		addItem(Item.forMaterial(mat, 1));
+		addItem(new Item(mat, 1));
 		
-		tiles[index] = new AirTile(x, y);
+		tiles[index] = new Tile(Material.AIR, x, y);
 	}
 	
 	public void resetDefaults()
 	{
-		setItem(0, new StoneItem(64));
-		setItem(1, new BedrockItem(64));
-		setItem(2, new StoneBricksItem(64));
-		setItem(3, new BricksItem(64));
-		setItem(4, new GrassItem(64));
-		setItem(5, new DirtItem(64));
-		setItem(6, new SandItem(64));
-		setItem(7, new WoodItem(64));
+		setItem(0, new Item(Material.STONE, 64));
+		setItem(1, new Item(Material.BEDROCK, 64));
+		setItem(2, new Item(Material.STONE_BRICKS, 64));
+		setItem(3, new Item(Material.BRICKS, 64));
+		setItem(4, new Item(Material.GRASS, 64));
+		setItem(5, new Item(Material.DIRT, 64));
+		setItem(6, new Item(Material.SAND, 64));
+		setItem(7, new Item(Material.WOOD, 64));
 	}
 }

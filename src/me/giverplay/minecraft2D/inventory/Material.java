@@ -1,52 +1,67 @@
 package me.giverplay.minecraft2D.inventory;
 
-import me.giverplay.minecraft2D.inventory.items.AirItem;
-import me.giverplay.minecraft2D.inventory.items.BedrockItem;
-import me.giverplay.minecraft2D.inventory.items.BricksItem;
-import me.giverplay.minecraft2D.inventory.items.DirtItem;
-import me.giverplay.minecraft2D.inventory.items.GrassItem;
-import me.giverplay.minecraft2D.inventory.items.SandItem;
-import me.giverplay.minecraft2D.inventory.items.StoneBricksItem;
-import me.giverplay.minecraft2D.inventory.items.StoneItem;
-import me.giverplay.minecraft2D.inventory.items.WoodItem;
-import me.giverplay.minecraft2D.world.tiles.AirTile;
-import me.giverplay.minecraft2D.world.tiles.BedrockTile;
-import me.giverplay.minecraft2D.world.tiles.BricksTile;
-import me.giverplay.minecraft2D.world.tiles.DirtTile;
-import me.giverplay.minecraft2D.world.tiles.GrassTile;
-import me.giverplay.minecraft2D.world.tiles.SandTile;
-import me.giverplay.minecraft2D.world.tiles.StoneBricksTile;
-import me.giverplay.minecraft2D.world.tiles.StoneTile;
-import me.giverplay.minecraft2D.world.tiles.WoodTile;
+import java.awt.image.BufferedImage;
+
+import me.giverplay.minecraft2D.graphics.Spritesheet;
 
 public enum Material
 {
-	STONE(StoneItem.class, StoneTile.class), 
-	GRASS(GrassItem.class, GrassTile.class), 
-	DIRT(DirtItem.class, DirtTile.class), 
-	SAND(SandItem.class, SandTile.class),
-	AIR(AirItem.class, AirTile.class),
-	BEDROCK(BedrockItem.class, BedrockTile.class),
-	STONE_BRICKS(StoneBricksItem.class, StoneBricksTile.class),
-	WOOD(WoodItem.class, WoodTile.class),
-	BRICKS(BricksItem.class, BricksTile.class);
+	STONE("Stone", 64, true, true, false, Spritesheet.TILE_STONE), 
+	GRASS("Grass", 64, true, true, false, Spritesheet.TILE_GRASS), 
+	DIRT("Dirt", 64, true, true, false, Spritesheet.TILE_DIRT), 
+	SAND("Sand", 64, true, true, false, Spritesheet.TILE_SAND),
+	AIR("Air", 64, true, false, false, null),
+	BEDROCK("Bedrock", 64, true, true, true, Spritesheet.TILE_BEDROCK),
+	STONE_BRICKS("Stone Bricks", 64, true, true, false, Spritesheet.TILE_STONE_BRICKS),
+	WOOD("Wood", 64, true, true, false, Spritesheet.TILE_WOOD),
+	BRICKS("Bricks", 64, true, true, false, Spritesheet.TILE_BRICKS);
 	
-	private Class<?> clazz;
-	private Class<?> tileClazz;
+	private String name;
+	private BufferedImage sprite;
 	
-	Material(Class<?> clazz, Class<?> tileClazz)
+	private int maxStack;
+	
+	private boolean isStackable;
+	private boolean isRigid;
+	private boolean creativeOnly;
+	
+	Material(String name, int itemMaxSize, boolean itemStackable, boolean tileRigid, boolean creativeOnly, BufferedImage sprite)
 	{
-		this.clazz = clazz;
-		this.tileClazz = tileClazz;
+		this.name = name;
+		this.maxStack = itemMaxSize;
+		this.isStackable = itemStackable;
+		this.isRigid = tileRigid;
+		this.creativeOnly = creativeOnly;
+		this.sprite = sprite;
 	}
 	
-	public Class<?> getItemClass()
+	public String getName()
 	{
-		return this.clazz;
+		return this.name;
 	}
 	
-	public Class<?> getTileClass()
+	public boolean isStackable()
 	{
-		return this.tileClazz;
+		return this.isStackable;
+	}
+	
+	public boolean isRigid()
+	{
+		return this.isRigid;
+	}
+	
+	public boolean isCreativeOnly()
+	{
+		return this.creativeOnly;
+	}
+	
+	public BufferedImage getSprite() 
+	{
+		return this.sprite;
+	}
+	
+	public int maxStackSize()
+	{
+		return this.maxStack;
 	}
 }

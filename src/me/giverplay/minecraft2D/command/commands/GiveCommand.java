@@ -5,6 +5,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Item;
+import me.giverplay.minecraft2D.inventory.Material;
 
 public class GiveCommand extends Command
 {
@@ -42,17 +43,11 @@ public class GiveCommand extends Command
 		
 		try
 		{
-		  item = Item.forName(args[0], amount);
+		  item = new Item(Material.valueOf(args[0].toUpperCase()), amount);
 		}
 		catch(IllegalArgumentException e)
 		{
-			System.out.println("A quantidade não pode ser maior que o limite do stack");
-			return;
-		}
-		
-		if(item == null)
-		{
-			System.out.println("Item " + args[0] + " não existe ou atingiu o limite do stack...");
+			System.out.println("A quantidade não pode ser maior que o limite do stack ou o item não existe");
 			return;
 		}
 		

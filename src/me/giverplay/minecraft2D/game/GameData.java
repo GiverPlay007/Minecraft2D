@@ -154,7 +154,7 @@ public class GameData
 		{
 			JSONObject obj = tiles.getJSONObject(key);
 			
-			til[Integer.parseInt(key)] = Tile.forMaterial(Material.valueOf(obj.getString("id")));
+			til[Integer.parseInt(key)] = new Tile(Material.valueOf(obj.getString("id")));
 		}
 		
 		this.world = new World(world.getInt("width"), world.getInt("height"), til);
@@ -176,7 +176,7 @@ public class GameData
 		for(String key : items.keySet())
 		{
 			JSONObject obj = items.getJSONObject(key);
-			Item item = Item.forMaterial(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
+			Item item = new Item(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
 			inv.setItem(Integer.parseInt(key), item);
 		}
 	}

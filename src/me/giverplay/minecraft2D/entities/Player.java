@@ -134,7 +134,7 @@ public class Player extends LivingEntity
 			if(caiu)
 			{
 				caiu = false;
-				//modifyLife((int) -take); TODO
+				modifyLife((int) take); //TODO Devolver o dano negativo
 			}
 		}
 		

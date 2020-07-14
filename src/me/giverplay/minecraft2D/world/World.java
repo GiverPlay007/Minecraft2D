@@ -5,8 +5,7 @@ import java.awt.Graphics;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.algorithms.PerlinNoise;
 import me.giverplay.minecraft2D.game.Camera;
-import me.giverplay.minecraft2D.world.tiles.AirTile;
-import me.giverplay.minecraft2D.world.tiles.DirtTile;
+import me.giverplay.minecraft2D.inventory.Material;
 
 public class World
 {
@@ -49,7 +48,7 @@ public class World
 				int y = yy * TILE_SIZE;
 				Tile til = tiles[index];
 				
-				World.tiles[index] = til == null ? new AirTile(x, y, validateBonds(xx, yy)) : Tile.forMaterial(til.getType(), x, y, validateBonds(xx, yy)); 
+				World.tiles[index] = til == null ? new Tile(Material.AIR, x, y, validateBonds(xx, yy)) : new Tile(til.getType(), x, y, validateBonds(xx, yy)); 
 			}
 		}
 	}
@@ -76,7 +75,7 @@ public class World
 					if(y2 >= height)
 						y2 = height -1;
 					
-					tiles[xx + y2 * width] = new DirtTile(x, y2 * TILE_SIZE, validateBonds(xx, y2));
+					tiles[xx + y2 * width] = new Tile(Material.STONE, x, y2 * TILE_SIZE, validateBonds(xx, y2));
 				}
 			}
 		}
@@ -89,7 +88,7 @@ public class World
 		for(int xx = 0; xx < width; xx++)
 			for(int yy = 0; yy < height; yy++)
 				if(tiles[xx + yy * width] == null)
-					tiles[xx + yy * width] = new AirTile(xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
+					tiles[xx + yy * width] = new Tile(Material.AIR, xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
 	}
 	
 	private boolean validateBonds(int x, int y)
