@@ -32,7 +32,7 @@ public class Player extends LivingEntity
 	
 	private double gravity = 0.4;
 	private double vspd = 0;
-	private double fallingCoefficient = 0.009;
+	private double fallingCoefficient = 0.24;
 	private double take = 0D;
 	
 	private int fallingFrames = 0;
@@ -124,7 +124,7 @@ public class Player extends LivingEntity
 			if(fallingFrames >= maxFallingFrames)
 			{
 				caiu = true;
-				take = Math.round(vspd * fallingFrames * fallingCoefficient);
+				take = (vspd * fallingCoefficient);
 			}
 		}
 		else
@@ -134,7 +134,7 @@ public class Player extends LivingEntity
 			if(caiu)
 			{
 				caiu = false;
-				System.out.println(take);
+				//modifyLife((int) -take); TODO
 			}
 		}
 		

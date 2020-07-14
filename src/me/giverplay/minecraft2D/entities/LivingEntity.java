@@ -2,6 +2,8 @@ package me.giverplay.minecraft2D.entities;
 
 import java.awt.image.BufferedImage;
 
+import me.giverplay.minecraft2D.sound.Sound;
+
 public class LivingEntity extends Entity
 {
 	protected int maxVida = 10;
@@ -24,6 +26,11 @@ public class LivingEntity extends Entity
 	public void modifyLife(int toModify)
 	{
 		vida += toModify;
+		
+		if(toModify < 0)
+		{
+			Sound.hit.play();
+		}
 		
 		if (vida < 0)
 			vida = 0;

@@ -3,9 +3,10 @@ package me.giverplay.minecraft2D.world;
 import java.awt.Graphics;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.algorithms.PerlinNoise;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.world.tiles.AirTile;
-import me.giverplay.minecraft2D.world.tiles.GrassTile;
+import me.giverplay.minecraft2D.world.tiles.DirtTile;
 
 public class World
 {
@@ -14,6 +15,8 @@ public class World
 	private static Tile[] tiles;
 	
 	private static Game game;
+	
+	private PerlinNoise perlin = new PerlinNoise(0.293);
 	private Camera camera;
 	
 	private int width;
@@ -50,7 +53,7 @@ public class World
 			}
 		}
 	}
-
+	
 	private void initializeWorld(int width, int height)
 	{
 		this.width = width;
@@ -61,14 +64,32 @@ public class World
 		{
 			for(int yy = 0; yy < height; yy++)
 			{
-				int index = xx + yy * width;
 				int x = xx * TILE_SIZE;
-				int y = yy * TILE_SIZE;
 				
-				tiles[index] = yy > height - 2 ? new GrassTile(x, y, validateBonds(xx, yy)) : new AirTile(x, y, validateBonds(xx, yy));
-				
+				if(yy >= height - 62)
+				{
+					int noise = (int) (perlin.noise(xx) * 10);
+					
+					int y2 = yy;
+					y2 += noise;
+					
+					if(y2 >= height)
+						y2 = height -1;
+					
+					tiles[xx + y2 * width] = new DirtTile(x, y2 * TILE_SIZE, validateBonds(xx, y2));
+				}
 			}
 		}
+		
+		validateTiles();
+	}
+	
+	private void validateTiles()
+	{
+		for(int xx = 0; xx < width; xx++)
+			for(int yy = 0; yy < height; yy++)
+				if(tiles[xx + yy * width] == null)
+					tiles[xx + yy * width] = new AirTile(xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
 	}
 	
 	private boolean validateBonds(int x, int y)

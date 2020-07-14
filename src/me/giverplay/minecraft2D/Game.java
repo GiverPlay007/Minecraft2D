@@ -30,6 +30,10 @@ public class Game
 	public static final int HEIGHT = 320;
 	public static final int SCALE = 2;
 	
+	//public static final int WIDTH = 1024;
+	//public static final int HEIGHT = 720;
+	//public static final int SCALE = 1;
+	
 	public static DiscordRP rich;
 	
 	private static boolean allReady = false;
@@ -68,6 +72,9 @@ public class Game
 	{
 		rich = new DiscordRP();
 		rich.start();
+		
+		Sound.init();
+		
 		Game game = new Game();
 		game.start();
 	}
@@ -91,8 +98,8 @@ public class Game
 		
 		camera = new Camera(0, 0);
 		sprite = new Spritesheet("/Spritesheet.png");
-		player = new Player(50, 195 * 16, 16, 16);
-		world = new World(200, 200);
+		player = new Player(50, 16, 16, 16);
+		world = new World(240, 240);
 		
 		services.getEntities().add(player);
 		
