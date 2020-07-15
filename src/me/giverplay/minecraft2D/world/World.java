@@ -1,6 +1,7 @@
 package me.giverplay.minecraft2D.world;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.algorithms.PerlinNoise;
@@ -53,16 +54,17 @@ public class World
 		
 		World.tiles = new Tile[width * height];
 		
-		for(int xx = 0; xx < width; xx++)
+		for (int xx = 0; xx < width; xx++)
 		{
-			for(int yy = 0; yy < height; yy++)
+			for (int yy = 0; yy < height; yy++)
 			{
 				int index = xx + yy * width;
 				int x = xx * TILE_SIZE;
 				int y = yy * TILE_SIZE;
 				Tile til = tiles[index];
 				
-				World.tiles[index] = til == null ? new Tile(Material.AIR, x, y, validateBonds(xx, yy)) : new Tile(til.getType(), x, y, validateBonds(xx, yy)); 
+				World.tiles[index] = til == null ? new Tile(Material.AIR, x, y, validateBonds(xx, yy))
+						: new Tile(til.getType(), x, y, validateBonds(xx, yy));
 			}
 		}
 	}
@@ -72,19 +74,19 @@ public class World
 		perlin = new PerlinNoise(seed);
 		tiles = new Tile[width * height];
 		
-		for(int xx = 0; xx < width; xx++)
+		for (int xx = 0; xx < width; xx++)
 		{
-			for(int yy = 0; yy < height; yy++)
-			{			
-				if(yy >= height - 62)
+			for (int yy = 0; yy < height; yy++)
+			{
+				if (yy >= height - 62)
 				{
 					int noise = (int) (perlin.noise(xx) * 10);
 					
 					int y2 = yy;
 					y2 += noise;
 					
-					if(y2 >= height)
-						y2 = height -1;
+					if (y2 >= height)
+						y2 = height - 1;
 					
 					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * TILE_SIZE, y2 * TILE_SIZE);
 				}
@@ -94,9 +96,9 @@ public class World
 	
 	private void validateNullTiles()
 	{
-		for(int xx = 0; xx < width; xx++)
-			for(int yy = 0; yy < height; yy++)
-				if(tiles[xx + yy * width] == null)
+		for (int xx = 0; xx < width; xx++)
+			for (int yy = 0; yy < height; yy++)
+				if (tiles[xx + yy * width] == null)
 					tiles[xx + yy * width] = new Tile(Material.AIR, xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
 	}
 	
@@ -112,7 +114,35 @@ public class World
 	
 	private void validateSurfaceTiles()
 	{
-		// TODO
+		for (int xx = 0; xx < width; xx++)
+		{
+			for (int yy = 0; yy < height; yy++)
+			{
+				int index = xx + yy * width;
+				int index2 = xx + (yy - 1) * width;
+				
+				try
+				{
+					if (tiles[index].getType() == Material.STONE && tiles[index2].getType() == Material.AIR)
+					{
+						tiles[index].setType(Material.GRASS);
+						
+						int c = 0;
+						
+						while(c < 3)
+						{
+							c++;
+							
+							tiles[xx + (yy + c) * width].setType(Material.DIRT);
+						}
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e)
+				{
+					continue;
+				}
+			}
+		}
 	}
 	
 	private void validateOceanAndLakes()
@@ -132,50 +162,64 @@ public class World
 	
 	public void validateTileBounds()
 	{
-		for(int xx = 0; xx < width; xx++)
+		Random rand = new Random();
+		
+		for (int xx = 0; xx < width; xx++)
 		{
-			for(int yy = 0; yy < height; yy++)
+			for (int yy = 0; yy < height; yy++)
 			{
+				int index = xx + yy * width;
+				
+				if (yy == height - 1)
+				{
+					tiles[index].setType(Material.BEDROCK);
+					
+					if (rand.nextInt(101) < 30)
+					{
+						tiles[xx + (yy - 1) * width].setType(Material.BEDROCK);
+					}
+				}
+				
 				boolean b = validateBonds(xx, yy);
 				
-				if(b)
+				if (b)
 					tiles[xx + yy * width].setFinal(true);
 			}
-		}	
+		}
 	}
 	
 	private boolean validateBonds(int x, int y)
 	{
-		return x == width - 1 || x == 0 || y == 0 || y == height -1;
+		return x == width - 1 || x == 0 || y == 0 || y == height - 1;
 	}
 	
 	public void render(Graphics g)
 	{
 		int xs = camera.getX() >> 4;
-		int ys = camera.getY() >> 4;
+					int ys = camera.getY() >> 4;
 		int xf = (camera.getX() + Game.WIDTH) >> 4;
-		int yf = (camera.getY() + Game.HEIGHT) >> 4;
-		
-		
-		for(int xx = xs; xx <= xf; xx++)
-		{
-			for(int yy = ys; yy <= yf; yy++)
+			int yf = (camera.getY() + Game.HEIGHT) >> 4;
+			
+			for (int xx = xs; xx <= xf; xx++)
 			{
-				
-				if(xx < xs || yy < ys || xx >= width || yy >= height)
-					continue;
-				
-				Tile tile = tiles[xx + yy * width];
-				
-				if(tile != null)
-					tile.render(g);
+				for (int yy = ys; yy <= yf; yy++)
+				{
+					
+					if (xx < xs || yy < ys || xx >= width || yy >= height)
+						continue;
+					
+					Tile tile = tiles[xx + yy * width];
+					
+					if (tile != null)
+						tile.render(g);
+				}
 			}
-		}
 	}
 	
 	public static boolean moveAllowed(int xn, int yn, int width, int height)
 	{
-		if(yn -1 + height < 0 || yn -1 + height >= game.getWorld().getHeight() * TILE_SIZE || xn -1 + width < 0 || xn -1 + width >= game.getWorld().getWidth() * TILE_SIZE)
+		if (yn - 1 + height < 0 || yn - 1 + height >= game.getWorld().getHeight() * TILE_SIZE || xn - 1 + width < 0
+				|| xn - 1 + width >= game.getWorld().getWidth() * TILE_SIZE)
 			return false;
 		
 		try
@@ -183,14 +227,14 @@ public class World
 			int x1 = xn / TILE_SIZE;
 			int y1 = yn / TILE_SIZE;
 			
-			int x2 = (xn + width -1) / TILE_SIZE;
+			int x2 = (xn + width - 1) / TILE_SIZE;
 			int y2 = yn / TILE_SIZE;
 			
 			int x3 = xn / TILE_SIZE;
-			int y3 = (yn + height -1) / TILE_SIZE;
+			int y3 = (yn + height - 1) / TILE_SIZE;
 			
-			int x4 = (xn + width -1) / TILE_SIZE;
-			int y4 = (yn + height -1) / TILE_SIZE;
+			int x4 = (xn + width - 1) / TILE_SIZE;
+			int y4 = (yn + height - 1) / TILE_SIZE;
 			
 			World world = Game.getGame().getWorld();
 			Tile[] tiles = world.getTiles();
@@ -200,13 +244,10 @@ public class World
 			int index3 = x3 + (y3 * world.getWidth());
 			int index4 = x4 + (y4 * world.getWidth());
 			
-			return !(tiles[index1].isRigid()
-					|| tiles[index2].isRigid()
-					|| tiles[index3].isRigid()
+			return !(tiles[index1].isRigid() || tiles[index2].isRigid() || tiles[index3].isRigid()
 					|| tiles[index4].isRigid());
 			
-		}
-		catch(ArrayIndexOutOfBoundsException e)
+		} catch (ArrayIndexOutOfBoundsException e)
 		{
 			return false;
 		}
@@ -229,7 +270,8 @@ public class World
 	
 	public static boolean canMove(int xn, int yn)
 	{
-		if(yn < 0 || yn >= game.getWorld().getHeight() * TILE_SIZE || xn < 0 || xn >= game.getWorld().getWidth() * TILE_SIZE)
+		if (yn < 0 || yn >= game.getWorld().getHeight() * TILE_SIZE || xn < 0
+				|| xn >= game.getWorld().getWidth() * TILE_SIZE)
 			return false;
 		
 		try
@@ -237,14 +279,14 @@ public class World
 			int x1 = xn / TILE_SIZE;
 			int y1 = yn / TILE_SIZE;
 			
-			int x2 = (xn + TILE_SIZE -1) / TILE_SIZE;
+			int x2 = (xn + TILE_SIZE - 1) / TILE_SIZE;
 			int y2 = yn / TILE_SIZE;
 			
 			int x3 = xn / TILE_SIZE;
-			int y3 = (yn + TILE_SIZE -1) / TILE_SIZE;
+			int y3 = (yn + TILE_SIZE - 1) / TILE_SIZE;
 			
-			int x4 = (xn + TILE_SIZE -1) / TILE_SIZE;
-			int y4 = (yn + TILE_SIZE -1) / TILE_SIZE;
+			int x4 = (xn + TILE_SIZE - 1) / TILE_SIZE;
+			int y4 = (yn + TILE_SIZE - 1) / TILE_SIZE;
 			
 			World world = Game.getGame().getWorld();
 			
@@ -253,12 +295,9 @@ public class World
 			int index3 = x3 + (y3 * world.getWidth());
 			int index4 = x4 + (y4 * world.getWidth());
 			
-			return !(tiles[index1].isRigid()
-					|| tiles[index2].isRigid()
-					|| tiles[index3].isRigid()
+			return !(tiles[index1].isRigid() || tiles[index2].isRigid() || tiles[index3].isRigid()
 					|| tiles[index4].isRigid());
-		}
-		catch(ArrayIndexOutOfBoundsException e)
+		} catch (ArrayIndexOutOfBoundsException e)
 		{
 			return false;
 		}

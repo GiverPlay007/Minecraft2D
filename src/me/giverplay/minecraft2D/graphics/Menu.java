@@ -32,6 +32,7 @@ public class Menu
 	private Button load;
 	
 	private boolean press = false;
+	private boolean saveable = false;
 	
 	private int x = 0;
 	private int y = 0;
@@ -56,6 +57,7 @@ public class Menu
 		
 		start.setClickHandler(() -> {
 			
+			saveable = true;
 			Game.rich.update("Em jogo", "Sobrevivendo");
 			game.setState(State.NORMAL);
 			start.setText("Continuar");
@@ -63,6 +65,9 @@ public class Menu
 		});
 		
 		save.setClickHandler(() -> {
+			
+			if(!saveable)
+				return;
 			
 			game.save();
 			game.getUI().addToast(new Toast("Jogo salvo", 10, 10));
@@ -73,6 +78,7 @@ public class Menu
 			
 			if(SaveWrapper.canLoad())
 			{
+				saveable = true;
 				game.handleLoad();
 				game.setState(State.NORMAL);
 				game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
