@@ -95,12 +95,13 @@ public class GameData
 		save.put("user", user);
 		worldJ.put("width", world.getWidth());
 		worldJ.put("height", world.getHeight());
+		worldJ.put("seed", world.getSeed());
 		
 		for(int i = 0; i < world.getTiles().length; i++)
 		{
 			Tile tile = world.getTiles()[i];
 			
-			if(tile.getType() == Material.AIR)
+			if(!tile.modified())
 				continue;
 			
 			JSONObject tileJ = new JSONObject();
@@ -157,7 +158,7 @@ public class GameData
 			til[Integer.parseInt(key)] = new Tile(Material.valueOf(obj.getString("id")));
 		}
 		
-		this.world = new World(world.getInt("width"), world.getInt("height"), til);
+		this.world = new World(world.getInt("width"), world.getInt("height"), til, world.getDouble("seed"));
 		this.entities = new ArrayList<>();
 		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
 		player.setLife(user.getInt("life"));

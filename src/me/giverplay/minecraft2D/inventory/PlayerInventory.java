@@ -230,14 +230,15 @@ public class PlayerInventory implements Inventory
 		if(tiles[index].getType() != Material.AIR)
 			return;
 		
-		tiles[index] = new Tile(item.getType(), x * TILE_SIZE, y * TILE_SIZE);
+		tiles[index].setType(item.getType());
 		
 		if(!moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight()))
 		{
-			tiles[index] = new Tile(mat, x * TILE_SIZE, y * TILE_SIZE);
+			tiles[index].setType(mat);
 			return;
 		}
 		
+		tiles[index].setModified(true);
 		removeItem(getFocusedSlot(), 1);
 	}
 	
@@ -252,7 +253,8 @@ public class PlayerInventory implements Inventory
 		Material mat = tiles[index].getType();
 		addItem(new Item(mat, 1));
 		
-		tiles[index] = new Tile(Material.AIR, x, y);
+		tiles[index].setType(Material.AIR);
+		tiles[index].setModified(true);
 	}
 	
 	public void resetDefaults()

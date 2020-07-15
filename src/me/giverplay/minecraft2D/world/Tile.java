@@ -17,6 +17,7 @@ public class Tile
 	private boolean isRigid;
 	private boolean isFinal;
 	private boolean creativeOnly;
+	private boolean modified = false;
 	
 	private int x, y;
 	
@@ -103,5 +104,15 @@ public class Tile
 	public boolean creativeOnly()
 	{
 		return this.creativeOnly;
+	}
+	
+	public boolean modified()
+	{
+		return this.modified;
+	}
+	
+	public void setModified(boolean toSet)
+	{
+		this.modified = toSet;
 	}
 }

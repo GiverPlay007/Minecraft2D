@@ -1,12 +1,9 @@
 package me.giverplay.minecraft2D.world;
 
 import java.awt.Graphics;
-import java.util.Random;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.algorithms.PerlinNoise;
 import me.giverplay.minecraft2D.game.Camera;
-import me.giverplay.minecraft2D.inventory.Material;
 
 public class World
 {
@@ -16,181 +13,33 @@ public class World
 	
 	private static Game game;
 	
-	private PerlinNoise perlin;
 	private Camera camera;
-	
-	private double seed;
+	private Generator gen;
 	
 	private int width;
 	private int height;
 	
 	public World(int width, int height, double seed)
 	{
-		this.width = width;
-		this.height = height;
-		this.seed = seed;
-		
-		game = Game.getGame();
-		camera = game.getCamera();
-		
-		generateTiles();
-		validateNullTiles();
-		validateCaves();
-		validateOres();
-		validateSurfaceTiles();
-		validateOceanAndLakes();
-		generateStructures();
-		generateFurnitures();
-		validateTileBounds();
+		init(width, height, seed);
+		World.tiles = gen.getProceduralTiles();
 	}
 	
-	public World(int width, int height, Tile[] tiles)
+	public World(int width, int height, Tile[] tiles, double seed)
 	{
-		game = Game.getGame();
-		camera = game.getCamera();
-		
+		init(width, height, seed);
+		gen.generateProceduralTiles();
+		World.tiles = gen.update(tiles);
+	}
+	
+	private void init(int width, int height, double seed)
+	{
 		this.width = width;
 		this.height = height;
 		
-		World.tiles = new Tile[width * height];
-		
-		for (int xx = 0; xx < width; xx++)
-		{
-			for (int yy = 0; yy < height; yy++)
-			{
-				int index = xx + yy * width;
-				int x = xx * TILE_SIZE;
-				int y = yy * TILE_SIZE;
-				Tile til = tiles[index];
-				
-				World.tiles[index] = til == null ? new Tile(Material.AIR, x, y, validateBonds(xx, yy))
-						: new Tile(til.getType(), x, y, validateBonds(xx, yy));
-			}
-		}
-	}
-	
-	private void generateTiles()
-	{
-		perlin = new PerlinNoise(seed);
-		tiles = new Tile[width * height];
-		
-		for (int xx = 0; xx < width; xx++)
-		{
-			for (int yy = 0; yy < height; yy++)
-			{
-				if (yy >= height - 62)
-				{
-					int noise = (int) (perlin.noise(xx) * 10);
-					
-					int y2 = yy;
-					y2 += noise;
-					
-					if (y2 >= height)
-						y2 = height - 1;
-					
-					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * TILE_SIZE, y2 * TILE_SIZE);
-				}
-			}
-		}
-	}
-	
-	private void validateNullTiles()
-	{
-		for (int xx = 0; xx < width; xx++)
-			for (int yy = 0; yy < height; yy++)
-				if (tiles[xx + yy * width] == null)
-					tiles[xx + yy * width] = new Tile(Material.AIR, xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
-	}
-	
-	private void validateCaves()
-	{
-		// TODO
-	}
-	
-	private void validateOres()
-	{
-		// TODO
-	}
-	
-	private void validateSurfaceTiles()
-	{
-		for (int xx = 0; xx < width; xx++)
-		{
-			for (int yy = 0; yy < height; yy++)
-			{
-				int index = xx + yy * width;
-				int index2 = xx + (yy - 1) * width;
-				
-				try
-				{
-					if (tiles[index].getType() == Material.STONE && tiles[index2].getType() == Material.AIR)
-					{
-						tiles[index].setType(Material.GRASS);
-						
-						int c = 0;
-						
-						while(c < 3)
-						{
-							c++;
-							
-							tiles[xx + (yy + c) * width].setType(Material.DIRT);
-						}
-					}
-				}
-				catch(ArrayIndexOutOfBoundsException e)
-				{
-					continue;
-				}
-			}
-		}
-	}
-	
-	private void validateOceanAndLakes()
-	{
-		// TODO
-	}
-	
-	private void generateStructures()
-	{
-		// TODO
-	}
-	
-	private void generateFurnitures()
-	{
-		// TODO
-	}
-	
-	public void validateTileBounds()
-	{
-		Random rand = new Random();
-		
-		for (int xx = 0; xx < width; xx++)
-		{
-			for (int yy = 0; yy < height; yy++)
-			{
-				int index = xx + yy * width;
-				
-				if (yy == height - 1)
-				{
-					tiles[index].setType(Material.BEDROCK);
-					
-					if (rand.nextInt(101) < 30)
-					{
-						tiles[xx + (yy - 1) * width].setType(Material.BEDROCK);
-					}
-				}
-				
-				boolean b = validateBonds(xx, yy);
-				
-				if (b)
-					tiles[xx + yy * width].setFinal(true);
-			}
-		}
-	}
-	
-	private boolean validateBonds(int x, int y)
-	{
-		return x == width - 1 || x == 0 || y == 0 || y == height - 1;
+		game = Game.getGame();
+		camera = game.getCamera();
+		gen = new Generator(width, height, seed);
 	}
 	
 	public void render(Graphics g)
@@ -301,6 +150,11 @@ public class World
 		{
 			return false;
 		}
+	}
+	
+	public double getSeed()
+	{
+		return gen.getSeed();
 	}
 	
 	public static double calcFallDamage(int time, double coefficient)
