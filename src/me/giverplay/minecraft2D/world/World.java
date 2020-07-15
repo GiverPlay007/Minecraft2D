@@ -15,18 +15,32 @@ public class World
 	
 	private static Game game;
 	
-	private PerlinNoise perlin = new PerlinNoise(0.293);
+	private PerlinNoise perlin;
 	private Camera camera;
+	
+	private double seed;
 	
 	private int width;
 	private int height;
 	
-	public World(int width, int height)
+	public World(int width, int height, double seed)
 	{
+		this.width = width;
+		this.height = height;
+		this.seed = seed;
+		
 		game = Game.getGame();
 		camera = game.getCamera();
 		
-		initializeWorld(width, height);
+		generateTiles();
+		validateNullTiles();
+		validateCaves();
+		validateOres();
+		validateSurfaceTiles();
+		validateOceanAndLakes();
+		generateStructures();
+		generateFurnitures();
+		validateTileBounds();
 	}
 	
 	public World(int width, int height, Tile[] tiles)
@@ -53,18 +67,15 @@ public class World
 		}
 	}
 	
-	private void initializeWorld(int width, int height)
+	private void generateTiles()
 	{
-		this.width = width;
-		this.height = height;
+		perlin = new PerlinNoise(seed);
 		tiles = new Tile[width * height];
 		
 		for(int xx = 0; xx < width; xx++)
 		{
 			for(int yy = 0; yy < height; yy++)
-			{
-				int x = xx * TILE_SIZE;
-				
+			{			
 				if(yy >= height - 62)
 				{
 					int noise = (int) (perlin.noise(xx) * 10);
@@ -75,20 +86,62 @@ public class World
 					if(y2 >= height)
 						y2 = height -1;
 					
-					tiles[xx + y2 * width] = new Tile(Material.STONE, x, y2 * TILE_SIZE, validateBonds(xx, y2));
+					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * TILE_SIZE, y2 * TILE_SIZE);
 				}
 			}
 		}
-		
-		validateTiles();
 	}
 	
-	private void validateTiles()
+	private void validateNullTiles()
 	{
 		for(int xx = 0; xx < width; xx++)
 			for(int yy = 0; yy < height; yy++)
 				if(tiles[xx + yy * width] == null)
 					tiles[xx + yy * width] = new Tile(Material.AIR, xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
+	}
+	
+	private void validateCaves()
+	{
+		// TODO
+	}
+	
+	private void validateOres()
+	{
+		// TODO
+	}
+	
+	private void validateSurfaceTiles()
+	{
+		// TODO
+	}
+	
+	private void validateOceanAndLakes()
+	{
+		// TODO
+	}
+	
+	private void generateStructures()
+	{
+		// TODO
+	}
+	
+	private void generateFurnitures()
+	{
+		// TODO
+	}
+	
+	public void validateTileBounds()
+	{
+		for(int xx = 0; xx < width; xx++)
+		{
+			for(int yy = 0; yy < height; yy++)
+			{
+				boolean b = validateBonds(xx, yy);
+				
+				if(b)
+					tiles[xx + yy * width].setFinal(true);
+			}
+		}	
 	}
 	
 	private boolean validateBonds(int x, int y)

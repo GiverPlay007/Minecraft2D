@@ -99,7 +99,7 @@ public class Game
 		camera = new Camera(0, 0);
 		sprite = new Spritesheet("/Spritesheet.png");
 		player = new Player(50, 16, 16, 16);
-		world = new World(240, 240);
+		world = new World(240, 240, 0.293);
 		
 		services.getEntities().add(player);
 		
