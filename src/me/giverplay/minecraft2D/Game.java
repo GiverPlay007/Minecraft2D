@@ -34,7 +34,7 @@ public class Game
 	//public static final int HEIGHT = 720;
 	//public static final int SCALE = 1;
 	
-	public static DiscordRP rich;
+	public static DiscordRP discordRichPresence;
 	
 	private static boolean allReady = false;
 	
@@ -70,8 +70,8 @@ public class Game
 	
 	public static void main(String[] args)
 	{
-		rich = new DiscordRP();
-		rich.start();
+		discordRichPresence = new DiscordRP();
+		discordRichPresence.start();
 		
 		Sound.init();
 		
@@ -112,7 +112,7 @@ public class Game
 		isRunning = true;
 		thread = new GameTask(this);
 		thread.start();
-		rich.update("No menu", "");
+		discordRichPresence.update("No menu", "");
 	}
 	
 	public synchronized void stop()

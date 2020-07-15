@@ -49,7 +49,7 @@ public class Menu
 		
 		exit.setClickHandler(() -> {
 			
-			Game.rich.shutdown();
+			Game.discordRichPresence.shutdown();
 			System.out.println("Saindo");
 			System.exit(0);
 			
@@ -58,7 +58,7 @@ public class Menu
 		start.setClickHandler(() -> {
 			
 			saveable = true;
-			Game.rich.update("Em jogo", "Sobrevivendo");
+			Game.discordRichPresence.update("Em jogo", "Sobrevivendo");
 			game.setState(State.NORMAL);
 			start.setText("Continuar");
 			
