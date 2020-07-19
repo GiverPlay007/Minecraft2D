@@ -13,9 +13,10 @@ public class TimerUtils
 	public static void runTaskTimer(int segundos, Runnable task)
 	{
 		
-		javax.swing.Timer timer = new javax.swing.Timer(segundos * 1000, e ->
-		{
+		javax.swing.Timer timer = new javax.swing.Timer(segundos * 1000, e -> {
+			
 			task.run();
+			
 		});
 		
 		timer.start();
