@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.inventory.Material;
@@ -44,6 +45,16 @@ public class UI
 		g.setColor(Color.YELLOW);
 		g.setFont(FontUtils.getFont(16, Font.PLAIN));
 		
+		renderHearth(g);
+		renderInventory(g, game.getPlayer().getInventory());
+		advanceToast(g);
+	}
+	
+	private void renderHearth(Graphics g)
+	{
+		if(game.getPlayer().getGamemode() != GameMode.SURVIVAL)
+			return;
+		
 		int max = game.getPlayer().getMaxLife();
 		int cur = game.getPlayer().getLife();
 		
@@ -53,9 +64,6 @@ public class UI
 		{
 			g.drawImage(i < cur ? Spritesheet.ICON_LIFE_FULL : Spritesheet.ICON_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
 		}
-		
-		renderInventory(g, game.getPlayer().getInventory());
-		advanceToast(g);
 	}
 	
 	private void renderInventory(Graphics g, Inventory inv)

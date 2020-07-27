@@ -63,8 +63,8 @@ public class Spritesheet
 		
 		for(int i = 0; i < 3; i++)
 		{
-			SPRITE_PLAYER_RIGHT[i] = getSprite(i * TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
-			SPRITE_PLAYER_LEFT[i] = getSprite(i * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			SPRITE_PLAYER_RIGHT[i] = getSprite(i * (TILE_SIZE * 2), 128, TILE_SIZE * 2, TILE_SIZE * 2);
+			SPRITE_PLAYER_LEFT[i] = getSprite(i * (TILE_SIZE * 2), 96, TILE_SIZE * 2, TILE_SIZE * 2);
 		}
 		
 		ICON_LIFE_FULL = getSprite(TILE_SIZE * 4, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);

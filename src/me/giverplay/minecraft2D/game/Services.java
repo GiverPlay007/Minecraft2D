@@ -193,7 +193,7 @@ public class Services
 	{
 		entities.clear();
 		
-		Player pl = new Player(50, 195 * 16, 16, 16);
+		Player pl = new Player(50, 170 * 16, 16, 16);
 		entities.add(pl);
 		GameData data = new GameData("Save", pl, game.getWorld(), entities);
 		game.load(data);

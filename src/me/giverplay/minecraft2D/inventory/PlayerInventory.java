@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Player;
+import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.world.Tile;
 
 public class PlayerInventory implements Inventory
@@ -204,8 +205,36 @@ public class PlayerInventory implements Inventory
 		if(button == MouseEvent.BUTTON1)
 		{
 			removeTile(xx, yy);
+			return;
 		}
-		else if(button == MouseEvent.BUTTON3)
+		
+		int creative = 0;
+		int w = game.getWorld().getWidth();
+		int h = game.getWorld().getHeight();
+		
+		Tile[] tiles = game.getWorld().getTiles();
+		
+		if(xx > 0)
+			if(tiles[(xx - 1) + yy * w].getType() == Material.AIR)
+				creative++;
+		
+		if(xx < w)
+		  if(tiles[(xx + 1) + yy * w].getType() == Material.AIR)
+		  	creative++;
+		
+
+		if(yy > 0)
+			if(tiles[xx + (yy - 1) * w].getType() == Material.AIR)
+				creative++;
+		
+		if(yy < h)
+		  if(tiles[xx + (yy + 1) * w].getType() == Material.AIR)
+		  	creative++;
+		  	
+		if(creative >= 4 && player.getGamemode() != GameMode.CREATIVE)
+			return;
+			
+		if(button == MouseEvent.BUTTON3)
 		{
 			placeTile(xx, yy);
 		}

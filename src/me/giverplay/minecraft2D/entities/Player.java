@@ -19,7 +19,7 @@ public class Player extends LivingEntity
 	private static final int DIR_RIGHT = 0;
 	private static final int DIR_LEFT = 1;
 	
-	private static final int MAX_FRAMES_ANIM = 5;
+	private static final int MAX_FRAMES_ANIM = 10;
 	
 	private boolean damaged = false;
 	private boolean isJumping = false;
@@ -134,7 +134,11 @@ public class Player extends LivingEntity
 			if(caiu)
 			{
 				caiu = false;
-				modifyLife((int) take); //TODO Devolver o dano negativo
+				
+				if(getGamemode() == GameMode.SURVIVAL)
+				{
+					modifyLife((int) -take); //TODO Devolver o dano negativo
+				}
 			}
 		}
 		
@@ -208,10 +212,9 @@ public class Player extends LivingEntity
 	@Override
 	public void render(Graphics g)
 	{
-		BufferedImage image = (dir == DIR_RIGHT ? Spritesheet.SPRITE_PLAYER_RIGHT : Spritesheet.SPRITE_PLAYER_LEFT)[anim]
-				.getSubimage(0, 0, 16, 16);
+		BufferedImage image = (dir == DIR_RIGHT ? Spritesheet.SPRITE_PLAYER_RIGHT : Spritesheet.SPRITE_PLAYER_LEFT)[anim];
 		
-		g.drawImage(image, getX() - camera.getX(), getY() - camera.getY(), null);
+		g.drawImage(image, getX() - camera.getX(), getY() - camera.getY(), 16, 16, null);
 	}
 	
 	public boolean isDamaged()
