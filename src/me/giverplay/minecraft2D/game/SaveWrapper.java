@@ -11,8 +11,7 @@ import org.json.JSONException;
 
 public class SaveWrapper
 {
-	private static File dataFolder;
-	private static File saveFolder;
+	private static File dataFolder, saveFolder;
 	
 	private static boolean canLoad = false;
 	

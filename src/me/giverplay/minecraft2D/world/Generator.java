@@ -52,6 +52,7 @@ public class Generator
 				if(til != null)
 				{
 					this.tiles[index].setType(til.getType());
+					this.tiles[index].setModified(true);
 				}
 			}
 		}
