@@ -24,7 +24,7 @@ public class SaveWrapper
 			if(!dataFolder.mkdir())
 			{
 				System.out.println("Falha ao criar pasta raiz.");
-				System.exit(-1);
+				System.exit(1);
 			}
 		}
 		
@@ -35,7 +35,7 @@ public class SaveWrapper
 			if(!saveFolder.mkdir())
 			{
 				System.out.println("Falha ao criar pasta de saves");
-				System.exit(-1);
+				System.exit(1);
 			}
 		}
 		
