@@ -4,6 +4,7 @@ import java.util.Random;
 
 // Original Code
 // https://gist.github.com/alksily/7a85a1898e65c936f861ee93516e397d
+// Ken Perlin - 2002
 
 public class PerlinNoise
 {
@@ -26,8 +27,8 @@ public class PerlinNoise
 	
 	private void init()
 	{
-		// Initialize the permutation array.
 		this.p = new int[512];
+
 		this.permutation = new int[]
 		{ 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240,
 				21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88,
@@ -40,9 +41,9 @@ public class PerlinNoise
 				251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31,
 				181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29,
 				24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180 };
+		
 		this.default_size = 35;
 		
-		// Populate it
 		for (int i = 0; i < 256; i++)
 		{
 			p[256 + i] = p[i] = permutation[i];
