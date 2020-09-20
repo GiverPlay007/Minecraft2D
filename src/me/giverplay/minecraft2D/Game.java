@@ -8,10 +8,10 @@ import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.game.Camera;
-import me.giverplay.minecraft2D.game.GameData;
+import me.giverplay.minecraft2D.game.SaveWrapper;
 import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.Listeners;
-import me.giverplay.minecraft2D.game.SaveWrapper;
+import me.giverplay.minecraft2D.game.SaveFactory;
 import me.giverplay.minecraft2D.game.Services;
 import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.game.Window;
@@ -221,7 +221,7 @@ public class Game
 		return this.window;
 	}
 	
-	public void load(GameData data)
+	public void load(SaveWrapper data)
 	{
 		this.player = data.getPlayer();
 		player.updateCamera();
@@ -232,11 +232,11 @@ public class Game
 	
 	public void save()
 	{
-		GameData data = new GameData("Save", getPlayer(), getWorld(), getEntities());
+		SaveWrapper data = new SaveWrapper("Save", getPlayer(), getWorld(), getEntities());
 		
 		try
 		{
-			SaveWrapper.saveGame(data);
+			SaveFactory.saveGame(data);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -264,7 +264,7 @@ public class Game
 	{
 		try
 		{
-			load(SaveWrapper.loadGame("Save"));
+			load(SaveFactory.loadGame("Save"));
 		} catch (IOException e)
 		{
 			System.out.println("Erro");

@@ -1,7 +1,5 @@
 package me.giverplay.minecraft2D.command.commands;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Inventory;
@@ -92,6 +90,6 @@ public class RemoveCommand extends Command
 			return;
 		}
 		
-		System.out.println("Itens removidos: " + amount + "x " + StringUtils.capitalize(args[0]));
+		System.out.println("Itens removidos: " + amount + "x " + mat.getName());
 	}
 }

@@ -1,117 +1,189 @@
 package me.giverplay.minecraft2D.game;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
 
-import org.json.JSONException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONObject;
+
+import me.giverplay.minecraft2D.entities.Enemy;
+import me.giverplay.minecraft2D.entities.Entity;
+import me.giverplay.minecraft2D.entities.Player;
+import me.giverplay.minecraft2D.inventory.Inventory;
+import me.giverplay.minecraft2D.inventory.Item;
+import me.giverplay.minecraft2D.inventory.Material;
+import me.giverplay.minecraft2D.inventory.PlayerInventory;
+import me.giverplay.minecraft2D.world.Tile;
+import me.giverplay.minecraft2D.world.World;
 
 public class SaveWrapper
 {
-	private static File dataFolder, saveFolder;
+	private String name;
+	private Player player;
+	private World world;
+	private List<Entity> entities;
 	
-	private static boolean canLoad = false;
-	
-	static
+	public SaveWrapper()
 	{
-		dataFolder = new File(System.getProperty("user.home") + "\\AppData\\Roaming\\.outroMinecraft");
 		
-		if(!dataFolder.exists())
+	}
+	
+	public SaveWrapper(String save, Player player, World world, List<Entity> entities)
+	{
+		this.name = save;
+		this.player = player;
+		this.world = world;
+		this.entities = entities;
+	}
+	
+	public Player getPlayer()
+	{
+		return this.player;
+	}
+	
+	public List<Entity> getEntities()
+	{
+		return this.entities;
+	}
+	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	public World getWorld()
+	{
+		return this.world;
+	}
+	
+	public String serialize()
+	{
+		JSONObject save = new JSONObject();
+		JSONObject user = new JSONObject();
+		JSONObject inventory = new JSONObject();
+		JSONObject worldJ = new JSONObject();
+		JSONObject tiles = new JSONObject();
+		JSONObject items = new JSONObject();
+		JSONObject entity = new JSONObject();
+		JSONObject enemy = new JSONObject();
+		
+		user.put("life", player.getLife());
+		user.put("max_life", player.getMaxLife());
+		user.put("x", player.getX());
+		user.put("y", player.getY());
+		
+		Inventory inv = player.getInventory();
+		inventory.put("size", inv.size());
+		
+		for(int i = 0; i < inv.size(); i++)
 		{
-			if(!dataFolder.mkdir())
+			Item item = inv.getItem(i);
+			
+			if(item.getType() == Material.AIR)
+				continue;
+			
+			JSONObject itemJ = new JSONObject();
+			
+			itemJ.put("id", item.getType().name());
+			itemJ.put("amount", item.getAmount());
+			items.put(String.valueOf(i), itemJ);
+		}
+		
+		inventory.put("items", items);
+		user.put("inventory", inventory);
+		save.put("user", user);
+		worldJ.put("width", world.getWidth());
+		worldJ.put("height", world.getHeight());
+		worldJ.put("seed", world.getSeed());
+		
+		for(int i = 0; i < world.getTiles().length; i++)
+		{
+			Tile tile = world.getTiles()[i];
+			
+			if(!tile.modified())
+				continue;
+			
+			JSONObject tileJ = new JSONObject();
+			
+			tileJ.put("id", tile.getType().name());
+			tiles.put(String.valueOf(i), tileJ);
+		}
+		
+		for(int i = 0; i < entities.size(); i++)
+		{
+			Entity ent = entities.get(i);
+			
+			if(ent instanceof Player)
+				continue;
+			
+			if(ent instanceof Enemy)
 			{
-				System.out.println("Falha ao criar pasta raiz.");
-				System.exit(1);
+				Enemy lent = (Enemy) ent;
+				JSONObject entJ = new JSONObject();
+				
+				entJ.put("x", lent.getX());
+				entJ.put("y", lent.getY());
+				entJ.put("life", lent.getMaxLife());
+				entJ.put("max_life", lent.getMaxLife());
+				enemy.put("enemies", "entJ");
 			}
 		}
 		
-		saveFolder = new File(dataFolder + "\\saves");
+		entity.put("enemies", enemy);
+		save.put("entities", entity);
+		worldJ.put("tiles", tiles);
+		save.put("world", worldJ);
 		
-		if(!saveFolder.exists())
-		{
-			if(!saveFolder.mkdir())
-			{
-				System.out.println("Falha ao criar pasta de saves");
-				System.exit(1);
-			}
-		}
-		
-		File file = new File(saveFolder, "Save.dat");
-		
-		if(file.exists())
-			canLoad = true;
+		return save.toString();
 	}
 	
-	public static File getDataFolder()
+	public void decode(String data)
 	{
-		return dataFolder;
-	}
-	
-	public static File getSaveFolder()
-	{
-		return saveFolder;
-	}
-	
-	public static GameData loadGame(String worldName) throws IOException
-	{
-		File file = new File(getSaveFolder(), worldName + ".dat");
+		JSONObject json = new JSONObject(data);
+		JSONObject user = json.getJSONObject("user");
+		JSONObject world = json.getJSONObject("world");
+		JSONObject inventory = user.getJSONObject("inventory");
+		JSONObject tiles = world.getJSONObject("tiles");
+		JSONObject items = inventory.getJSONObject("items");
+		JSONObject entity = json.getJSONObject("entities");
+		JSONObject enemy = entity.getJSONObject("enemies");
 		
-		if(!file.exists())
+		Tile[] til = new Tile[world.getInt("width") * world.getInt("height")];
+		
+		for(String key : tiles.keySet())
 		{
-			System.out.println("Arquivo de save não existe.");
-			return null;
+			JSONObject obj = tiles.getJSONObject(key);
+			
+			til[Integer.parseInt(key)] = new Tile(Material.valueOf(obj.getString("id")));
 		}
 		
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		GameData data = new GameData();
-		data.setName(worldName);
+		this.world = new World(world.getInt("width"), world.getInt("height"), til, world.getDouble("seed"));
+		this.entities = new ArrayList<>();
+		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
+		player.setLife(user.getInt("life"));
+		player.setMaxLife(user.getInt("max_life"));
+		this.entities.add(player);
+		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
+		player.setInventory(inv);
 		
-		try
+		for(String key : enemy.keySet())
 		{
-			data.decode(br.readLine());
-		}
-		catch(JSONException e)
-		{
-			System.out.println("Falha ao decodificar o save");
-			return null;
-		}
-		finally
-		{
-			br.close();
+			JSONObject ene = enemy.getJSONObject(key);
+			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
+			entities.add(en);
 		}
 		
-		return data;
-	}
-	
-	public static void saveGame(GameData data) throws IOException
-	{
-		File file = new File(saveFolder, data.getName() + ".dat");
-		
-		if(file.exists())
-			file.delete();
-		
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(saveFolder, data.getName() + ".dat")));
-		
-		try
+		for(String key : items.keySet())
 		{
-			writer.write(data.serialize());
-		}
-		catch(JSONException e)
-		{
-			System.out.println("Falha ao serializar e salvar o mundo");
-		}
-		finally
-		{
-			writer.close();
-			canLoad = true;
+			JSONObject obj = items.getJSONObject(key);
+			Item item = new Item(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
+			inv.setItem(Integer.parseInt(key), item);
 		}
 	}
 
-	public static boolean canLoad()
+	public void setName(String worldName)
 	{
-		return canLoad;
+		this.name = worldName;
 	}
 }

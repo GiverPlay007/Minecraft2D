@@ -195,7 +195,7 @@ public class Services
 		
 		Player pl = new Player(50, 170 * 16, 16, 16);
 		entities.add(pl);
-		GameData data = new GameData("Save", pl, game.getWorld(), entities);
+		SaveWrapper data = new SaveWrapper("Save", pl, game.getWorld(), entities);
 		game.load(data);
 		game.setState(State.NORMAL);
 	}
