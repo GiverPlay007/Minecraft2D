@@ -4,18 +4,25 @@ import me.giverplay.minecraft2D.world.Material;
 
 public interface Inventory
 {
-	public Item[] getItems();
-	public Item getItem(int slot);
+	Item[] getItems();
+
+	Item getItem(int slot);
+
+	int firstEmpty();
+
+	int size();
+
+	int getFocusedSlot();
 	
-	public int firstEmpty();
-	public int size();
-	public int getFocusedSlot();
+	boolean hasItem(Material type);
+
+	boolean addItem(Item item);
 	
-	public boolean hasItem(Material type);
-	public boolean addItem(Item item);
-	
-	public void removeItem(Material type, int amount);
-	public void removeItem(int slot);
-	public void removeItem(int slot, int amount);
-	public void setItem(int slot, Item item);
+	void removeItem(Material type, int amount);
+
+	void removeItem(int slot);
+
+	void removeItem(int slot, int amount);
+
+	void setItem(int slot, Item item);
 }
