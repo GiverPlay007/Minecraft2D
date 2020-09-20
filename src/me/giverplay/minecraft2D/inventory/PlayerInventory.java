@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.game.GameMode;
+import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
 
 public class PlayerInventory implements Inventory

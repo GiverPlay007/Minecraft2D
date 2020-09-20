@@ -1,5 +1,7 @@
 package me.giverplay.minecraft2D.inventory;
 
+import me.giverplay.minecraft2D.world.Material;
+
 public interface Inventory
 {
 	public Item[] getItems();

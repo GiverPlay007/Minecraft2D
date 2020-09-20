@@ -5,7 +5,6 @@ import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
 import java.util.Random;
 
 import me.giverplay.minecraft2D.algorithms.PerlinNoise;
-import me.giverplay.minecraft2D.inventory.Material;
 
 public class Generator
 {

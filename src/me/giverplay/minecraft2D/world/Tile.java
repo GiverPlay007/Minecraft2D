@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.inventory.Material;
 
 public class Tile
 {

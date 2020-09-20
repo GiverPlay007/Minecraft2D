@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.inventory;
+package me.giverplay.minecraft2D.world;
 
 import java.awt.image.BufferedImage;
 

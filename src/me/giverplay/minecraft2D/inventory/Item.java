@@ -1,5 +1,7 @@
 package me.giverplay.minecraft2D.inventory;
 
+import me.giverplay.minecraft2D.world.Material;
+
 import java.awt.image.BufferedImage;
 
 public class Item

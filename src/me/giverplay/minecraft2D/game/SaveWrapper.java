@@ -12,7 +12,7 @@ import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
-import me.giverplay.minecraft2D.inventory.Material;
+import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.World;

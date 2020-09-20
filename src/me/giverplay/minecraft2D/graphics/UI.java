@@ -13,7 +13,7 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
-import me.giverplay.minecraft2D.inventory.Material;
+import me.giverplay.minecraft2D.world.Material;
 
 public class UI
 {

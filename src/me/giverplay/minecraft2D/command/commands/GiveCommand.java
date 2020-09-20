@@ -3,7 +3,7 @@ package me.giverplay.minecraft2D.command.commands;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Item;
-import me.giverplay.minecraft2D.inventory.Material;
+import me.giverplay.minecraft2D.world.Material;
 
 public class GiveCommand extends Command
 {
