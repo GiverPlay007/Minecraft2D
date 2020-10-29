@@ -7,7 +7,10 @@ import me.giverplay.minecraft2D.Game;
 
 public class Tile
 {
-	private static Game game = Game.getGame();
+	private static final Game game = Game.getGame();
+	
+	private final int x;
+	private final int y;
 	
 	private String name;
 	private BufferedImage sprite;
@@ -16,9 +19,17 @@ public class Tile
 	private boolean isRigid;
 	private boolean isFinal;
 	private boolean creativeOnly;
-	private boolean modified = false;
+	private boolean modified;
 	
-	private int x, y;
+	public Tile(Material type)
+	{
+		this(type, 0, 0);
+	}
+	
+	public Tile(Material type, int x, int y)
+	{
+		this(type, x, y, false);
+	}
 	
 	public Tile(Material type, int x, int y, boolean isFinal)
 	{
@@ -29,29 +40,12 @@ public class Tile
 		this.y = y;
 	}
 	
-	public Tile(Material type, int x, int y)
-	{
-		setType(type);
-		
-		this.x = x;
-		this.y = y;
-	}
-	
-	public Tile(Material type)
-	{
-		setType(type);
-		
-		this.x = 0;
-		this.y = 0;
-	}
-	
 	public void setType(Material type)
 	{
 		this.type = type;
 		this.name = type.getName();
 		this.sprite = type.getSprite();
 		this.isRigid = type.isRigid();
-		this.isFinal = false;
 		this.creativeOnly = type.isCreativeOnly();
 	}
 	

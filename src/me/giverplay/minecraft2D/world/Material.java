@@ -16,14 +16,14 @@ public enum Material
 	WOOD("Wood", 64, true, true, false, Spritesheet.TILE_WOOD),
 	BRICKS("Bricks", 64, true, true, false, Spritesheet.TILE_BRICKS);
 	
-	private String name;
-	private BufferedImage sprite;
+	private final String name;
+	private final BufferedImage sprite;
 	
-	private int maxStack;
+	private final int maxStack;
 	
-	private boolean isStackable;
-	private boolean isRigid;
-	private boolean creativeOnly;
+	private final boolean isStackable;
+	private final boolean isRigid;
+	private final boolean creativeOnly;
 	
 	Material(String name, int itemMaxSize, boolean itemStackable, boolean tileRigid, boolean creativeOnly, BufferedImage sprite)
 	{
