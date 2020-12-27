@@ -1,4 +1,4 @@
-# Minecraft2D
+## :video_game: Sobre
 
-Projeto Prático Danki Códigos.  
-Esse jogo não tem nenhuma ligação com o Minecraft, nem com a Mojang ou Microsoft, é apenas um simples joguinho com mapa editável que nem cheguei a terminar.
+Jogo de plataforma com jogabilidade baseada no [Minecraft](https://minecraft.net/), desenvolvido em [Java](https://www.java.com/).  
+Este é um projeto do [Curso de Desenvolvimento de Jogos](https://cursos.dankicode.com/curso-dev-games) da [Danki Code](http://cursos.dankicode.com/) e não tem nenhuma ligação com o jogo original.
