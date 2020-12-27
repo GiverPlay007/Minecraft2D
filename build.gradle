@@ -5,6 +5,21 @@ plugins {
 group 'me.giverplay'
 version '1.0-SNAPSHOT'
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+jar {
+    manifest {
+        attributes "Main-Class": "me.giverplay.minecraft2D.Game"
+    }
+
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 
@@ -15,6 +30,6 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation group: 'org.json', name: 'json', version: '20200518'
-    implementation name: 'discord-rpc'
+    compile group: 'org.json', name: 'json', version: '20200518'
+    compile name: 'discord-rpc'
 }
