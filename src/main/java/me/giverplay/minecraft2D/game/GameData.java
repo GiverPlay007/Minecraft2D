@@ -17,19 +17,19 @@ import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.World;
 
-public class SaveWrapper
+public class GameData
 {
 	private String name;
 	private Player player;
 	private World world;
 	private List<Entity> entities;
 	
-	public SaveWrapper()
+	public GameData()
 	{
 		
 	}
 	
-	public SaveWrapper(String save, Player player, World world, List<Entity> entities)
+	public GameData(String save, Player player, World world, List<Entity> entities)
 	{
 		this.name = save;
 		this.player = player;

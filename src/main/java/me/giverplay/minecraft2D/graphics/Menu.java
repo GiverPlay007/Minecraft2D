@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.game.SaveFactory;
+import me.giverplay.minecraft2D.game.GameSave;
 import me.giverplay.minecraft2D.game.State;
 
 public class Menu
@@ -76,7 +76,7 @@ public class Menu
 		
 		load.setClickHandler(() -> {
 			
-			if(SaveFactory.canLoad())
+			if(GameSave.canLoad())
 			{
 				saveable = true;
 				game.handleLoad();

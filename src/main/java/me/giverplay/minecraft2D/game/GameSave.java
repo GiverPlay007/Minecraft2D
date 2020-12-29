@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
-public class SaveFactory
+public class GameSave
 {
 	private static File dataFolder, saveFolder;
 	
@@ -55,7 +55,7 @@ public class SaveFactory
 		return saveFolder;
 	}
 	
-	public static SaveWrapper loadGame(String worldName) throws IOException
+	public static GameData loadGame(String worldName) throws IOException
 	{
 		File file = new File(getSaveFolder(), worldName + ".dat");
 		
@@ -66,7 +66,7 @@ public class SaveFactory
 		}
 		
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		SaveWrapper data = new SaveWrapper();
+		GameData data = new GameData();
 		data.setName(worldName);
 		
 		try
@@ -86,7 +86,7 @@ public class SaveFactory
 		return data;
 	}
 	
-	public static void saveGame(SaveWrapper data) throws IOException
+	public static void saveGame(GameData data) throws IOException
 	{
 		File file = new File(saveFolder, data.getName() + ".dat");
 		
