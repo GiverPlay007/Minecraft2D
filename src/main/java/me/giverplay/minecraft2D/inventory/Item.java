@@ -6,13 +6,13 @@ import java.awt.image.BufferedImage;
 
 public class Item
 {
+	private final BufferedImage sprite;
+	private final Material type;
+	private final int maxStack;
+
 	private String name;
-	private BufferedImage sprite;
-	private Material type;
-	
 	private int amount;
-	private int maxStack;
-	
+
 	public Item(Material type, int amount)
 	{
 		this.type = type;

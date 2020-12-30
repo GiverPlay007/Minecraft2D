@@ -1,24 +1,21 @@
 package me.giverplay.minecraft2D.inventory;
 
-import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
-import static me.giverplay.minecraft2D.world.World.moveAllowed;
-
 import java.awt.event.MouseEvent;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.entities.Player;
+import me.giverplay.minecraft2D.entity.entities.Player;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
 
 public class PlayerInventory implements Inventory
 {
-	private Item[] items;
-	
-	private Game game = Game.getGame();
-	private Player player;
-	
-	private int size;
+	private final Item[] items;
+	private final int size;
+
+	private final Game game;
+	private final Player player;
+
 	private int focusedSlot = 0;
 	
 	public PlayerInventory(int size, Player holder)
@@ -26,7 +23,8 @@ public class PlayerInventory implements Inventory
 		this.size = size;
 		this.items = new Item[size];
 		this.player = holder;
-		
+		this.game = player.getGame();
+
 		for(int i = 0; i < size; i++)
 		{
 			items[i] = new Item(Material.AIR, 1);
@@ -90,7 +88,7 @@ public class PlayerInventory implements Inventory
 	@Override
 	public boolean addItem(Item item)
 	{
-		int rest = item.getAmount(), buffer = 0;
+		int rest = item.getAmount(), buffer;
 		boolean next = false;
 		
 		for(int i = 0; i < items.length; i++)
@@ -200,8 +198,8 @@ public class PlayerInventory implements Inventory
 	
 	public void handleClick(int x, int y, int button)
 	{
-		int xx = (x + game.getCamera().getX()) / TILE_SIZE;
-		int yy = (y + game.getCamera().getY()) / TILE_SIZE;
+		int xx = (x + game.getCamera().getX()) / Tile.SIZE;
+		int yy = (y + game.getCamera().getY()) / Tile.SIZE;
 		
 		if(button == MouseEvent.BUTTON1)
 		{
@@ -262,7 +260,7 @@ public class PlayerInventory implements Inventory
 		
 		tiles[index].setType(item.getType());
 		
-		if(!moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight()))
+		if(!game.getWorld().moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight()))
 		{
 			tiles[index].setType(mat);
 			return;

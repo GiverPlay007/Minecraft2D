@@ -34,13 +34,9 @@ public final class Spritesheet
 		return SPRITESHEET.getSubimage(x, y, width, hight);
 	}
 	
-	public static void init()
+	public static void init() throws IOException
 	{
-		try {
-			SPRITESHEET = ImageIO.read(Spritesheet.class.getResource("/Spritesheet.png"));
-		} catch (IOException e) {
-			System.out.println("Erro na leitura do Spritesheet");
-		}
+		SPRITESHEET = ImageIO.read(Spritesheet.class.getResource("/Spritesheet.png"));
 
 		TILE_STONE = getSprite(0, 0, TILE_SIZE, TILE_SIZE);
 		TILE_GRASS = getSprite(TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);

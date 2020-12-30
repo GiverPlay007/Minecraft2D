@@ -1,11 +1,10 @@
-package me.giverplay.minecraft2D.entities;
-
-import static me.giverplay.minecraft2D.world.World.moveAllowed;
+package me.giverplay.minecraft2D.entity.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.entity.EntityLiving;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.game.GameInput;
@@ -13,8 +12,9 @@ import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.sound.Sound;
+import me.giverplay.minecraft2D.world.Tile;
 
-public class Player extends LivingEntity
+public class Player extends EntityLiving
 {
 	private static final int DIR_RIGHT = 0;
 	private static final int DIR_LEFT = 1;
@@ -41,20 +41,18 @@ public class Player extends LivingEntity
 	private int anim = 0;
 	private int anim_frames = 0;
 	private int dir = 0;
-	
-	private Game game;
+
 	private Camera camera;
 	private Inventory inv;
 	private GameMode mode;
 	private GameInput input;
 	
-	public Player(int x, int y, int width, int height)
+	public Player(Game game, int x, int y)
 	{
-		super(x, y, width, height, 1, null);
+		super(game, x, y, Tile.SIZE, Tile.SIZE, 1, 10);
 		
 		setGamemode(GameMode.SURVIVAL);
-		
-		game = Game.getGame();
+
 		camera = game.getCamera();
 		input = game.getInput();
 		inv = new PlayerInventory(36, this);
@@ -90,13 +88,13 @@ public class Player extends LivingEntity
 		{
 			jump = false;
 			
-			if(!moveAllowed(getX() + mx, (int) (y + 1) + my, mw, mh) && moveAllowed(getX() + mx, (int) (y -1) + my, mw, mh))
+			if(!moveAllowed(getX() + maskX, (int) (y + 1) + maskY, maskWidth, masHeight) && moveAllowed(getX() + maskX, (int) (y -1) + maskY, maskWidth, masHeight))
 			{
 				vspd = -4;
 			}
 		}
 		
-		if (!moveAllowed((int) x + mx, (int) (y + vspd) + my, mw, mh))
+		if (!moveAllowed((int) x + maskX, (int) (y + vspd) + maskY, maskWidth, masHeight))
 		{
 			
 			int signVsp = 0;
@@ -109,7 +107,7 @@ public class Player extends LivingEntity
 				signVsp = -1;
 			}
 			
-			while (moveAllowed((int) x + mx, (int) (y + signVsp) + my, mw, mh))
+			while (moveAllowed((int) x + maskX, (int) (y + signVsp) + maskY, maskWidth, masHeight))
 			{
 				y = y + signVsp;
 			}
@@ -160,7 +158,7 @@ public class Player extends LivingEntity
 		
 		if (right)
 		{
-			if (moveAllowed((int) (x + speed) + mx, getY() + my, mw, mh))
+			if (moveAllowed((int) (x + speed) + maskX, getY() + maskY, maskWidth, masHeight))
 			{
 				moveX(speed);
 				dir = DIR_RIGHT;
@@ -168,7 +166,7 @@ public class Player extends LivingEntity
 		} 
 		else if (left)
 		{
-			if (moveAllowed((int) (x - speed) + mx, getY() + my, mw, mh))
+			if (moveAllowed((int) (x - speed) + maskX, getY() + maskY, maskWidth, masHeight))
 			{
 				moveX(-speed);
 				dir = DIR_LEFT;
@@ -252,7 +250,7 @@ public class Player extends LivingEntity
 	
 	public boolean fallingRelative()
 	{
-		return moveAllowed(getX() + mx, getY() + 1 + my, mw, mh) && vspd >= 0;
+		return moveAllowed(getX() + maskX, getY() + 1 + maskY, maskWidth, masHeight) && vspd >= 0;
 	}
 	
 	public Inventory getInventory()

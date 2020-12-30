@@ -1,10 +1,14 @@
 package me.giverplay.minecraft2D.world;
 
+import me.giverplay.minecraft2D.game.Camera;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class Tile
 {
+	public static final int SIZE = 16;
+
 	private final int x;
 	private final int y;
 	
@@ -45,9 +49,9 @@ public class Tile
 		this.creativeOnly = type.isCreativeOnly();
 	}
 	
-	public void render(Graphics g, int x, int y)
+	public void render(Graphics g, Camera camera)
 	{
-		g.drawImage(sprite, x, y, null);
+		g.drawImage(sprite, x - camera.getX(), y - camera.getY(), null);
 	}
 	
 	public String getName()

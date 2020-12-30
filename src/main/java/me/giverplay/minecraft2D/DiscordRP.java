@@ -3,42 +3,23 @@ package me.giverplay.minecraft2D;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import net.arikia.dev.drpc.DiscordUser;
-import net.arikia.dev.drpc.callbacks.ReadyCallback;
 
-public class DiscordRP
+public class DiscordRP implements Runnable
 {
-	private boolean running = false;
+	private volatile boolean running = false;
 	private long created = 0;
 	
 	public void start()
 	{
 		created = System.currentTimeMillis();
 		
-		DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(new ReadyCallback()
-		{
-			@Override
-			public void apply(DiscordUser user)
-			{
-				update("Initializing", "...");
-			}
-		}).build();
-		
+		DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
+						.setReadyEventHandler(user -> update("Initializing", "..."))
+						.build();
+
 		DiscordRPC.discordInitialize("731973126346375169", handlers, true);
-		
-		new Thread("Discord Callback")
-		{
-			
-			@Override
-			public void run() 
-			{
-				while(running)
-				{
-					DiscordRPC.discordRunCallbacks();
-				}
-			};
-			
-		}.start();
+
+		new Thread(this, "Discord Callbacks").start();
 	}
 	
 	public void shutdown()
@@ -55,5 +36,13 @@ public class DiscordRP
 		builder.setStartTimestamps(created);
 		
 		DiscordRPC.discordUpdatePresence(builder.build());
+	}
+
+	@Override
+	public void run()
+	{
+		while(running) {
+			DiscordRPC.discordRunCallbacks();
+		}
 	}
 }

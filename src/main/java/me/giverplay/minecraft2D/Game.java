@@ -2,8 +2,8 @@ package me.giverplay.minecraft2D;
 
 import me.giverplay.minecraft2D.command.CommandManager;
 import me.giverplay.minecraft2D.command.CommandTask;
-import me.giverplay.minecraft2D.entities.Entity;
-import me.giverplay.minecraft2D.entities.Player;
+import me.giverplay.minecraft2D.entity.Entity;
+import me.giverplay.minecraft2D.entity.entities.Player;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameData;
 import me.giverplay.minecraft2D.game.GameInput;
@@ -62,9 +62,19 @@ public class Game
 
 	public static void main(String[] args)
 	{
+		try
+		{
+			Spritesheet.init();
+			Sound.init();
+		}
+		catch(Throwable t)
+		{
+			System.out.println("Falha ao carregar assets :(");
+			t.printStackTrace();
+			System.exit(1);
+		}
+
 		discordRichPresence.start();
-		Spritesheet.init();
-		Sound.init();
 		game.start();
 	}
 
@@ -98,9 +108,9 @@ public class Game
 			stop();
 
 		entities.clear();
-		player = new Player(50, 170 * 16, 16, 16);
+		player = new Player(this, 50, 170 * 16);
 		entities.add(player);
-		world = new World(240, 240, 0.293);
+		world = new World(this, 240, 240, 0.293);
 
 		setState(State.NORMAL);
 		start();
@@ -139,7 +149,7 @@ public class Game
 	public void loadSave()
 	{
 		try {
-			load(GameSave.loadGame("Save"));
+			load(GameSave.loadGame(this, "Save"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -195,9 +205,9 @@ public class Game
 		g.setColor(new Color(110, 200, 255));
 		g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 
-		game.getWorld().render(g);
+		getWorld().render(g);
 
-		entities.sort(Entity.sortDepth);
+		entities.sort(Entity.depthSorter);
 		entities.forEach(entity -> entity.render(g));
 
 		Graphics graphics = window.getRenderGraphics();
@@ -205,7 +215,7 @@ public class Game
 
 		renderNoScale(graphics);
 
-		switch (game.getState())
+		switch (getState())
 		{
 			case GAME_OVER:
 				graphics.setColor(new Color(0, 0, 0, 100));
@@ -262,10 +272,21 @@ public class Game
 		Sound.lose.play();
 	}
 
+	public void removeEntity(Entity entity)
+	{
+		entities.remove(entity);
+	}
+
+	public void addEntity(Entity entity)
+	{
+		entities.add(entity);
+	}
+
 	public Player getPlayer()
 	{
 		return this.player;
 	}
+
 	public World getWorld()
 	{
 		return this.world;

@@ -1,14 +1,13 @@
-package me.giverplay.minecraft2D.entities;
-
-import static me.giverplay.minecraft2D.world.World.canMove;
+package me.giverplay.minecraft2D.entity.entities;
 
 import java.awt.Graphics;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.sound.Sound;
+import me.giverplay.minecraft2D.entity.EntityLiving;
+import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.world.World;
 
-public class Enemy extends LivingEntity
+public class Enemy extends EntityLiving
 {
 	private Game game;
 	
@@ -20,7 +19,7 @@ public class Enemy extends LivingEntity
 	private int animF = 0;
 	private int maxAnimF = 10;
 	
-	public Enemy(double x, double y, int width, int height, double speed)
+	public Enemy(double x, double y, double speed)
 	{
 		super(x, y, width, height, speed, null);
 		
@@ -38,7 +37,7 @@ public class Enemy extends LivingEntity
 	@Override
 	public void tick()
 	{
-		if(isCollifingEntity(this, game.getPlayer()))
+		if(isColliding(this, game.getPlayer()))
 		{
 			if(game.getPlayer().fallingRelative())
 				destroy();
@@ -75,12 +74,5 @@ public class Enemy extends LivingEntity
 		}
 		
 		//g.drawImage(SPRITE_ENEMY[anim], getX() - game.getCamera().getX(), getY() - game.getCamera().getY(), null);
-	}
-	
-	@Override
-	public void destroy()
-	{
-		super.destroy();
-		Sound.hit2.play();
 	}
 }

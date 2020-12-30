@@ -1,15 +1,14 @@
 package me.giverplay.minecraft2D.game;
 
-import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import me.giverplay.minecraft2D.Game;
 import org.json.JSONObject;
 
-import me.giverplay.minecraft2D.entities.Enemy;
-import me.giverplay.minecraft2D.entities.Entity;
-import me.giverplay.minecraft2D.entities.Player;
+import me.giverplay.minecraft2D.entity.entities.Enemy;
+import me.giverplay.minecraft2D.entity.Entity;
+import me.giverplay.minecraft2D.entity.entities.Player;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.world.Material;
@@ -138,7 +137,7 @@ public class GameData
 		return save.toString();
 	}
 	
-	public void decode(String data)
+	public void decode(Game game, String data)
 	{
 		JSONObject json = new JSONObject(data);
 		JSONObject user = json.getJSONObject("user");
@@ -158,19 +157,20 @@ public class GameData
 			til[Integer.parseInt(key)] = new Tile(Material.valueOf(obj.getString("id")));
 		}
 		
-		this.world = new World(world.getInt("width"), world.getInt("height"), til, world.getDouble("seed"));
+		this.world = new World(game, world.getInt("width"), world.getInt("height"), til, world.getDouble("seed"));
 		this.entities = new ArrayList<>();
-		this.player = new Player(user.getInt("x"), user.getInt("y"), TILE_SIZE, TILE_SIZE);
-		player.setLife(user.getInt("life"));
-		player.setMaxLife(user.getInt("max_life"));
+		this.player = new Player(user.getInt("x"), user.getInt("y"));
+		this.player.setLife(user.getInt("life"));
+		this.player.setMaxLife(user.getInt("max_life"));
 		this.entities.add(player);
+
 		PlayerInventory inv = new PlayerInventory(inventory.getInt("size"), player);
-		player.setInventory(inv);
+		this.player.setInventory(inv);
 		
 		for(String key : enemy.keySet())
 		{
 			JSONObject ene = enemy.getJSONObject(key);
-			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), TILE_SIZE, TILE_SIZE, 1);
+			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), 1);
 			entities.add(en);
 		}
 		
