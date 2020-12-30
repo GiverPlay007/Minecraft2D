@@ -1,43 +1,40 @@
 package me.giverplay.minecraft2D.world;
 
-import java.awt.Graphics;
-
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.Camera;
+
+import java.awt.Graphics;
 
 public class World
 {
 	private final Tile[] tiles;
 	
-	private Game game;
+	private final Camera camera;
+	private final Generator generator;
 	
-	private Camera camera;
-	private Generator gen;
-	
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	public World(Game game, int width, int height, double seed)
 	{
-		initWorld(game, width, height, seed);
-		this.tiles = gen.getProceduralTiles();
+		this(game, width, height, null, seed);
 	}
 	
 	public World(Game game, int width, int height, Tile[] tiles, double seed)
 	{
-		initWorld(game, width, height, seed);
-		this.gen.generateProceduralTiles();
-		this.tiles = gen.update(tiles);
-	}
-	
-	private void initWorld(Game game, int width, int height, double seed)
-	{
 		this.width = width;
 		this.height = height;
-		
-		this.game = game;
+
 		this.camera = game.getCamera();
-		this.gen = new Generator(width, height, seed);
+		this.generator = new Generator(width, height, seed);
+
+		if(tiles != null) {
+			this.generator.getProceduralTiles();
+			this.tiles = generator.update(tiles);
+		}
+		else {
+			this.tiles = generator.getProceduralTiles();
+		}
 	}
 	
 	public void render(Graphics g)
@@ -112,11 +109,6 @@ public class World
 
 	public double getSeed()
 	{
-		return gen.getSeed();
-	}
-	
-	public static double calcFallDamage(int time, double coefficient)
-	{
-		return (coefficient * ((time / 60) ^ 1) * 5);
+		return generator.getSeed();
 	}
 }

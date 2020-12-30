@@ -3,7 +3,7 @@ package me.giverplay.minecraft2D;
 import me.giverplay.minecraft2D.command.CommandManager;
 import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entity.Entity;
-import me.giverplay.minecraft2D.entity.entities.Player;
+import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameData;
 import me.giverplay.minecraft2D.game.GameInput;
@@ -11,10 +11,10 @@ import me.giverplay.minecraft2D.game.GameSave;
 import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.game.Window;
-import me.giverplay.minecraft2D.graphics.FontUtils;
-import me.giverplay.minecraft2D.graphics.Menu;
-import me.giverplay.minecraft2D.graphics.Spritesheet;
-import me.giverplay.minecraft2D.graphics.UI;
+import me.giverplay.minecraft2D.utils.FontUtils;
+import me.giverplay.minecraft2D.graphics.gui.Menu;
+import me.giverplay.minecraft2D.graphics.Sprites;
+import me.giverplay.minecraft2D.graphics.gui.UI;
 import me.giverplay.minecraft2D.sound.Sound;
 import me.giverplay.minecraft2D.utils.ThreadUtils;
 import me.giverplay.minecraft2D.world.World;
@@ -47,7 +47,7 @@ public class Game
 	private Window window;
 	private Camera camera;
 	private World world;
-	private Player player;
+	private PlayerEntity player;
 	private Menu menu;
 	private UI ui;
 
@@ -64,7 +64,7 @@ public class Game
 	{
 		try
 		{
-			Spritesheet.init();
+			Sprites.init();
 			Sound.init();
 		}
 		catch(Throwable t)
@@ -108,7 +108,7 @@ public class Game
 			stop();
 
 		entities.clear();
-		player = new Player(this, 50, 170 * 16);
+		player = new PlayerEntity(this, 50, 170 * 16);
 		entities.add(player);
 		world = new World(this, 240, 240, 0.293);
 
@@ -282,7 +282,7 @@ public class Game
 		entities.add(entity);
 	}
 
-	public Player getPlayer()
+	public PlayerEntity getPlayer()
 	{
 		return this.player;
 	}

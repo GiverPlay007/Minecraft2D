@@ -1,0 +1,41 @@
+{
+  "player": {
+    "x": 20,
+    "y": 25,
+    "life": 9,
+    "maxLife": 10,
+    "gameMode": "SURVIVAL",
+    "inventory": {
+      "size": 36,
+      "items": {
+        "2": "DIAMOND_SWORD",
+        "8": "STONE"
+      }
+    }
+  },
+  "world": {
+    "gameTime": 25562562465456,
+    "seed": 133.03,
+    "width": 240,
+    "height": 240,
+    "tiles": {
+      "223": "STONE",
+      "152": "DIRT",
+      "240": "BRICKS"
+    }
+  },
+  "entities": [
+    {
+      "class": "me.giverplay.minecraft2D.entity.entities.EnemyEntity",
+      "x": 20,
+      "y": 15,
+      "life": 6,
+      "maxLife": 10
+    },
+    {
+      "class": "me.giverplay.minecraft2D.entity.entities.SwordEntity",
+      "x": 20,
+      "y": 15
+    }
+  ]
+}

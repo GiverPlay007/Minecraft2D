@@ -3,7 +3,7 @@ package me.giverplay.minecraft2D.inventory;
 import java.awt.event.MouseEvent;
 
 import me.giverplay.minecraft2D.Game;
-import me.giverplay.minecraft2D.entity.entities.Player;
+import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
@@ -14,11 +14,11 @@ public class PlayerInventory implements Inventory
 	private final int size;
 
 	private final Game game;
-	private final Player player;
+	private final PlayerEntity player;
 
 	private int focusedSlot = 0;
 	
-	public PlayerInventory(int size, Player holder)
+	public PlayerInventory(int size, PlayerEntity holder)
 	{
 		this.size = size;
 		this.items = new Item[size];
@@ -230,7 +230,7 @@ public class PlayerInventory implements Inventory
 		  if(tiles[xx + (yy + 1) * w].getType() == Material.AIR)
 		  	creative++;
 		  	
-		if(creative >= 4 && player.getGamemode() != GameMode.CREATIVE)
+		if(creative >= 4 && player.getGameMode() != GameMode.CREATIVE)
 			return;
 			
 		if(button == MouseEvent.BUTTON3)

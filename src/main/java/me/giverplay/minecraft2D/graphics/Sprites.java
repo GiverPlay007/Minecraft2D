@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public final class Spritesheet
+public final class Sprites
 {
 	public static BufferedImage TILE_STONE;
 	public static BufferedImage TILE_GRASS;
@@ -36,7 +36,7 @@ public final class Spritesheet
 	
 	public static void init() throws IOException
 	{
-		SPRITESHEET = ImageIO.read(Spritesheet.class.getResource("/Spritesheet.png"));
+		SPRITESHEET = ImageIO.read(Sprites.class.getResource("/Spritesheet.png"));
 
 		TILE_STONE = getSprite(0, 0, TILE_SIZE, TILE_SIZE);
 		TILE_GRASS = getSprite(TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);

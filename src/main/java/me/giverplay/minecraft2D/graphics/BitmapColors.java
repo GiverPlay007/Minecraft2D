@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.graphics;
 
-public class Cores
+public class BitmapColors
 {
 	public static final int TILE_GRAMA = 0xFFFFFFFF;
 	public static final int LOC_JOGADOR = 0xFF3D0CFF;

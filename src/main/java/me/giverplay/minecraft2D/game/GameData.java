@@ -6,9 +6,9 @@ import java.util.List;
 import me.giverplay.minecraft2D.Game;
 import org.json.JSONObject;
 
-import me.giverplay.minecraft2D.entity.entities.Enemy;
+import me.giverplay.minecraft2D.entity.entities.EnemyEntity;
 import me.giverplay.minecraft2D.entity.Entity;
-import me.giverplay.minecraft2D.entity.entities.Player;
+import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.world.Material;
@@ -19,7 +19,7 @@ import me.giverplay.minecraft2D.world.World;
 public class GameData
 {
 	private String name;
-	private Player player;
+	private PlayerEntity player;
 	private World world;
 	private List<Entity> entities;
 	
@@ -28,35 +28,21 @@ public class GameData
 		
 	}
 	
-	public GameData(String save, Player player, World world, List<Entity> entities)
+	public GameData(String save, PlayerEntity player, World world, List<Entity> entities)
 	{
 		this.name = save;
 		this.player = player;
 		this.world = world;
 		this.entities = entities;
 	}
-	
-	public Player getPlayer()
-	{
-		return this.player;
-	}
-	
-	public List<Entity> getEntities()
-	{
-		return this.entities;
-	}
-	
-	public String getName()
-	{
-		return this.name;
-	}
-	
-	public World getWorld()
-	{
-		return this.world;
-	}
-	
+
 	public String serialize()
+	{
+		JSONObject save = new JSONObject();
+		return save.toString();
+	}
+
+	public String serializez()
 	{
 		JSONObject save = new JSONObject();
 		JSONObject user = new JSONObject();
@@ -113,12 +99,12 @@ public class GameData
 		{
 			Entity ent = entities.get(i);
 			
-			if(ent instanceof Player)
+			if(ent instanceof PlayerEntity)
 				continue;
 			
-			if(ent instanceof Enemy)
+			if(ent instanceof EnemyEntity)
 			{
-				Enemy lent = (Enemy) ent;
+				EnemyEntity lent = (EnemyEntity) ent;
 				JSONObject entJ = new JSONObject();
 				
 				entJ.put("x", lent.getX());
@@ -159,7 +145,7 @@ public class GameData
 		
 		this.world = new World(game, world.getInt("width"), world.getInt("height"), til, world.getDouble("seed"));
 		this.entities = new ArrayList<>();
-		this.player = new Player(user.getInt("x"), user.getInt("y"));
+		this.player = new PlayerEntity(game, user.getInt("x"), user.getInt("y"));
 		this.player.setLife(user.getInt("life"));
 		this.player.setMaxLife(user.getInt("max_life"));
 		this.entities.add(player);
@@ -170,7 +156,7 @@ public class GameData
 		for(String key : enemy.keySet())
 		{
 			JSONObject ene = enemy.getJSONObject(key);
-			Enemy en = new Enemy(ene.getInt("x"), ene.getInt("y"), 1);
+			EnemyEntity en = new EnemyEntity(game, ene.getInt("x"), ene.getInt("y"));
 			entities.add(en);
 		}
 		
@@ -180,6 +166,28 @@ public class GameData
 			Item item = new Item(Material.valueOf(obj.getString("id")), obj.getInt("amount"));
 			inv.setItem(Integer.parseInt(key), item);
 		}
+
+		
+	}
+
+	public PlayerEntity getPlayer()
+	{
+		return this.player;
+	}
+
+	public List<Entity> getEntities()
+	{
+		return this.entities;
+	}
+
+	public String getName()
+	{
+		return this.name;
+	}
+
+	public World getWorld()
+	{
+		return this.world;
 	}
 
 	public void setName(String worldName)

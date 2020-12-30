@@ -2,19 +2,19 @@ package me.giverplay.minecraft2D.world;
 
 import java.awt.image.BufferedImage;
 
-import me.giverplay.minecraft2D.graphics.Spritesheet;
+import me.giverplay.minecraft2D.graphics.Sprites;
 
 public enum Material
 {
-	STONE("Stone", 64, true, true, false, Spritesheet.TILE_STONE), 
-	GRASS("Grass", 64, true, true, false, Spritesheet.TILE_GRASS), 
-	DIRT("Dirt", 64, true, true, false, Spritesheet.TILE_DIRT), 
-	SAND("Sand", 64, true, true, false, Spritesheet.TILE_SAND),
+	STONE("Stone", 64, true, true, false, Sprites.TILE_STONE),
+	GRASS("Grass", 64, true, true, false, Sprites.TILE_GRASS),
+	DIRT("Dirt", 64, true, true, false, Sprites.TILE_DIRT),
+	SAND("Sand", 64, true, true, false, Sprites.TILE_SAND),
 	AIR("Air", 64, true, false, false, null),
-	BEDROCK("Bedrock", 64, true, true, true, Spritesheet.TILE_BEDROCK),
-	STONE_BRICKS("Stone Bricks", 64, true, true, false, Spritesheet.TILE_STONE_BRICKS),
-	WOOD("Wood", 64, true, true, false, Spritesheet.TILE_WOOD),
-	BRICKS("Bricks", 64, true, true, false, Spritesheet.TILE_BRICKS);
+	BEDROCK("Bedrock", 64, true, true, true, Sprites.TILE_BEDROCK),
+	STONE_BRICKS("Stone Bricks", 64, true, true, false, Sprites.TILE_STONE_BRICKS),
+	WOOD("Wood", 64, true, true, false, Sprites.TILE_WOOD),
+	BRICKS("Bricks", 64, true, true, false, Sprites.TILE_BRICKS);
 	
 	private final String name;
 	private final BufferedImage sprite;

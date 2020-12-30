@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.utils;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class FontUtils
 {
-	private static InputStream stream = FontUtils.class.getResourceAsStream("/Font.ttf");
+	private static final InputStream stream = FontUtils.class.getResourceAsStream("/Font.ttf");
 	private static Font font;
 	
 	static

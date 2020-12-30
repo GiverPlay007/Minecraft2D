@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.graphics.gui;
 
 import static me.giverplay.minecraft2D.Game.HEIGHT;
 import static me.giverplay.minecraft2D.Game.SCALE;
@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.GameMode;
+import me.giverplay.minecraft2D.graphics.Sprites;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
+import me.giverplay.minecraft2D.utils.FontUtils;
 import me.giverplay.minecraft2D.utils.GraphicsUtils;
 import me.giverplay.minecraft2D.world.Material;
 
@@ -47,7 +49,7 @@ public class UI
 	
 	private void renderHearth(Graphics g)
 	{
-		if(game.getPlayer().getGamemode() != GameMode.SURVIVAL)
+		if(game.getPlayer().getGameMode() != GameMode.SURVIVAL)
 			return;
 		
 		int max = game.getPlayer().getMaxLife();
@@ -57,7 +59,7 @@ public class UI
 		
 		for(int i = 0; i < max; i++)
 		{
-			g.drawImage(i < cur ? Spritesheet.ICON_LIFE_FULL : Spritesheet.ICON_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
+			g.drawImage(i < cur ? Sprites.ICON_LIFE_FULL : Sprites.ICON_LIFE_NON_FULL, i * (heartSize + 5), 0, heartSize, heartSize, null);
 		}
 	}
 	

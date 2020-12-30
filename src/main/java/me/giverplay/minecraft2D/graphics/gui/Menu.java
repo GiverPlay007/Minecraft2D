@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.graphics.gui;
 
 import static me.giverplay.minecraft2D.Game.HEIGHT;
 import static me.giverplay.minecraft2D.Game.SCALE;

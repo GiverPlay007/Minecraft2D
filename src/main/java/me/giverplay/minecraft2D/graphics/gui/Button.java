@@ -1,4 +1,7 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.graphics.gui;
+
+import me.giverplay.minecraft2D.graphics.Sprites;
+import me.giverplay.minecraft2D.utils.FontUtils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,11 +31,11 @@ public class Button
 	
 	public void render(Graphics g)
 	{
-		g.drawImage(Spritesheet.ICON_BUTTON, x, y, width, height, null);
+		g.drawImage(Sprites.ICON_BUTTON, x, y, width, height, null);
 		g.drawRect(x, y, width, height);
 		
 		if(menu.getFocusedButton() == this)
-			g.drawImage(Spritesheet.ICON_SEL, x, y, width, height, null);
+			g.drawImage(Sprites.ICON_SEL, x, y, width, height, null);
 		
 		g.setFont(FontUtils.getFont(20, Font.BOLD));
 		g.setColor(Color.BLACK);

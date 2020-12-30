@@ -5,8 +5,6 @@ import me.giverplay.minecraft2D.sound.Sound;
 
 public abstract class EntityLiving extends Entity
 {
-  protected double speed;
-
   private int life;
   private int maxLife;
 
@@ -33,6 +31,7 @@ public abstract class EntityLiving extends Entity
   {
     Sound.heal.play();
     life += heal;
+
     if(this.life > maxLife)
       this.life = maxLife;
   }
@@ -61,15 +60,5 @@ public abstract class EntityLiving extends Entity
       return;
 
     this.maxLife = maxLife;
-  }
-
-  public double getSpeed()
-  {
-    return speed;
-  }
-
-  public void setSpeed(double speed)
-  {
-    this.speed = speed;
   }
 }

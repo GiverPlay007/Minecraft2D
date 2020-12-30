@@ -1,7 +1,5 @@
 package me.giverplay.minecraft2D.world;
 
-import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
-
 import java.util.Random;
 
 import me.giverplay.minecraft2D.algorithms.PerlinNoise;
@@ -33,7 +31,7 @@ public class Generator
 		validateSurfaceTiles();
 		validateOceanAndLakes();
 		generateStructures();
-		generateFurnitures();
+		generateFurniture();
 		validateTileBounds();
 		
 		return tiles;
@@ -79,7 +77,7 @@ public class Generator
 					if (y2 >= height)
 						y2 = height - 1;
 					
-					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * TILE_SIZE, y2 * TILE_SIZE);
+					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * Tile.SIZE, y2 * Tile.SIZE);
 				}
 			}
 		}
@@ -90,7 +88,7 @@ public class Generator
 		for (int xx = 0; xx < width; xx++)
 			for (int yy = 0; yy < height; yy++)
 				if (tiles[xx + yy * width] == null)
-					tiles[xx + yy * width] = new Tile(Material.AIR, xx * TILE_SIZE, yy * TILE_SIZE, validateBonds(xx, yy));
+					tiles[xx + yy * width] = new Tile(Material.AIR, xx * Tile.SIZE, yy * Tile.SIZE, validateBonds(xx, yy));
 	}
 	
 	private void validateCaves()
@@ -143,7 +141,7 @@ public class Generator
 		// TODO
 	}
 	
-	private void generateFurnitures()
+	private void generateFurniture()
 	{
 		// TODO
 	}
@@ -184,10 +182,5 @@ public class Generator
 	public double getSeed()
 	{
 		return this.seed;
-	}
-
-	public void generateProceduralTiles()
-	{
-		getProceduralTiles();
 	}
 }
