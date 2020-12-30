@@ -1,4 +1,4 @@
-package me.giverplay.minecraft2D.graphics;
+package me.giverplay.minecraft2D.utils;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

@@ -6,15 +6,16 @@ import java.awt.Graphics;
 
 public class Button
 {
-	private String text;
-	private Menu menu;
+	private final Menu menu;
+
+	private final int width;
+	private final int height;
+	private final int x;
+	private final int y;
+
 	private Runnable handler;
-	
-	private int width;
-	private int height;
-	private int x;
-	private int y;
-	
+	private String text;
+
 	public Button(Menu menu, String text, int x, int y, int width, int height)
 	{
 		this.menu = menu;

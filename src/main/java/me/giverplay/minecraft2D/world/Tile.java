@@ -3,12 +3,8 @@ package me.giverplay.minecraft2D.world;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import me.giverplay.minecraft2D.Game;
-
 public class Tile
 {
-	private static final Game game = Game.getGame();
-	
 	private final int x;
 	private final int y;
 	
@@ -49,9 +45,9 @@ public class Tile
 		this.creativeOnly = type.isCreativeOnly();
 	}
 	
-	public void render(Graphics g)
+	public void render(Graphics g, int x, int y)
 	{
-		g.drawImage(sprite, x - game.getCamera().getX(), y - game.getCamera().getY(), null);
+		g.drawImage(sprite, x, y, null);
 	}
 	
 	public String getName()

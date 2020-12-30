@@ -4,8 +4,8 @@ public class Toast
 {
 	private String text;
 	
-	private int fadeIn;
-	private int fadeOut;
+	private final int fadeIn;
+	private final int fadeOut;
 	
 	public Toast(String text, int fadeIn, int fadeOut)
 	{

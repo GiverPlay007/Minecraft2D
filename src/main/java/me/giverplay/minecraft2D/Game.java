@@ -1,26 +1,30 @@
 package me.giverplay.minecraft2D;
 
-import java.io.IOException;
-import java.util.List;
-
 import me.giverplay.minecraft2D.command.CommandManager;
 import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entities.Entity;
 import me.giverplay.minecraft2D.entities.Player;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameData;
-import me.giverplay.minecraft2D.game.GameTask;
-import me.giverplay.minecraft2D.game.Listeners;
+import me.giverplay.minecraft2D.game.GameInput;
 import me.giverplay.minecraft2D.game.GameSave;
-import me.giverplay.minecraft2D.game.Services;
+import me.giverplay.minecraft2D.game.GameTask;
 import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.game.Window;
-import me.giverplay.minecraft2D.graphics.FutureRender;
+import me.giverplay.minecraft2D.graphics.FontUtils;
 import me.giverplay.minecraft2D.graphics.Menu;
 import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.graphics.UI;
 import me.giverplay.minecraft2D.sound.Sound;
+import me.giverplay.minecraft2D.utils.ThreadUtils;
 import me.giverplay.minecraft2D.world.World;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Game
 {
@@ -30,180 +34,241 @@ public class Game
 	public static final int HEIGHT = 320;
 	public static final int SCALE = 2;
 	
-	//public static final int WIDTH = 1024;
-	//public static final int HEIGHT = 720;
-	//public static final int SCALE = 1;
-	
-	public static DiscordRP discordRichPresence;
-	
-	private static boolean allReady = false;
-	
-	public static int FPS = 0;
-	
-	private static Game game;
+	public static final DiscordRP discordRichPresence = new DiscordRP();
+	private static final Game game = new Game();
 			
-	private State state = State.NORMAL;
-	private Window window;
-	private GameTask thread;
-	private Services services;
-	private CommandTask cmdTask;
+	private final ArrayList<Entity> entities = new ArrayList<>();
+
 	private CommandManager commandManager;
+	private CommandTask cmdTask;
+	private GameInput gameInput;
+	private State state = State.NORMAL;
+	private GameTask gameTask;
+	private Window window;
 	private Camera camera;
-	private Spritesheet sprite;
 	private World world;
 	private Player player;
-	private Listeners listeners;
-	
-	private boolean isRunningRelative = false;
-	private boolean isRunning = false;
-	
-	public static Game getGame()
-	{
-		return game;
-	}
-	
-	public Game()
-	{
-		setupFrame();
-		setupAssets();
-	}
-	
+	private Menu menu;
+	private UI ui;
+
+	private BufferedImage layer;
+
+	private boolean showGameOver = true;
+
+	private int gameOverFrames = 0;
+	private final int maxGameOverFrames = 30;
+
+	private volatile boolean isRunning = false;
+
 	public static void main(String[] args)
 	{
-		discordRichPresence = new DiscordRP();
 		discordRichPresence.start();
-		
+		Spritesheet.init();
 		Sound.init();
-		
-		Game game = new Game();
 		game.start();
 	}
-	
-	private void setupFrame()
+
+	public Game()
+	{
+		initFrame();
+		initGame();
+	}
+
+	private void initFrame()
 	{
 		window = new Window(this);
-		listeners = new Listeners(this);
+		gameInput = new GameInput(this);
 	}
 	
-	private void setupAssets()
+	private void initGame()
 	{
-		isRunningRelative = true;
-		
-		game = this;
-		cmdTask = new CommandTask(this);
-		cmdTask.start();
-		
 		commandManager = new CommandManager();
-		services = new Services(this);
-		
+		menu = new Menu(this);
+		ui = new UI(this);
+
+		layer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
 		camera = new Camera(0, 0);
-		sprite = new Spritesheet("/Spritesheet.png");
-		player = new Player(50, 170 * 16, 16, 16);
-		world = new World(240, 240, 0.293);
-		
-		services.getEntities().add(player);
-		
+
 		setState(State.PAUSED);
-		allReady = true;
 	}
-	
+
+	public void restart()
+	{
+		if(isRunning)
+			stop();
+
+		entities.clear();
+		player = new Player(50, 170 * 16, 16, 16);
+		entities.add(player);
+		world = new World(240, 240, 0.293);
+
+		setState(State.NORMAL);
+		start();
+	}
+
 	public synchronized void start()
 	{
 		isRunning = true;
-		thread = new GameTask(this);
-		thread.start();
+
+		gameTask = new GameTask(this);
+		gameTask.start();
+
+		cmdTask = new CommandTask(this);
+		cmdTask.start();
+
 		discordRichPresence.update("No menu", "");
 	}
 	
 	public synchronized void stop()
 	{
 		isRunning = false;
-		
-		try
-		{
-			thread.join();
-		} catch (InterruptedException e)
-		{
+		ThreadUtils.join(gameTask);
+		ThreadUtils.join(cmdTask);
+	}
+
+	public void load(GameData data)
+	{
+		this.player = data.getPlayer();
+		this.player.updateCamera();
+
+		this.world = data.getWorld();
+		this.entities.clear();
+		this.entities.addAll(data.getEntities());
+	}
+
+	public void loadSave()
+	{
+		try {
+			load(GameSave.loadGame("Save"));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public synchronized void restart()
+
+	public void save()
 	{
-		services.restart();
-	}
-	
-	public static void handleRestart()
-	{
-		game.restart();
-	}
-	
-	public synchronized void runService(int s)
-	{
-		if(s == Services.TICK)
-		{
-			services.tick();
+		GameData data = new GameData("Save", getPlayer(), getWorld(), new ArrayList<>(entities));
+
+		try {
+			GameSave.saveGame(data);
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
-		else if(s == Services.RENDER)
-		{
-			services.render();
-		}
-	}
-	
-	public Player getPlayer()
-	{
-		return this.player;
-	}
-	
-	public Spritesheet getSpritesheet()
-	{
-		return this.sprite;
-	}
-	
-	public World getWorld()
-	{
-		return this.world;
-	}
-	
-	public List<Entity> getEntities()
-	{
-		return services.getEntities();
+
+		setState(State.NORMAL);
 	}
 
-	public void matar()
+	public void tick()
+	{
+		gameInput.tick();
+		menu.tick();
+
+		switch (game.getState())
+		{
+			case NORMAL:
+			case INVENTORY:
+			case CRAFT:
+
+				for(int i = 0; i < entities.size(); i++) entities.get(i).tick();
+
+				break;
+
+			case PAUSED:
+				break;
+
+			case GAME_OVER:
+
+				if(gameInput.select.down)
+					restart();
+
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	public void render()
+	{
+		Graphics g = layer.getGraphics();
+
+		g.setColor(new Color(110, 200, 255));
+		g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+
+		game.getWorld().render(g);
+
+		entities.sort(Entity.sortDepth);
+		entities.forEach(entity -> entity.render(g));
+
+		Graphics graphics = window.getRenderGraphics();
+		graphics.drawImage(layer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+
+		renderNoScale(graphics);
+
+		switch (game.getState())
+		{
+			case GAME_OVER:
+				graphics.setColor(new Color(0, 0, 0, 100));
+				graphics.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
+
+				String txt = "Game Over";
+				graphics.setColor(Color.WHITE);
+				graphics.setFont(FontUtils.getFont(32, Font.BOLD));
+				graphics.drawString(txt, (WIDTH * SCALE - graphics.getFontMetrics().stringWidth(txt)) / 2, HEIGHT * SCALE / 2);
+
+				gameOverFrames++;
+
+				if(gameOverFrames > maxGameOverFrames)
+				{
+					gameOverFrames = 0;
+					showGameOver = !showGameOver;
+				}
+
+				if(showGameOver)
+				{
+					graphics.setFont(FontUtils.getFont(24, Font.BOLD));
+					graphics.drawString("> Aperte ENTER para reiniciar <", (WIDTH * SCALE - graphics.getFontMetrics().stringWidth("> Aperte ENTER para reiniciar <")) / 2, HEIGHT * SCALE / 2 + 28);
+				}
+
+				break;
+
+			case PAUSED:
+				menu.render(graphics);
+				break;
+
+			default:
+				break;
+		}
+
+		window.getBufferStrategy().show();
+	}
+
+	public void renderNoScale(Graphics g)
+	{
+		ui.render(g);
+
+		g.setColor(new Color(100, 100, 100));
+		g.setFont(FontUtils.getFont(18, Font.PLAIN));
+
+		g.setColor(Color.WHITE);
+		g.setFont(FontUtils.getFont(11, Font.PLAIN));
+		g.drawString("TPS: " + gameTask.getTps(), 0, Game.HEIGHT * Game.SCALE - 14);
+		g.drawString("FPS: " + gameTask.getFps(), 0, Game.HEIGHT * Game.SCALE - 2);
+	}
+
+	public void doGameOver()
 	{
 		setState(State.GAME_OVER);
 		Sound.lose.play();
 	}
-	
-	public Camera getCamera()
+
+	public Player getPlayer()
 	{
-		return this.camera;
+		return this.player;
 	}
-	
-	public void addSmoothRender(FutureRender run)
+	public World getWorld()
 	{
-		services.getSmoothRenders().add(run);
-	}
-	
-	public CommandTask getCommandTask()
-	{
-		return this.cmdTask;
-	}
-	
-	public CommandManager getCommandManager()
-	{
-		return this.commandManager;
-	}
-	
-	public boolean isRunning()
-	{
-		return this.isRunningRelative;
-	}
-	
-	public boolean isRunningThread()
-	{
-		return this.isRunning;
+		return this.world;
 	}
 
 	public State getState()
@@ -211,69 +276,43 @@ public class Game
 		return state;
 	}
 
-	public void setState(State state)
+	public Camera getCamera()
 	{
-		this.state = state;
+		return this.camera;
 	}
-	
+
 	public Window getWindow()
 	{
 		return this.window;
 	}
-	
-	public void load(GameData data)
-	{
-		this.player = data.getPlayer();
-		player.updateCamera();
-		this.world = data.getWorld();
-		services.setEntities(data.getEntities());
-		allReady = true;
-	}
-	
-	public void save()
-	{
-		GameData data = new GameData("Save", getPlayer(), getWorld(), getEntities());
-		
-		try
-		{
-			GameSave.saveGame(data);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		setState(State.NORMAL);
-	}
-	
-	public static boolean allReady()
-	{
-		return allReady;
-	}
-	
+
 	public UI getUI()
 	{
-		return services.getUI();
+		return this.ui;
 	}
-	
+
 	public Menu getMenu()
 	{
-		return services.getMenu();
+		return this.menu;
 	}
 
-	public void handleLoad()
+	public GameInput getInput()
 	{
-		try
-		{
-			load(GameSave.loadGame("Save"));
-		} catch (IOException e)
-		{
-			System.out.println("Erro");
-			e.printStackTrace();
-		}
+		return gameInput;
 	}
 
-	public Listeners getListeners()
+	public CommandManager getCommandManager()
 	{
-		return listeners;
+		return this.commandManager;
+	}
+
+	public synchronized boolean isRunning()
+	{
+		return this.isRunning;
+	}
+
+	public void setState(State state)
+	{
+		this.state = state;
 	}
 }

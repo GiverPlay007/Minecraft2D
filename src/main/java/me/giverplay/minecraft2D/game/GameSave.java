@@ -11,13 +11,14 @@ import org.json.JSONException;
 
 public class GameSave
 {
-	private static File dataFolder, saveFolder;
+	private static final File dataFolder;
+	private static final File saveFolder;
 	
 	private static boolean canLoad = false;
 	
 	static
 	{
-		dataFolder = new File(System.getProperty("user.home") + "\\AppData\\Roaming\\.outroMinecraft");
+		dataFolder = new File(System.getProperty("user.home") + File.separator + "Craftzinho");
 		
 		if(!dataFolder.exists())
 		{
@@ -28,7 +29,7 @@ public class GameSave
 			}
 		}
 		
-		saveFolder = new File(dataFolder + "\\saves");
+		saveFolder = new File(dataFolder + File.separator + "Saves");
 		
 		if(!saveFolder.exists())
 		{

@@ -1,11 +1,15 @@
 package me.giverplay.minecraft2D.game;
 
 import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.utils.ThreadUtils;
 
 public class GameTask extends Thread implements Runnable
 {
-	private Game game;
-	
+	private final Game game;
+
+	private int fps;
+	private int tps;
+
 	public GameTask(Game game)
 	{
 		this.game = game;
@@ -15,39 +19,53 @@ public class GameTask extends Thread implements Runnable
 	public void run()
 	{
 		game.getWindow().requestFocus();
-		
-		long lastTime = System.nanoTime();
+
 		long timer = System.currentTimeMillis();
-		
-		double ticks = 60.0D;
-		double ns = 1000000000 / ticks;
-		double delta = 0.0D;
-		
+		long lastTime = System.nanoTime();
+		long now;
+
+		double nsPerTick = 1_000_000_000 / 60.0D;
+		double unprocessed = 0.0D;
+
 		int fps = 0;
-		
-		while(game.isRunningThread())
+		int tps = 0;
+
+		while(game.isRunning())
 		{
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
+			now = System.nanoTime();
+			unprocessed += (now -lastTime) / nsPerTick;
 			lastTime = now;
-			
-			if(delta >= 1)
+
+			while(unprocessed >= 1)
 			{
-				game.runService(Services.TICK);
-				game.runService(Services.RENDER);
-				
-				delta--;
-				fps++;
+				game.tick();
+				++tps;
+				--unprocessed;
 			}
-			
+
+			game.render();
+			fps++;
+
 			if(System.currentTimeMillis() - timer >= 1000)
 			{
-				Game.FPS = fps;
+				this.tps = tps;
+				this.fps = fps;
+				tps = 0;
 				fps = 0;
 				timer += 1000;
 			}
+
+			ThreadUtils.sleep(5);
 		}
-		
-		game.stop();
+	}
+
+	public int getFps()
+	{
+		return fps;
+	}
+
+	public int getTps()
+	{
+		return tps;
 	}
 }

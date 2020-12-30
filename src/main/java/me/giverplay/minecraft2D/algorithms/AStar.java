@@ -1,7 +1,6 @@
 package me.giverplay.minecraft2D.algorithms;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,14 +11,7 @@ public class AStar
 {
 	public static double lastTime = System.currentTimeMillis();
 	
-	private static Comparator<Node> nodeSorter = new Comparator<Node>()
-	{
-		@Override
-		public int compare(Node n0, Node n1)
-		{
-			return (n1.getfCost() < n0.getfCost() ? +1 : n1.getfCost() > n0.getfCost() ? -1 : 0);
-		}
-	};
+	private static final Comparator<Node> nodeSorter = Comparator.comparingDouble(Node::getfCost);
 	
 	public static boolean clear()
 	{
@@ -43,17 +35,17 @@ public class AStar
 		
 		while(openList.size() > 0)
 		{
-			Collections.sort(openList, nodeSorter);
+			openList.sort(nodeSorter);
 			current = openList.get(0);
 			
-			if(current.getTile().equals(end))
+			if(current.tile.equals(end))
 			{
 				List<Node> path = new ArrayList<>();
 				
-				while(current.getParent() != null)
+				while(current.parent != null)
 				{
 					path.add(current);
-					current = current.getParent();
+					current = current.parent;
 				}
 				
 				openList.clear();
@@ -69,8 +61,8 @@ public class AStar
 				if(i == 4)
 					continue;
 				
-				int x = current.getTile().x;
-				int y = current.getTile().y;
+				int x = current.tile.x;
+				int y = current.tile.y;
 				int xi = (i % 3) - 1;
 				int yi = (i / 3) - 1;
 				
@@ -118,19 +110,19 @@ public class AStar
 				
 				Vector2i a = new Vector2i(x + xi, y + yi);
 				
-				double gCost = current.getgCost() + getDistance(current.getTile(), a);
+				double gCost = current.gCost + getDistance(current.tile, a);
 				double hCost = getDistance(a, end);
 				
 				Node node = new Node(a, current, gCost, hCost);
 				
-				if(vecInList(closedList, a) && gCost >= current.getgCost())
+				if(vecInList(closedList, a) && gCost >= current.gCost)
 					continue;
 				
 				if(!vecInList(openList, a))
 				{
 					openList.add(node);
 				}
-				else if(gCost < current.getgCost())
+				else if(gCost < current.gCost)
 				{
 					openList.remove(current);
 					openList.add(node);
@@ -154,7 +146,7 @@ public class AStar
 	{
 		for(int i = 0; i < list.size(); i++)
 		{
-			if(list.get(i).getTile().equals(vector))
+			if(list.get(i).tile.equals(vector))
 			{
 				return true;
 			}

@@ -13,31 +13,26 @@ import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.Item;
+import me.giverplay.minecraft2D.utils.GraphicsUtils;
 import me.giverplay.minecraft2D.world.Material;
 
 public class UI
 {
-	private ArrayList<Toast> toasts = new ArrayList<>();
+	private final ArrayList<Toast> toasts = new ArrayList<>();
 	
-	private Game game;
+	private final Game game;
 	private Toast toast;
-	private Color currentColor;
-	
+
 	private boolean showingToast = false;
-	
+
 	private int toastFadeIn = 0;
 	private int toastFadeOut = 0;
 	private int toastFrames = 0;
 	private int maxToastFrames = 0;
-	private int time = 50;
-	private int heartSize = 24;
-	private int slotSize = 32;
-	private int xs = (WIDTH * SCALE) / 2 - 9 * slotSize / SCALE;
-	private int ys = (HEIGHT * SCALE) - slotSize - 5;
-	
-	public UI()
+
+	public UI(Game game)
 	{
-		game = Game.getGame();
+		this.game = game;
 	}
 	
 	public void render(Graphics g)
@@ -57,8 +52,8 @@ public class UI
 		
 		int max = game.getPlayer().getMaxLife();
 		int cur = game.getPlayer().getLife();
-		
-		heartSize = 16;
+
+		int heartSize = 16;
 		
 		for(int i = 0; i < max; i++)
 		{
@@ -69,6 +64,11 @@ public class UI
 	private void renderInventory(Graphics g, Inventory inv)
 	{
 		g.setColor(new Color(0, 0, 0, 144));
+		
+		int slotSize = 32;
+		int xs = (WIDTH * SCALE) / 2 - 9 * slotSize / SCALE;
+		int ys = (HEIGHT * SCALE) - slotSize - 5;
+
 		g.fillRect(xs, ys, 9 * slotSize, slotSize);
 		g.setFont(new Font("arial", Font.BOLD, 16));
 		g.setColor(Color.WHITE);
@@ -98,6 +98,7 @@ public class UI
 	
 	public void advanceToast(Graphics g)
 	{
+		int time = 50;
 		if(!showingToast)
 		{
 			if(toasts.size() == 0)
@@ -126,14 +127,14 @@ public class UI
 		
 		if(toastFrames <= toastFadeIn)
 		{
-			alpha = (int) (255 * toastFrames / toastFadeIn);
+			alpha = 255 * toastFrames / toastFadeIn;
 		}
 		else if(toastFrames >= toastFadeIn + time)
 		{
-			alpha = (int) (255 * ( toastFadeOut - (toastFrames - (toastFadeIn + time))) / toastFadeOut);
+			alpha = 255 * ( toastFadeOut - (toastFrames - (toastFadeIn + time))) / toastFadeOut;
 		}
-		
-		currentColor = new Color(255, 255, 255, alpha);
+
+		Color currentColor = new Color(255, 255, 255, alpha);
 		g.setColor(currentColor);
 		
 		g.setFont(FontUtils.getFont(32, Font.BOLD));

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Spritesheet
+public final class Spritesheet
 {
 	public static BufferedImage TILE_STONE;
 	public static BufferedImage TILE_GRASS;
@@ -27,28 +27,21 @@ public class Spritesheet
 	public static BufferedImage ICON_BUTTON;
 	public static BufferedImage ICON_SEL;
 	
-	private BufferedImage spritesheet;
+	private static BufferedImage SPRITESHEET;
 	
-	public Spritesheet(String path)
+	public static BufferedImage getSprite(int x, int y, int width, int hight)
 	{
-		try
-		{
-			spritesheet = ImageIO.read(getClass().getResource(path));
-		} catch (IOException e)
-		{
+		return SPRITESHEET.getSubimage(x, y, width, hight);
+	}
+	
+	public static void init()
+	{
+		try {
+			SPRITESHEET = ImageIO.read(Spritesheet.class.getResource("/Spritesheet.png"));
+		} catch (IOException e) {
 			System.out.println("Erro na leitura do Spritesheet");
 		}
-		
-		setup();
-	}
-	
-	public BufferedImage getSprite(int x, int y, int width, int hight)
-	{
-		return spritesheet.getSubimage(x, y, width, hight);
-	}
-	
-	private void setup()
-	{
+
 		TILE_STONE = getSprite(0, 0, TILE_SIZE, TILE_SIZE);
 		TILE_GRASS = getSprite(TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
 		TILE_DIRT = getSprite(TILE_SIZE * 2, 0, TILE_SIZE, TILE_SIZE);

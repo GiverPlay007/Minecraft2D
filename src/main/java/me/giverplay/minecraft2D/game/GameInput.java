@@ -13,7 +13,7 @@ import java.util.List;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 
-public class Listeners implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
+public class GameInput implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
 {
 	public List<Key> keys = new ArrayList<Key>();
 	
@@ -28,13 +28,15 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	public Key jump = new Key();
 	public Key select = new Key();
 	
-	private Game game;
+	private final Game game;
 	
-	private boolean updated = false;
-	
-	public Listeners(Game game)
+	public GameInput(Game game)
 	{
 		this.game = game;
+		game.getWindow().addKeyListener(this);
+		game.getWindow().addMouseWheelListener(this);
+		game.getWindow().addMouseListener(this);
+		game.getWindow().addMouseMotionListener(this);
 	}
 	
 	@Override
@@ -128,20 +130,7 @@ public class Listeners implements KeyListener, MouseListener, MouseWheelListener
 	
 	public void tick()
 	{
-		if(Game.allReady() && !updated)
-		{
-			game.getWindow().addKeyListener(this);
-			game.getWindow().addMouseWheelListener(this);
-			game.getWindow().addMouseListener(this);
-			game.getWindow().addMouseMotionListener(this);
-			
-			updated = true;
-		}
-		
-		for (int i = 0; i < keys.size(); i++)
-		{
-			keys.get(i).tick();
-		}
+		keys.forEach(Key::tick);
 	}
 	
 	@Override

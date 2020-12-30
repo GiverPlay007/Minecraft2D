@@ -31,14 +31,14 @@ public class Camera
 		return this.x;
 	}
 	
-	public static int clamp(int atual, int min, int max)
+	public static int clamp(int current, int min, int max)
 	{
-		if(atual < min)
-		  atual = min;
+		if(current < min)
+		  current = min;
 		
-		if(atual > max)
-			atual = max;
+		if(current > max)
+			current = max;
 		
-		return atual;
+		return current;
 	}
 }

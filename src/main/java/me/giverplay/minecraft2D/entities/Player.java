@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameMode;
-import me.giverplay.minecraft2D.game.Listeners;
+import me.giverplay.minecraft2D.game.GameInput;
 import me.giverplay.minecraft2D.graphics.Spritesheet;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
@@ -46,7 +46,7 @@ public class Player extends LivingEntity
 	private Camera camera;
 	private Inventory inv;
 	private GameMode mode;
-	private Listeners input;
+	private GameInput input;
 	
 	public Player(int x, int y, int width, int height)
 	{
@@ -56,7 +56,7 @@ public class Player extends LivingEntity
 		
 		game = Game.getGame();
 		camera = game.getCamera();
-		input = game.getListeners();
+		input = game.getInput();
 		inv = new PlayerInventory(36, this);
 		
 		((PlayerInventory) inv).resetDefaults();
@@ -69,7 +69,7 @@ public class Player extends LivingEntity
 	{
 		if (vida == 0)
 		{
-			game.matar();
+			game.doGameOver();
 			return;
 		}
 		

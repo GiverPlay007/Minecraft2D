@@ -20,19 +20,15 @@ public class Menu
 	private static final int dw = 256;
 	private static final int dh = 44;
 	
-	private List<Button> buttons;
+	private final List<Button> buttons;
 	
-	private Game game;
-	
+	private final Game game;
+	private final Button start;
+
 	private Button focusedButton = null;
-	
-	private Button start;
-	private Button exit;
-	private Button save;
-	private Button load;
-	
+
 	private boolean press = false;
-	private boolean saveable = false;
+	private boolean savable = false;
 	
 	private int x = 0;
 	private int y = 0;
@@ -42,10 +38,10 @@ public class Menu
 		this.game = game;
 		
 		start = new Button(this, "Novo Jogo", xButton - dw / 2, yButton, dw, dh);
-		exit = new Button(this, "Sair", xButton - dw / 2, yButton + dh * 2 + 10, dw, dh);
-		
-		save = new Button(this, "Salvar", xButton - dw / 2, yButton + dh + 5, dw / 2 - 5, dh);
-		load = new Button(this, "Carregar", xButton + 5, yButton + dh + 5, dw / 2 - 5, dh);
+		Button exit = new Button(this, "Sair", xButton - dw / 2, yButton + dh * 2 + 10, dw, dh);
+
+		Button save = new Button(this, "Salvar", xButton - dw / 2, yButton + dh + 5, dw / 2 - 5, dh);
+		Button load = new Button(this, "Carregar", xButton + 5, yButton + dh + 5, dw / 2 - 5, dh);
 		
 		exit.setClickHandler(() -> {
 			
@@ -57,7 +53,7 @@ public class Menu
 		
 		start.setClickHandler(() -> {
 			
-			saveable = true;
+			savable = true;
 			Game.discordRichPresence.update("Em jogo", "Sobrevivendo");
 			game.setState(State.NORMAL);
 			start.setText("Continuar");
@@ -66,7 +62,7 @@ public class Menu
 		
 		save.setClickHandler(() -> {
 			
-			if(!saveable)
+			if(!savable)
 				return;
 			
 			game.save();
@@ -78,8 +74,8 @@ public class Menu
 			
 			if(GameSave.canLoad())
 			{
-				saveable = true;
-				game.handleLoad();
+				savable = true;
+				game.loadSave();
 				game.setState(State.NORMAL);
 				game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
 			}
@@ -91,7 +87,7 @@ public class Menu
 	
 	public void tick()
 	{
-		if(game.getListeners().menu.down)
+		if(game.getInput().menu.down)
 			game.setState(State.PAUSED);
 			
 		if(press)
@@ -107,22 +103,17 @@ public class Menu
 	{
 		g.setColor(new Color(0, 0, 0, 128));
 		g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
-		
-		for(int i = 0; i < buttons.size(); i++)
-		{
-			buttons.get(i).render(g);
-		}
+
+		buttons.forEach(button -> button.render(g));
 	}
 	
 	public void updateLoc(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
-		
-		for(int i = 0; i < buttons.size(); i++)
+
+		for(Button but : buttons)
 		{
-			Button but = buttons.get(i);
-			
 			if(x >= but.getY() && y >= but.getY() && y <= but.getY() + but.getHeight() && x <= but.getX() + but.getWidth())
 			{
 				focusedButton = but;

@@ -9,13 +9,13 @@ import me.giverplay.minecraft2D.algorithms.PerlinNoise;
 public class Generator
 {
 	private Tile[] tiles;
-	
+
 	private PerlinNoise perlin;
+
+	private final double seed;
 	
-	private double seed;
-	
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	public Generator(int width, int height, double seed)
 	{
@@ -128,10 +128,7 @@ public class Generator
 						}
 					}
 				}
-				catch(ArrayIndexOutOfBoundsException e)
-				{
-					continue;
-				}
+				catch(ArrayIndexOutOfBoundsException ignore) { }
 			}
 		}
 	}

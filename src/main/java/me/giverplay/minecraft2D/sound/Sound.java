@@ -12,137 +12,73 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound
 {
-	public static Clips coin = load("/coin.wav", 1);
-	public static Clips hit = load("/hit.wav", 1);
-	public static Clips lose = load("/lose.wav", 1);
-	public static Clips hit2 = load("/hit2.wav", 1);
-	public static Clips jump = load("/jump.wav", 1);
-	public static Clips life = load("/life.wav", 1);
-	public static Clips up = load("/up.wav", 1);
-		
+	public static Clips coin = load("/coin.wav");
+	public static Clips hit = load("/hit.wav");
+	public static Clips lose = load("/lose.wav");
+	public static Clips hit2 = load("/hit2.wav");
+	public static Clips jump = load("/jump.wav");
+	public static Clips life = load("/life.wav");
+	public static Clips up = load("/up.wav");
+
 	public static void init() // Fix first sound lag
-	{
-		
-	}
-	
+	{ }
+
 	public static class Clips
 	{
+		private final int count;
+
 		public Clip[] clips;
-		private int p;
-		private int count;
-		
-		public Clips(byte[] buffer, int count) throws IllegalArgumentException, LineUnavailableException, IOException, UnsupportedAudioFileException
+		private int index;
+
+		public Clips(byte[] buffer, int count) throws LineUnavailableException, IOException, UnsupportedAudioFileException
 		{
-			if(buffer == null)
-			{
-				throw new IllegalArgumentException("Buffer n�o pode ser nulo");
-			}
-			
 			clips = new Clip[count];
-			
+
 			this.count = count;
-			
-			for(int i = 0; i < count; i++)
-			{
+
+			for(int i = 0; i < count; i++) {
 				clips[i] = AudioSystem.getClip();
 				clips[i].open(AudioSystem.getAudioInputStream(new ByteArrayInputStream(buffer)));
 			}
 		}
-		
-		public void play() throws IllegalStateException
+
+		public void play()
 		{
-			if(clips == null)
-			{
-				throw new IllegalStateException("Lista de clips est� vazia");
-			}
-			
-			clips[p].stop();
-			clips[p].setFramePosition(0);
-			clips[p].start();
-			
-			p++;
-			
-			if(p >= count)
-			{
-				p = 0;
+			clips[index].stop();
+			clips[index].setFramePosition(0);
+			clips[index].start();
+
+			index++;
+
+			if(index >= count) {
+				index = 0;
 			}
 		}
-		
-		public void loop() throws IllegalStateException
+
+		public void loop()
 		{
-			if(clips == null)
-			{
-				throw new IllegalStateException("Lista de clips est� vazia");
-			}
-			
-			clips[p].loop(300);
+			clips[index].loop(300);
 		}
 	}
-	
-	private static Clips load(String name, int count)
+
+	private static Clips load(String name)
 	{
-		try
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 DataInputStream dis = new DataInputStream(Sound.class.getResourceAsStream(name)))
 		{
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataInputStream dis = new DataInputStream(Sound.class.getResourceAsStream(name));
-			
 			byte[] buffer = new byte[1024];
-			
-			int read = 0;
-			
-			while((read = dis.read(buffer)) >= 0)
-			{
+
+			int read;
+
+			while((read = dis.read(buffer)) >= 0) {
 				baos.write(buffer, 0, read);
 			}
-			
-			dis.close();
-			
+
 			byte[] data = baos.toByteArray();
-			
-			try
-			{
-				return new Clips(data, count);
-			} 
-			catch (IllegalArgumentException e)
-			{
-				System.out.println("Argumentos inv�lidos: " + e.getMessage());
-			} 
-			catch (LineUnavailableException e)
-			{
-				System.out.println("Linha indispon�vel");
-			} 
-			catch (UnsupportedAudioFileException e)
-			{
-				System.out.println("Arquivo de audio n�o suportado");
-			}
+			return new Clips(data, 1);
+
+		} catch(Throwable throwable) {
+			return null;
 		}
-		catch(NullPointerException | IOException e)
-		{
-			try
-			{
-				try
-				{
-					return new Clips(null, count);
-				} 
-				catch (IllegalArgumentException e1)
-				{
-					System.out.println("Argumentos inv�lidos: " + e.getMessage());
-				} 
-				catch (LineUnavailableException e1)
-				{
-					System.out.println("Linha indispon�vel");
-				} 
-				catch (UnsupportedAudioFileException e1)
-				{
-					System.out.println("Arquivo de audio n�o suportado");
-				}
-			} 
-			catch (IOException e1)
-			{
-				return null;
-			}
-		}
-		
-		return null;
 	}
 }
