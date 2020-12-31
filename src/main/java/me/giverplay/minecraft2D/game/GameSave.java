@@ -67,12 +67,12 @@ public class GameSave
 		}
 		
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		GameData data = new GameData();
+		GameData data = new GameData(game);
 		data.setName(worldName);
 		
 		try
 		{
-			data.decodeAndApply(game, br.readLine());
+			data.deserializeAndApply(br.readLine());
 		}
 		catch(JSONException e)
 		{

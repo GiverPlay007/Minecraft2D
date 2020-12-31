@@ -12,7 +12,7 @@ public class EnemyEntity extends EntityMob
 {
 	private final Animation animation;
 
-	public EnemyEntity(Game game, double x, double y)
+	public EnemyEntity(Game game, int x, int y)
 	{
 		super(game, x, y, Tile.SIZE, Tile.SIZE, 5, 1);
 

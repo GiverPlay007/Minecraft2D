@@ -117,4 +117,9 @@ public class World
 	{
 		return gameTime;
 	}
+
+	public void setGameTime(long gameTime)
+	{
+		this.gameTime = gameTime;
+	}
 }

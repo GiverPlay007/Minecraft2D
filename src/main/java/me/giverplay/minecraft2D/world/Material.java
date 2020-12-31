@@ -64,4 +64,13 @@ public enum Material
 	{
 		return this.maxStack;
 	}
+
+	public static Material parse(String name)
+	{
+		try {
+			return valueOf(name);
+		} catch(IllegalArgumentException e) {
+			return Material.AIR;
+		}
+	}
 }

@@ -18,7 +18,7 @@ public class PlayerInventory implements Inventory
 
 	private int focusedSlot = 0;
 	
-	public PlayerInventory(int size, PlayerEntity holder)
+	public PlayerInventory(PlayerEntity holder, int size)
 	{
 		this.size = size;
 		this.items = new Item[size];

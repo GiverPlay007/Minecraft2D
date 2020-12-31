@@ -31,7 +31,7 @@ public class PlayerEntity extends EntityMob
 		animation = new Animation(Sprites.SPRITE_PLAYER_RIGHT, 300);
 		camera = game.getCamera();
 		input = game.getInput();
-		inv = new PlayerInventory(36, this);
+		inv = new PlayerInventory(this, 36);
 		
 		((PlayerInventory) inv).resetDefaults();
 		

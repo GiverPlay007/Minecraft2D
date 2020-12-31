@@ -29,14 +29,14 @@
   },
   "entities": [
     {
-      "class": "me.giverplay.minecraft2D.entity.entities.EnemyEntity",
+      "class": "EnemyEntity",
       "x": 20,
       "y": 15,
       "life": 6,
       "maxLife": 10
     },
     {
-      "class": "me.giverplay.minecraft2D.entity.entities.SwordEntity",
+      "class": "SwordEntity",
       "x": 20,
       "y": 15
     }

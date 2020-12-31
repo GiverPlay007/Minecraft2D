@@ -134,7 +134,7 @@ public class Game
 
 	public void save()
 	{
-		GameData data = new GameData("Save", getPlayer(), getWorld(), new ArrayList<>(entities));
+		GameData data = new GameData(this, "Save", getPlayer(), getWorld(), new ArrayList<>(entities));
 
 		try {
 			GameSave.saveGame(data);

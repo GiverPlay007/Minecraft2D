@@ -5,6 +5,7 @@ import me.giverplay.minecraft2D.entity.EntityLiving;
 import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
+import me.giverplay.minecraft2D.utils.ReflectionUtils;
 import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.World;
@@ -15,18 +16,21 @@ import java.util.ArrayList;
 
 public class GameData
 {
-	private String name;
-	private PlayerEntity player;
-	private World world;
-	private ArrayList<Entity> entities;
-	
-	public GameData()
-	{
+  private final Game game;
 
+	private ArrayList<Entity> entities;
+	private PlayerEntity player;
+	private String name;
+	private World world;
+
+	public GameData(Game game)
+	{
+    this(game, null, null, null, null);
 	}
 	
-	public GameData(String save, PlayerEntity player, World world, ArrayList<Entity> entities)
+	public GameData(Game game, String save, PlayerEntity player, World world, ArrayList<Entity> entities)
 	{
+	  this.game = game;
 		this.name = save;
 		this.player = player;
 		this.world = world;
@@ -141,13 +145,111 @@ public class GameData
 		}
 	}
 
-	public void decodeAndApply(Game game, String data)
+	public void deserializeAndApply(String data)
 	{
+    JSONObject save = new JSONObject(data);
+    JSONObject playerJson = save.getJSONObject("player");
+    JSONObject worldJson = save.getJSONObject("world");
+    JSONArray entitiesJson = save.getJSONArray("entities");
 
+    deserializePlayer(playerJson);
+    deserializeWorld(worldJson);
+    deserializeEntities(entitiesJson);
+
+    apply();
 	}
 
-	private void apply(Game game)
-	{
+  private void deserializePlayer(JSONObject playerJson)
+  {
+    player = new PlayerEntity(game, playerJson.getInt("x"), playerJson.getInt("y"));
+
+    player.setInventory(deserializePlayerInventory(playerJson.getJSONObject("inventory")));
+    player.setGameMode(GameMode.parse(playerJson.getString("gameMode")));
+    player.setMaxLife(playerJson.getInt("maxLife"));
+    player.setLife(playerJson.getInt("life"));
+  }
+
+  private PlayerInventory deserializePlayerInventory(JSONObject inventoryJson)
+  {
+    PlayerInventory inventory = new PlayerInventory(player, inventoryJson.getInt("size"));
+
+    JSONArray itemsArray = inventoryJson.getJSONArray("items");
+
+    for(int index = 0; index < itemsArray.length(); index++)
+    {
+      JSONObject item = itemsArray.getJSONObject(index);
+      Material type = Material.parse(item.getString("type"));
+
+      int amount = item.getInt("amount");
+      int slot = item.getInt("slot");
+
+      inventory.setItem(slot, new Item(type, amount));
+    }
+
+    return inventory;
+  }
+
+  private void deserializeWorld(JSONObject worldJson)
+  {
+    int width = worldJson.getInt("width");
+    int height = worldJson.getInt("height");
+    long seed = worldJson.getLong("seed");
+    long gameTime = worldJson.getLong("gameTime");
+
+    JSONObject tilesJson = worldJson.getJSONObject("tiles");
+    Tile[] tilesArray = deserializeTiles(tilesJson, width, height);
+
+    world = new World(game, width, height, tilesArray, seed);
+    world.setGameTime(gameTime);
+  }
+
+  private Tile[] deserializeTiles(JSONObject tilesJson, int width, int height)
+  {
+    Tile[] tilesArray = new Tile[width * height];
+
+    for(String key : tilesJson.keySet())
+    {
+      Material type = Material.parse(tilesJson.getString(key));
+      tilesArray[Integer.parseInt(key)] = new Tile(type);
+    }
+
+    return tilesArray;
+  }
+
+  private void deserializeEntities(JSONArray entitiesJson)
+  {
+    entities = new ArrayList<>();
+
+    for(int index = 0; index < entitiesJson.length(); index++)
+    {
+      JSONObject entityJson = entitiesJson.getJSONObject(index);
+      String clazz = entityJson.getString("class");
+      Entity entity;
+
+      int x = entityJson.getInt("x");
+      int y = entityJson.getInt("y");
+
+      try {
+      	entity = ReflectionUtils.newEntityInstance(clazz, game, x, y);
+			}
+			catch(Exception e){
+				System.out.println("Falha ao criar instância de " + clazz);
+				e.printStackTrace();
+				continue;
+			}
+
+			if(entity instanceof EntityLiving)
+			{
+				((EntityLiving) entity).setLife(entityJson.getInt("life"));
+				((EntityLiving) entity).setMaxLife(entityJson.getInt("maxLife"));
+			}
+
+			entities.add(entity);
+    }
+  }
+
+	private void apply()
+  {
 		game.world = this.world;
 		game.player = this.player;
 		game.entities.clear();
