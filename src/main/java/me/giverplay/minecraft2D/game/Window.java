@@ -8,8 +8,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import me.giverplay.minecraft2D.Game;
-
 public class Window extends Canvas
 {
 	private static final long serialVersionUID = 1L;

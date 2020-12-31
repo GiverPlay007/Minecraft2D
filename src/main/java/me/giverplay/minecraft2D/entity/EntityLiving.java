@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.entity;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.sound.Sound;
 
 public abstract class EntityLiving extends Entity

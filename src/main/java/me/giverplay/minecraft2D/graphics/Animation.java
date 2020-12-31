@@ -20,6 +20,8 @@ public class Animation
   {
     if(System.currentTimeMillis() - lastFrame >= period)
     {
+      lastFrame = System.currentTimeMillis();
+
       index++;
 
       if(index >= frames.length)

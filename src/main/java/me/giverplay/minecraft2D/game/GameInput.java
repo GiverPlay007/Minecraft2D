@@ -10,7 +10,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 
 public class GameInput implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener

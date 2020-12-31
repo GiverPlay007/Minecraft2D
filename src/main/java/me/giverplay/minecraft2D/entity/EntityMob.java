@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.entity;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.algorithms.Node;
 import me.giverplay.minecraft2D.algorithms.Vector2i;
 import me.giverplay.minecraft2D.world.Tile;

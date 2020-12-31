@@ -24,12 +24,12 @@ public class Sound
 
 	public static void init() throws Throwable
 	{
-		explosion = load("explosion.wav", 4);
-		damage = load("damage.wav", 1);
-		heal = load("heal.wav", 1);
-		jump = load("jump.wav", 2);
-		lose = load("lose.wav", 1);
-		hit = load("hit.wav", 1);
+		explosion = load("explosion", 4);
+		damage = load("damage", 1);
+		heal = load("heal", 1);
+		jump = load("jump", 2);
+		lose = load("lose", 1);
+		hit = load("hit", 1);
 	}
 
 	public static class Clips
@@ -73,7 +73,7 @@ public class Sound
 
 		for(int i = 0; i < count; i++)
 		{
-			String name = "/sounds/" + nameBase + i;
+			String name = "/sounds/" + nameBase + i + ".wav";
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			DataInputStream dis = new DataInputStream(Sound.class.getResourceAsStream(name));

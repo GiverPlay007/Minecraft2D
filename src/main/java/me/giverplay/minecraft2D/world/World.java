@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.world;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.Camera;
 
 import java.awt.Graphics;
@@ -14,7 +14,9 @@ public class World
 	
 	private final int width;
 	private final int height;
-	
+
+	private long gameTime;
+
 	public World(Game game, int width, int height, double seed)
 	{
 		this(game, width, height, null, seed);
@@ -48,7 +50,6 @@ public class World
 			{
 				for (int yy = ys; yy <= yf; yy++)
 				{
-					
 					if (xx < xs || yy < ys || xx >= width || yy >= height)
 						continue;
 					
@@ -110,5 +111,10 @@ public class World
 	public double getSeed()
 	{
 		return generator.getSeed();
+	}
+
+	public long getGameTime()
+	{
+		return gameTime;
 	}
 }

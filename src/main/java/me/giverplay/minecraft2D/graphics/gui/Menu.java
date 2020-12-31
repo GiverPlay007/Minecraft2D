@@ -1,15 +1,16 @@
 package me.giverplay.minecraft2D.graphics.gui;
 
-import static me.giverplay.minecraft2D.Game.HEIGHT;
-import static me.giverplay.minecraft2D.Game.SCALE;
-import static me.giverplay.minecraft2D.Game.WIDTH;
+import static me.giverplay.minecraft2D.game.Game.HEIGHT;
+import static me.giverplay.minecraft2D.game.Game.SCALE;
+import static me.giverplay.minecraft2D.game.Game.WIDTH;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
 import java.util.List;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.Main;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.GameSave;
 import me.giverplay.minecraft2D.game.State;
 
@@ -45,7 +46,7 @@ public class Menu
 		
 		exit.setClickHandler(() -> {
 			
-			Game.discordRichPresence.shutdown();
+			Main.discordRichPresence.shutdown();
 			System.out.println("Saindo");
 			System.exit(0);
 			
@@ -54,7 +55,7 @@ public class Menu
 		start.setClickHandler(() -> {
 			
 			savable = true;
-			Game.discordRichPresence.update("Em jogo", "Sobrevivendo");
+			Main.discordRichPresence.update("Em jogo", "Sobrevivendo");
 			game.setState(State.NORMAL);
 			start.setText("Continuar");
 			

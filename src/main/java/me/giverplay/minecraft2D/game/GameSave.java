@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import me.giverplay.minecraft2D.Game;
 import org.json.JSONException;
 
 public class GameSave
@@ -73,7 +72,7 @@ public class GameSave
 		
 		try
 		{
-			data.decode(game, br.readLine());
+			data.decodeAndApply(game, br.readLine());
 		}
 		catch(JSONException e)
 		{

@@ -1,10 +1,10 @@
-package me.giverplay.minecraft2D;
+package me.giverplay.minecraft2D.game;
 
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 
-public class DiscordRP implements Runnable
+public class DiscordPresence implements Runnable
 {
 	private volatile boolean running = false;
 	private long created = 0;
@@ -30,7 +30,7 @@ public class DiscordRP implements Runnable
 	
 	public void update(String line1, String line2)
 	{
-		DiscordRichPresence.Builder builder = new DiscordRichPresence.Builder(line2);
+		DiscordRichPresence.Builder builder = new net.arikia.dev.drpc.DiscordRichPresence.Builder(line2);
 		builder.setBigImage("maior", "Craftzinho");
 		builder.setDetails(line1);
 		builder.setStartTimestamps(created);

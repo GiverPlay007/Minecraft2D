@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.graphics;
 
-import static me.giverplay.minecraft2D.world.World.TILE_SIZE;
+import static me.giverplay.minecraft2D.world.Tile.SIZE;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -38,27 +38,27 @@ public final class Sprites
 	{
 		SPRITESHEET = ImageIO.read(Sprites.class.getResource("/Spritesheet.png"));
 
-		TILE_STONE = getSprite(0, 0, TILE_SIZE, TILE_SIZE);
-		TILE_GRASS = getSprite(TILE_SIZE, 0, TILE_SIZE, TILE_SIZE);
-		TILE_DIRT = getSprite(TILE_SIZE * 2, 0, TILE_SIZE, TILE_SIZE);
-		TILE_SAND = getSprite(TILE_SIZE * 3, 0, TILE_SIZE, TILE_SIZE);
-		TILE_BEDROCK = getSprite(TILE_SIZE * 4, 0, TILE_SIZE, TILE_SIZE);
-		TILE_STONE_BRICKS = getSprite(TILE_SIZE * 5, 0, TILE_SIZE, TILE_SIZE);
-		TILE_WOOD = getSprite(TILE_SIZE * 6, 0, TILE_SIZE, TILE_SIZE);
-		TILE_BRICKS = getSprite(TILE_SIZE * 7, 0, TILE_SIZE, TILE_SIZE);
+		TILE_STONE = getSprite(0, 0, SIZE, SIZE);
+		TILE_GRASS = getSprite(SIZE, 0, SIZE, SIZE);
+		TILE_DIRT = getSprite(SIZE * 2, 0, SIZE, SIZE);
+		TILE_SAND = getSprite(SIZE * 3, 0, SIZE, SIZE);
+		TILE_BEDROCK = getSprite(SIZE * 4, 0, SIZE, SIZE);
+		TILE_STONE_BRICKS = getSprite(SIZE * 5, 0, SIZE, SIZE);
+		TILE_WOOD = getSprite(SIZE * 6, 0, SIZE, SIZE);
+		TILE_BRICKS = getSprite(SIZE * 7, 0, SIZE, SIZE);
 		
 		SPRITE_PLAYER_RIGHT = new BufferedImage[3];
 		SPRITE_PLAYER_LEFT = new BufferedImage[3];
 		
 		for(int i = 0; i < 3; i++)
 		{
-			SPRITE_PLAYER_RIGHT[i] = getSprite(i * (TILE_SIZE * 2), 128, TILE_SIZE * 2, TILE_SIZE * 2);
-			SPRITE_PLAYER_LEFT[i] = getSprite(i * (TILE_SIZE * 2), 96, TILE_SIZE * 2, TILE_SIZE * 2);
+			SPRITE_PLAYER_RIGHT[i] = getSprite(i * (SIZE * 2), 128, SIZE * 2, SIZE * 2);
+			SPRITE_PLAYER_LEFT[i] = getSprite(i * (SIZE * 2), 96, SIZE * 2, SIZE * 2);
 		}
 		
-		ICON_LIFE_FULL = getSprite(TILE_SIZE * 4, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);
-		ICON_LIFE_NON_FULL = getSprite(TILE_SIZE * 5, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE);
-		ICON_BUTTON = getSprite(TILE_SIZE * 3, TILE_SIZE * 4, TILE_SIZE, TILE_SIZE / 2);
-		ICON_SEL = getSprite(TILE_SIZE * 3, TILE_SIZE * 4 + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE / 2);
+		ICON_LIFE_FULL = getSprite(SIZE * 4, SIZE * 4, SIZE, SIZE);
+		ICON_LIFE_NON_FULL = getSprite(SIZE * 5, SIZE * 4, SIZE, SIZE);
+		ICON_BUTTON = getSprite(SIZE * 3, SIZE * 4, SIZE, SIZE / 2);
+		ICON_SEL = getSprite(SIZE * 3, SIZE * 4 + SIZE / 2, SIZE, SIZE / 2);
 	}
 }

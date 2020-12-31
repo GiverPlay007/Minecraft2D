@@ -1,21 +1,14 @@
-package me.giverplay.minecraft2D;
+package me.giverplay.minecraft2D.game;
 
+import me.giverplay.minecraft2D.Main;
 import me.giverplay.minecraft2D.command.CommandManager;
 import me.giverplay.minecraft2D.command.CommandTask;
 import me.giverplay.minecraft2D.entity.Entity;
 import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
-import me.giverplay.minecraft2D.game.Camera;
-import me.giverplay.minecraft2D.game.GameData;
-import me.giverplay.minecraft2D.game.GameInput;
-import me.giverplay.minecraft2D.game.GameSave;
-import me.giverplay.minecraft2D.game.GameTask;
-import me.giverplay.minecraft2D.game.State;
-import me.giverplay.minecraft2D.game.Window;
-import me.giverplay.minecraft2D.utils.FontUtils;
 import me.giverplay.minecraft2D.graphics.gui.Menu;
-import me.giverplay.minecraft2D.graphics.Sprites;
 import me.giverplay.minecraft2D.graphics.gui.UI;
 import me.giverplay.minecraft2D.sound.Sound;
+import me.giverplay.minecraft2D.utils.FontUtils;
 import me.giverplay.minecraft2D.utils.ThreadUtils;
 import me.giverplay.minecraft2D.world.World;
 
@@ -33,11 +26,11 @@ public class Game
 	public static final int WIDTH = 512;
 	public static final int HEIGHT = 320;
 	public static final int SCALE = 2;
-	
-	public static final DiscordRP discordRichPresence = new DiscordRP();
-	private static final Game game = new Game();
 			
-	private final ArrayList<Entity> entities = new ArrayList<>();
+	protected final ArrayList<Entity> entities = new ArrayList<>();
+
+	protected PlayerEntity player;
+	protected World world;
 
 	private CommandManager commandManager;
 	private CommandTask cmdTask;
@@ -46,8 +39,6 @@ public class Game
 	private GameTask gameTask;
 	private Window window;
 	private Camera camera;
-	private World world;
-	private PlayerEntity player;
 	private Menu menu;
 	private UI ui;
 
@@ -59,24 +50,6 @@ public class Game
 	private final int maxGameOverFrames = 30;
 
 	private volatile boolean isRunning = false;
-
-	public static void main(String[] args)
-	{
-		try
-		{
-			Sprites.init();
-			Sound.init();
-		}
-		catch(Throwable t)
-		{
-			System.out.println("Falha ao carregar assets :(");
-			t.printStackTrace();
-			System.exit(1);
-		}
-
-		discordRichPresence.start();
-		game.start();
-	}
 
 	public Game()
 	{
@@ -98,6 +71,10 @@ public class Game
 
 		layer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
 		camera = new Camera(0, 0);
+
+		world = new World(this, 250, 250, 53.4331);
+		player = new PlayerEntity(this, 150, 170);
+		entities.add(player);
 
 		setState(State.PAUSED);
 	}
@@ -126,7 +103,7 @@ public class Game
 		cmdTask = new CommandTask(this);
 		cmdTask.start();
 
-		discordRichPresence.update("No menu", "");
+		Main.discordRichPresence.update("No menu", "");
 	}
 	
 	public synchronized void stop()
@@ -173,7 +150,7 @@ public class Game
 		gameInput.tick();
 		menu.tick();
 
-		switch (game.getState())
+		switch (getState())
 		{
 			case NORMAL:
 			case INVENTORY:

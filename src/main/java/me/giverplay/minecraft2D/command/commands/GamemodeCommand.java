@@ -1,6 +1,5 @@
 package me.giverplay.minecraft2D.command.commands;
 
-import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.game.GameMode;
 
@@ -32,7 +31,7 @@ public class GamemodeCommand extends Command
 			return;
 		}
 		
-		Game.getGame().getPlayer().setGamemode(mode);
+		//Game.getGame().getPlayer().setGamemode(mode);
 		System.out.println("Modo de jogo alterado para " + mode.name());
 	}
 }

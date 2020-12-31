@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.entity.entities;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.entity.EntityMob;
 import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.GameInput;
@@ -41,6 +41,8 @@ public class PlayerEntity extends EntityMob
 	@Override
 	public void tick()
 	{
+		super.tick();
+
 		if (getLife() <= 0)
 		{
 			game.doGameOver();

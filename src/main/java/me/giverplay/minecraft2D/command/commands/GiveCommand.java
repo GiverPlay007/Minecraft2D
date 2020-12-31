@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.command.commands;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.world.Material;
@@ -13,7 +13,7 @@ public class GiveCommand extends Command
 	{
 		super("give");
 		
-		game = Game.getGame();
+		//game = Game.getGame();
 	}
 	
 	@Override

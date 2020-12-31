@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.entity.entities;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.entity.EntityMob;
 import me.giverplay.minecraft2D.graphics.Animation;
 import me.giverplay.minecraft2D.graphics.Sprites;

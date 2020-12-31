@@ -7,10 +7,13 @@
     "gameMode": "SURVIVAL",
     "inventory": {
       "size": 36,
-      "items": {
-        "2": "DIAMOND_SWORD",
-        "8": "STONE"
-      }
+      "items": [
+        {
+          "slot": 10,
+          "type": "DIAMOND_SWORD",
+          "amount": 64
+        }
+      ]
     }
   },
   "world": {

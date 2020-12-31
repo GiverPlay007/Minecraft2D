@@ -1,6 +1,5 @@
 package me.giverplay.minecraft2D.game;
 
-import me.giverplay.minecraft2D.Game;
 import me.giverplay.minecraft2D.utils.ThreadUtils;
 
 public class GameTask extends Thread implements Runnable

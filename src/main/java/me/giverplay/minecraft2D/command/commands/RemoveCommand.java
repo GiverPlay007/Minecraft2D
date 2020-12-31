@@ -1,6 +1,6 @@
 package me.giverplay.minecraft2D.command.commands;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.command.Command;
 import me.giverplay.minecraft2D.inventory.Inventory;
 import me.giverplay.minecraft2D.world.Material;
@@ -15,7 +15,7 @@ public class RemoveCommand extends Command
 	@Override
 	public void execute(String[] args)
 	{
-		Inventory inv = Game.getGame().getPlayer().getInventory();
+		Inventory inv = null;//Game.getGame().getPlayer().getInventory();
 		
 		if(args.length == 0)
 		{

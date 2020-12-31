@@ -1,15 +1,15 @@
 package me.giverplay.minecraft2D.graphics.gui;
 
-import static me.giverplay.minecraft2D.Game.HEIGHT;
-import static me.giverplay.minecraft2D.Game.SCALE;
-import static me.giverplay.minecraft2D.Game.WIDTH;
+import static me.giverplay.minecraft2D.game.Game.HEIGHT;
+import static me.giverplay.minecraft2D.game.Game.SCALE;
+import static me.giverplay.minecraft2D.game.Game.WIDTH;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.graphics.Sprites;
 import me.giverplay.minecraft2D.inventory.Inventory;

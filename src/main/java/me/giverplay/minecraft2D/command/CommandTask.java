@@ -3,7 +3,7 @@ package me.giverplay.minecraft2D.command;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import me.giverplay.minecraft2D.Game;
+import me.giverplay.minecraft2D.game.Game;
 
 public class CommandTask extends Thread implements Runnable
 {
