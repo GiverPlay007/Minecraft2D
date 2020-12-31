@@ -35,12 +35,15 @@ public class Game
 	private CommandManager commandManager;
 	private CommandTask cmdTask;
 	private GameInput gameInput;
+	private GameSave save;
 	private State state = State.NORMAL;
 	private GameTask gameTask;
 	private Window window;
 	private Camera camera;
 	private Menu menu;
 	private UI ui;
+
+	private String currentWorldName = "world";
 
 	private BufferedImage layer;
 
@@ -75,6 +78,7 @@ public class Game
 		world = new World(this, 250, 250, 53.4331);
 		player = new PlayerEntity(this, 150, 160 * 16);
 		entities.add(player);
+		save = new GameSave(this);
 
 		setState(State.PAUSED);
 	}
@@ -113,33 +117,27 @@ public class Game
 		ThreadUtils.join(cmdTask);
 	}
 
-	public void load(GameData data)
-	{
-		this.player = data.getPlayer();
-		this.player.updateCamera();
-
-		this.world = data.getWorld();
-		this.entities.clear();
-		this.entities.addAll(data.getEntities());
-	}
-
-	public void loadSave()
+	public void loadSave(String worldName)
 	{
 		try {
-			load(GameSave.loadGame(this, "Save"));
-		} catch (IOException e) {
-			e.printStackTrace();
+			save.loadGame(worldName);
+		}
+		catch (Throwable t) {
+			System.out.println("Falha ao carregar o mundo " + worldName);
+			t.printStackTrace();
 		}
 	}
 
 	public void save()
 	{
-		GameData data = new GameData(this, "Save", getPlayer(), getWorld(), new ArrayList<>(entities));
+		GameData data = new GameData(this, currentWorldName, getPlayer(), getWorld(), new ArrayList<>(entities));
 
 		try {
-			GameSave.saveGame(data);
-		} catch(IOException e) {
-			e.printStackTrace();
+			save.saveGame(data);
+		}
+		catch(Throwable t) {
+			System.out.println("Falha ao salvar o mundo " + currentWorldName);
+			t.printStackTrace();
 		}
 
 		setState(State.NORMAL);

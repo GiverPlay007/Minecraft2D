@@ -73,10 +73,10 @@ public class Menu
 		
 		load.setClickHandler(() -> {
 			
-			if(GameSave.canLoad())
+			if(true) // TODO: Create world screen
 			{
 				savable = true;
-				game.loadSave();
+				game.loadSave("world"); // TODO: Get name from new world screen
 				game.setState(State.NORMAL);
 				game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
 			}
