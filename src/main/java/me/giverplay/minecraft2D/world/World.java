@@ -50,20 +50,15 @@ public class World
 			{
 				for (int yy = ys; yy <= yf; yy++)
 				{
-					if (xx < xs || yy < ys || xx >= width || yy >= height)
-						continue;
-					
 					Tile tile = tiles[xx + yy * width];
-					
-					if (tile != null)
-						tile.render(g, camera);
+					tile.render(g, camera);
 				}
 			}
 	}
 
 	public boolean moveAllowed(int xn, int yn, int width, int height)
 	{
-		if(xn < 0 || xn + width >= getWidth() || yn < 0 || yn >= getHeight())
+		if(xn < 0 || (xn + width -1) / Tile.SIZE >= getWidth() || yn < 0 || (yn + height -1) / Tile.SIZE >= getHeight())
 			return false;
 
 		int x1 = xn / Tile.SIZE;

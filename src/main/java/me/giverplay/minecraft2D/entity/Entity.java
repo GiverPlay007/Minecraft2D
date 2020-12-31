@@ -20,10 +20,10 @@ public abstract class Entity
 	protected double x;
 	protected double y;
 
-	protected int maskX = 6;
-	protected int maskY = 2;
-	protected int maskWidth = 4;
-	protected int maskHeight = 14;
+	protected int maskX = 0;
+	protected int maskY = 0;
+	protected int maskWidth = 0;
+	protected int maskHeight = 0;
 
 	protected final int width;
 	protected final int height;

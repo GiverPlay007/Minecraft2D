@@ -73,7 +73,7 @@ public class Game
 		camera = new Camera(0, 0);
 
 		world = new World(this, 250, 250, 53.4331);
-		player = new PlayerEntity(this, 150, 170);
+		player = new PlayerEntity(this, 150, 160 * 16);
 		entities.add(player);
 
 		setState(State.PAUSED);
@@ -84,10 +84,10 @@ public class Game
 		if(isRunning)
 			stop();
 
+		world = new World(this, 240, 240, 0.293);
 		entities.clear();
 		player = new PlayerEntity(this, 50, 170 * 16);
 		entities.add(player);
-		world = new World(this, 240, 240, 0.293);
 
 		setState(State.NORMAL);
 		start();

@@ -131,7 +131,7 @@ public class GameData
 				continue;
 
 			JSONObject entityJson = new JSONObject();
-			entityJson.put("class", entity.getClass().getName());
+			entityJson.put("class", entity.getClass().getSimpleName());
 			entityJson.put("x", entity.getX());
 			entityJson.put("y", entity.getY());
 

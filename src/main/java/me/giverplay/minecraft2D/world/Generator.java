@@ -76,7 +76,7 @@ public class Generator
 					
 					if (y2 >= height)
 						y2 = height - 1;
-					
+
 					tiles[xx + y2 * width] = new Tile(Material.STONE, xx * Tile.SIZE, y2 * Tile.SIZE);
 				}
 			}
@@ -115,7 +115,7 @@ public class Generator
 					if (tiles[index].getType() == Material.STONE && tiles[index2].getType() == Material.AIR)
 					{
 						tiles[index].setType(Material.GRASS);
-						
+
 						int c = 0;
 						
 						while(c < 3)

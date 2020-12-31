@@ -32,10 +32,15 @@ public class PlayerEntity extends EntityMob
 		camera = game.getCamera();
 		input = game.getInput();
 		inv = new PlayerInventory(this, 36);
-		
+
 		((PlayerInventory) inv).resetDefaults();
 		
 		setDepth(2);
+
+		maskX = 5;
+		maskY = 2;
+		maskWidth = 10;
+		maskHeight = 2;
 	}
 	
 	@Override
@@ -48,6 +53,9 @@ public class PlayerEntity extends EntityMob
 			game.doGameOver();
 			return;
 		}
+
+		movingRight = input.right.down;
+		movingLeft = input.left.down;
 
 		if(input.jump.down)
 			jump();

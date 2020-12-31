@@ -52,10 +52,10 @@ public abstract class EntityMob extends EntityLiving
   {
     tickGravity();
 
-    if(movingRight)
+    if(movingRight && isMoveAllowed((int) (x + speed), getY()))
       moveX(speed);
 
-    if(movingLeft)
+    if(movingLeft && isMoveAllowed((int) (x - speed), getY()))
       moveX(-speed);
 
     direction = lastX > x ? DIR_LEFT : DIR_RIGHT;
@@ -73,13 +73,13 @@ public abstract class EntityMob extends EntityLiving
     {
       jump = false;
 
-      if(!world.moveAllowed(getX() + maskX, (int) (y + 1) + maskY, maskWidth, maskHeight) && world.moveAllowed(getX() + maskX, (int) (y -1) + maskY, maskWidth, maskHeight))
+      if(!isMoveAllowed(getX(), getY() +1) && isMoveAllowed(getX(), getY() -1))
       {
         vspd = -4;
       }
     }
 
-    if (!world.moveAllowed((int) x + maskX, (int) (y + vspd) + maskY, maskWidth, maskHeight))
+    if (!isMoveAllowed(getX(), (int) (y + vspd)))
     {
       int signVsp;
 
