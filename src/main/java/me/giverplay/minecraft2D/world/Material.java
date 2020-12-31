@@ -68,9 +68,19 @@ public enum Material
 	public static Material parse(String name)
 	{
 		try {
-			return valueOf(name);
+			return valueOf(name.toUpperCase());
 		} catch(IllegalArgumentException e) {
 			return Material.AIR;
+		}
+	}
+
+	public static boolean isMaterial(String name) // TODO: Get by name and description name
+	{
+		try {
+			valueOf(name.toUpperCase());
+			return true;
+		} catch(IllegalArgumentException e) {
+			return false;
 		}
 	}
 }

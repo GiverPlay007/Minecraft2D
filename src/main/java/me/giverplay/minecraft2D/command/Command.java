@@ -1,11 +1,15 @@
 package me.giverplay.minecraft2D.command;
 
+import me.giverplay.minecraft2D.game.Game;
+
 public abstract class Command
 {
-	private String name;
-	
-	public Command(String name)
+	private final String name;
+	protected final Game game;
+
+	public Command(Game game, String name)
 	{
+		this.game = game;
 		this.name = name;
 	}
 	

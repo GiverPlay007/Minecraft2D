@@ -25,10 +25,7 @@ public class PlayerInventory implements Inventory
 		this.player = holder;
 		this.game = player.getGame();
 
-		for(int i = 0; i < size; i++)
-		{
-			items[i] = new Item(Material.AIR, 1);
-		}
+		clear();
 	}
 	
 	@Override
@@ -182,7 +179,28 @@ public class PlayerInventory implements Inventory
 	{
 		return focusedSlot;
 	}
-	
+
+	@Override
+	public void clear()
+	{
+		for(int i = 0; i < size; i++)
+		{
+			items[i] = new Item(Material.AIR, 1);
+		}
+	}
+
+	@Override
+	public void removeItem(Material type)
+	{
+		for(int i = 0; i < size; i++)
+		{
+			if(getItem(0).getType() == type)
+			{
+				removeItem(i);
+			}
+		}
+	}
+
 	public void updateFocus(int toUpdate)
 	{
 		focusedSlot = toUpdate + focusedSlot < 0 ? 8 : toUpdate + focusedSlot > 8 ? 0 : focusedSlot + toUpdate;

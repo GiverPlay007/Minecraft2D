@@ -17,12 +17,22 @@ public enum GameMode
 		return descName;
 	}
 
-	public static GameMode parse(String name)
+	public static GameMode parse(String name) // TODO: Parse by desc name and number
 	{
 		try {
-			return valueOf(name);
+			return valueOf(name.toUpperCase());
 		} catch(IllegalArgumentException e) {
 			return SURVIVAL;
+		}
+	}
+
+	public static boolean isGameMode(String name) // TODO: New check
+	{
+		try {
+			valueOf(name.toUpperCase());
+			return true;
+		} catch(IllegalArgumentException e) {
+			return false;
 		}
 	}
 }

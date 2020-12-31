@@ -17,12 +17,16 @@ public interface Inventory
 	boolean hasItem(Material type);
 
 	boolean addItem(Item item);
-	
+
 	void removeItem(Material type, int amount);
+
+	void removeItem(Material type);
 
 	void removeItem(int slot);
 
 	void removeItem(int slot, int amount);
 
 	void setItem(int slot, Item item);
+
+	void clear();
 }
