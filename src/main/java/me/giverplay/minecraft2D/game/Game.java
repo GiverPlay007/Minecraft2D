@@ -16,7 +16,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Game
@@ -68,7 +67,7 @@ public class Game
 	
 	private void initGame()
 	{
-		commandManager = new CommandManager();
+		commandManager = new CommandManager(this);
 		menu = new Menu(this);
 		ui = new UI(this);
 

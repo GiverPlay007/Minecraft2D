@@ -57,7 +57,7 @@ public class PlayerEntity extends EntityMob
 		movingRight = input.right.down;
 		movingLeft = input.left.down;
 
-		if(input.jump.down)
+		if(input.jump.down || input.up.down)
 			jump();
 		
 		updateCamera();

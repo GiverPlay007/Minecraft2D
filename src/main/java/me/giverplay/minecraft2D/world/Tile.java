@@ -51,6 +51,9 @@ public class Tile
 	
 	public void render(Graphics g, Camera camera)
 	{
+		if(type == Material.AIR)
+			return;
+
 		g.drawImage(sprite, x - camera.getX(), y - camera.getY(), null);
 	}
 	
