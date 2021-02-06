@@ -57,6 +57,7 @@ public class CommandManager
 			System.out.println("Causa: " + e.getCause());
 			System.out.println("Erro: " + e.getMessage());
 			System.out.println(" ");
+			e.printStackTrace();
 		}
 	}
 }
