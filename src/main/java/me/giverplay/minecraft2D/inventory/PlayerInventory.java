@@ -1,5 +1,6 @@
 package me.giverplay.minecraft2D.inventory;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import me.giverplay.minecraft2D.game.Game;
@@ -244,13 +245,12 @@ public class PlayerInventory implements Inventory {
     if(tiles[index].getType() != Material.AIR)
       return;
 
+    Rectangle playerRect = new Rectangle(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight());
+    Rectangle rect = new Rectangle(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+
+    if(playerRect.intersects(rect)) return;
+
     tiles[index].setType(item.getType());
-
-    if(!game.getWorld().moveAllowed(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight())) {
-      tiles[index].setType(mat);
-      return;
-    }
-
     tiles[index].setModified(true);
     removeItem(getFocusedSlot(), 1);
   }
