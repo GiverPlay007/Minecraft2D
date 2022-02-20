@@ -2,31 +2,30 @@ package me.giverplay.minecraft2D.inventory;
 
 import me.giverplay.minecraft2D.world.Material;
 
-public interface Inventory
-{
-	Item[] getItems();
+public interface Inventory {
+  Item[] getItems();
 
-	Item getItem(int slot);
+  Item getItem(int slot);
 
-	int firstEmpty();
+  int firstEmpty();
 
-	int size();
+  int size();
 
-	int getFocusedSlot();
-	
-	boolean hasItem(Material type);
+  int getFocusedSlot();
 
-	boolean addItem(Item item);
+  boolean hasItem(Material type);
 
-	void removeItem(Material type, int amount);
+  boolean addItem(Item item);
 
-	void removeItem(Material type);
+  void removeItem(Material type, int amount);
 
-	void removeItem(int slot);
+  void removeItem(Material type);
 
-	void removeItem(int slot, int amount);
+  void removeItem(int slot);
 
-	void setItem(int slot, Item item);
+  void removeItem(int slot, int amount);
 
-	void clear();
+  void setItem(int slot, Item item);
+
+  void clear();
 }

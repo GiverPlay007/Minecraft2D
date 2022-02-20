@@ -11,86 +11,77 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class Sound
-{
-	private static final Random RANDOM = new Random();
+public class Sound {
 
-	public static Clips explosion;
-	public static Clips damage;
-	public static Clips lose;
-	public static Clips jump;
-	public static Clips heal;
-	public static Clips hit;
+  private static final Random RANDOM = new Random();
 
-	public static void init() throws Throwable
-	{
-		explosion = load("explosion", 4);
-		damage = load("damage", 1);
-		heal = load("heal", 1);
-		jump = load("jump", 2);
-		lose = load("lose", 1);
-		hit = load("hit", 1);
-	}
+  public static Clips explosion;
+  public static Clips damage;
+  public static Clips lose;
+  public static Clips jump;
+  public static Clips heal;
+  public static Clips hit;
 
-	public static class Clips
-	{
-		public Clip[] clips;
+  public static void init() throws Throwable {
+    explosion = load("explosion", 4);
+    damage = load("damage", 1);
+    heal = load("heal", 1);
+    jump = load("jump", 2);
+    lose = load("lose", 1);
+    hit = load("hit", 1);
+  }
 
-		public Clips(byte[][] buffer) throws LineUnavailableException, IOException, UnsupportedAudioFileException
-		{
-			clips = new Clip[buffer.length];
+  public static class Clips {
+    public Clip[] clips;
 
-			for(int i = 0; i < clips.length; i++)
-			{
-				clips[i] = AudioSystem.getClip();
-				clips[i].open(AudioSystem.getAudioInputStream(new ByteArrayInputStream(buffer[i])));
-			}
-		}
+    public Clips(byte[][] buffer) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+      clips = new Clip[buffer.length];
 
-		public void play()
-		{
-			play(false);
-		}
+      for (int i = 0; i < clips.length; i++) {
+        clips[i] = AudioSystem.getClip();
+        clips[i].open(AudioSystem.getAudioInputStream(new ByteArrayInputStream(buffer[i])));
+      }
+    }
 
-		public void play(boolean loop)
-		{
-			int index = RANDOM.nextInt(clips.length);
+    public void play() {
+      play(false);
+    }
 
-			clips[index].stop();
-			clips[index].setFramePosition(0);
+    public void play(boolean loop) {
+      int index = RANDOM.nextInt(clips.length);
 
-			if(loop) {
-				clips[index].loop(300);
-			} else {
-				clips[index].start();
-			}
-		}
-	}
+      clips[index].stop();
+      clips[index].setFramePosition(0);
 
-	private static Clips load(String nameBase, int count) throws IOException, LineUnavailableException, UnsupportedAudioFileException
-	{
-		byte[][] dataArray = new byte[count][];
+      if(loop) {
+        clips[index].loop(300);
+      } else {
+        clips[index].start();
+      }
+    }
+  }
 
-		for(int i = 0; i < count; i++)
-		{
-			String name = "/sounds/" + nameBase + i + ".wav";
+  private static Clips load(String nameBase, int count) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+    byte[][] dataArray = new byte[count][];
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			DataInputStream dis = new DataInputStream(Sound.class.getResourceAsStream(name));
+    for (int i = 0; i < count; i++) {
+      String name = "/sounds/" + nameBase + i + ".wav";
 
-			byte[] buffer = new byte[1024];
-			int read;
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      DataInputStream dis = new DataInputStream(Sound.class.getResourceAsStream(name));
 
-			while((read = dis.read(buffer)) >= 1)
-			{
-				bos.write(buffer, 0, read);
-			}
+      byte[] buffer = new byte[1024];
+      int read;
 
-			dataArray[i] = bos.toByteArray();
-			dis.close();
-			bos.close();
-		}
+      while ((read = dis.read(buffer)) >= 1) {
+        bos.write(buffer, 0, read);
+      }
 
-		return new Clips(dataArray);
-	}
+      dataArray[i] = bos.toByteArray();
+      dis.close();
+      bos.close();
+    }
+
+    return new Clips(dataArray);
+  }
 }

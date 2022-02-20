@@ -14,139 +14,126 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class GameData
-{
+public class GameData {
+
   private final Game game;
 
-	private ArrayList<Entity> entities;
-	private PlayerEntity player;
-	private String name;
-	private World world;
+  private ArrayList<Entity> entities;
+  private PlayerEntity player;
+  private String name;
+  private World world;
 
-	public GameData(Game game)
-	{
+  public GameData(Game game) {
     this(game, null, null, null, null);
-	}
-	
-	public GameData(Game game, String save, PlayerEntity player, World world, ArrayList<Entity> entities)
-	{
-	  this.game = game;
-		this.name = save;
-		this.player = player;
-		this.world = world;
-		this.entities = entities;
-	}
+  }
 
-	public String serialize()
-	{
-		JSONObject save = new JSONObject();
-		JSONObject playerJson = new JSONObject();
-		JSONObject worldJson = new JSONObject();
-		JSONArray entitiesJson = new JSONArray();
+  public GameData(Game game, String save, PlayerEntity player, World world, ArrayList<Entity> entities) {
+    this.game = game;
+    this.name = save;
+    this.player = player;
+    this.world = world;
+    this.entities = entities;
+  }
 
-		savePlayer(playerJson);
-		saveWorld(worldJson);
-		saveEntities(entitiesJson);
+  public String serialize() {
+    JSONObject save = new JSONObject();
+    JSONObject playerJson = new JSONObject();
+    JSONObject worldJson = new JSONObject();
+    JSONArray entitiesJson = new JSONArray();
 
-		save.put("player", playerJson);
-		save.put("world", worldJson);
-		save.put("entities", entitiesJson);
+    savePlayer(playerJson);
+    saveWorld(worldJson);
+    saveEntities(entitiesJson);
 
-		return save.toString();
-	}
+    save.put("player", playerJson);
+    save.put("world", worldJson);
+    save.put("entities", entitiesJson);
 
-	private void savePlayer(JSONObject playerJson)
-	{
-		playerJson.put("x", player.getX());
-		playerJson.put("y", player.getY());
-		playerJson.put("life", player.getLife());
-		playerJson.put("maxLife", player.getMaxLife());
-		playerJson.put("gameMode", player.getGameMode().name());
+    return save.toString();
+  }
 
-		JSONObject inventoryJson = new JSONObject();
-		saveInventory(inventoryJson, (PlayerInventory) player.getInventory());
+  private void savePlayer(JSONObject playerJson) {
+    playerJson.put("x", player.getX());
+    playerJson.put("y", player.getY());
+    playerJson.put("life", player.getLife());
+    playerJson.put("maxLife", player.getMaxLife());
+    playerJson.put("gameMode", player.getGameMode().name());
 
-		playerJson.put("inventory", inventoryJson);
-	}
+    JSONObject inventoryJson = new JSONObject();
+    saveInventory(inventoryJson, (PlayerInventory) player.getInventory());
 
-	private void saveInventory(JSONObject inventoryJson, PlayerInventory inventory)
-	{
-		JSONArray items = new JSONArray();
+    playerJson.put("inventory", inventoryJson);
+  }
 
-		for(int slot = 0; slot < inventory.size(); slot++)
-		{
-			Item item = inventory.getItem(slot);
+  private void saveInventory(JSONObject inventoryJson, PlayerInventory inventory) {
+    JSONArray items = new JSONArray();
 
-			if(item.getType() == Material.AIR)
-				continue;
+    for (int slot = 0; slot < inventory.size(); slot++) {
+      Item item = inventory.getItem(slot);
 
-			JSONObject itemJson = new JSONObject();
-			itemJson.put("slot", slot);
-			itemJson.put("type", item.getType().name());
-			itemJson.put("amount", item.getAmount());
+      if(item.getType() == Material.AIR)
+        continue;
 
-			itemJson.put(Integer.toString(slot), itemJson);
-		}
+      JSONObject itemJson = new JSONObject();
+      itemJson.put("slot", slot);
+      itemJson.put("type", item.getType().name());
+      itemJson.put("amount", item.getAmount());
 
-		inventoryJson.put("size", inventory.size());
-		inventoryJson.put("items", items);
-	}
+      itemJson.put(Integer.toString(slot), itemJson);
+    }
 
-	private void saveWorld(JSONObject worldJson)
-	{
-		worldJson.put("width", world.getWidth());
-		worldJson.put("height", world.getHeight());
-		worldJson.put("seed", world.getSeed());
-		worldJson.put("gameTime", world.getGameTime());
+    inventoryJson.put("size", inventory.size());
+    inventoryJson.put("items", items);
+  }
 
-		saveTiles(worldJson);
-	}
+  private void saveWorld(JSONObject worldJson) {
+    worldJson.put("width", world.getWidth());
+    worldJson.put("height", world.getHeight());
+    worldJson.put("seed", world.getSeed());
+    worldJson.put("gameTime", world.getGameTime());
 
-	private void saveTiles(JSONObject worldJson)
-	{
-		JSONObject tilesJson = new JSONObject();
+    saveTiles(worldJson);
+  }
 
-		Tile[] tiles = world.getTiles();
+  private void saveTiles(JSONObject worldJson) {
+    JSONObject tilesJson = new JSONObject();
 
-		for(int index = 0; index < tiles.length; index++)
-		{
-			Tile tile = tiles[index];
+    Tile[] tiles = world.getTiles();
 
-			if(!tile.modified())
-				continue;
+    for (int index = 0; index < tiles.length; index++) {
+      Tile tile = tiles[index];
 
-			tilesJson.put(Integer.toString(index), tile.getType().name());
-		}
+      if(!tile.modified())
+        continue;
 
-		worldJson.put("tiles", tilesJson);
-	}
+      tilesJson.put(Integer.toString(index), tile.getType().name());
+    }
 
-	private void saveEntities(JSONArray entitiesJson)
-	{
-		ArrayList<Entity> entities = this.entities;
+    worldJson.put("tiles", tilesJson);
+  }
 
-		for(Entity entity : entities)
-		{
-			if(entity == player)
-				continue;
+  private void saveEntities(JSONArray entitiesJson) {
+    ArrayList<Entity> entities = this.entities;
 
-			JSONObject entityJson = new JSONObject();
-			entityJson.put("class", entity.getClass().getSimpleName());
-			entityJson.put("x", entity.getX());
-			entityJson.put("y", entity.getY());
+    for (Entity entity : entities) {
+      if(entity == player)
+        continue;
 
-			if(entity instanceof EntityLiving)
-			{
-				entityJson.put("life", ((EntityLiving) entity).getLife());
-				entityJson.put("life", ((EntityLiving) entity).getMaxLife());
-			}
+      JSONObject entityJson = new JSONObject();
+      entityJson.put("class", entity.getClass().getSimpleName());
+      entityJson.put("x", entity.getX());
+      entityJson.put("y", entity.getY());
 
-			entitiesJson.put(entityJson);
-		}
-	}
+      if(entity instanceof EntityLiving) {
+        entityJson.put("life", ((EntityLiving) entity).getLife());
+        entityJson.put("life", ((EntityLiving) entity).getMaxLife());
+      }
 
-	public void deserializeAndApply(String data)
-	{
+      entitiesJson.put(entityJson);
+    }
+  }
+
+  public void deserializeAndApply(String data) {
     JSONObject save = new JSONObject(data);
     JSONObject playerJson = save.getJSONObject("player");
     JSONObject worldJson = save.getJSONObject("world");
@@ -157,10 +144,9 @@ public class GameData
     deserializeEntities(entitiesJson);
 
     apply();
-	}
+  }
 
-  private void deserializePlayer(JSONObject playerJson)
-  {
+  private void deserializePlayer(JSONObject playerJson) {
     player = new PlayerEntity(game, playerJson.getInt("x"), playerJson.getInt("y"));
 
     player.setInventory(deserializePlayerInventory(playerJson.getJSONObject("inventory")));
@@ -169,14 +155,12 @@ public class GameData
     player.setLife(playerJson.getInt("life"));
   }
 
-  private PlayerInventory deserializePlayerInventory(JSONObject inventoryJson)
-  {
+  private PlayerInventory deserializePlayerInventory(JSONObject inventoryJson) {
     PlayerInventory inventory = new PlayerInventory(player, inventoryJson.getInt("size"));
 
     JSONArray itemsArray = inventoryJson.getJSONArray("items");
 
-    for(int index = 0; index < itemsArray.length(); index++)
-    {
+    for (int index = 0; index < itemsArray.length(); index++) {
       JSONObject item = itemsArray.getJSONObject(index);
       Material type = Material.parse(item.getString("type"));
 
@@ -189,8 +173,7 @@ public class GameData
     return inventory;
   }
 
-  private void deserializeWorld(JSONObject worldJson)
-  {
+  private void deserializeWorld(JSONObject worldJson) {
     int width = worldJson.getInt("width");
     int height = worldJson.getInt("height");
     long seed = worldJson.getLong("seed");
@@ -203,12 +186,10 @@ public class GameData
     world.setGameTime(gameTime);
   }
 
-  private Tile[] deserializeTiles(JSONObject tilesJson, int width, int height)
-  {
+  private Tile[] deserializeTiles(JSONObject tilesJson, int width, int height) {
     Tile[] tilesArray = new Tile[width * height];
 
-    for(String key : tilesJson.keySet())
-    {
+    for (String key : tilesJson.keySet()) {
       Material type = Material.parse(tilesJson.getString(key));
       tilesArray[Integer.parseInt(key)] = new Tile(type);
     }
@@ -216,12 +197,10 @@ public class GameData
     return tilesArray;
   }
 
-  private void deserializeEntities(JSONArray entitiesJson)
-  {
+  private void deserializeEntities(JSONArray entitiesJson) {
     entities = new ArrayList<>();
 
-    for(int index = 0; index < entitiesJson.length(); index++)
-    {
+    for (int index = 0; index < entitiesJson.length(); index++) {
       JSONObject entityJson = entitiesJson.getJSONObject(index);
       String clazz = entityJson.getString("class");
       Entity entity;
@@ -230,54 +209,46 @@ public class GameData
       int y = entityJson.getInt("y");
 
       try {
-      	entity = ReflectionUtils.newEntityInstance(clazz, game, x, y);
-			}
-			catch(Exception e){
-				System.out.println("Falha ao criar instância de " + clazz);
-				e.printStackTrace();
-				continue;
-			}
+        entity = ReflectionUtils.newEntityInstance(clazz, game, x, y);
+      } catch (Exception e) {
+        System.out.println("Falha ao criar instância de " + clazz);
+        e.printStackTrace();
+        continue;
+      }
 
-			if(entity instanceof EntityLiving)
-			{
-				((EntityLiving) entity).setLife(entityJson.getInt("life"));
-				((EntityLiving) entity).setMaxLife(entityJson.getInt("maxLife"));
-			}
+      if(entity instanceof EntityLiving) {
+        ((EntityLiving) entity).setLife(entityJson.getInt("life"));
+        ((EntityLiving) entity).setMaxLife(entityJson.getInt("maxLife"));
+      }
 
-			entities.add(entity);
+      entities.add(entity);
     }
   }
 
-	private void apply()
-  {
-		game.world = this.world;
-		game.player = this.player;
-		game.entities.clear();
-		game.entities.addAll(this.entities);
-	}
+  private void apply() {
+    game.world = this.world;
+    game.player = this.player;
+    game.entities.clear();
+    game.entities.addAll(this.entities);
+  }
 
-	public PlayerEntity getPlayer()
-	{
-		return this.player;
-	}
+  public PlayerEntity getPlayer() {
+    return this.player;
+  }
 
-	public ArrayList<Entity> getEntities()
-	{
-		return this.entities;
-	}
+  public ArrayList<Entity> getEntities() {
+    return this.entities;
+  }
 
-	public String getName()
-	{
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public World getWorld()
-	{
-		return this.world;
-	}
+  public World getWorld() {
+    return this.world;
+  }
 
-	public void setName(String worldName)
-	{
-		this.name = worldName;
-	}
+  public void setName(String worldName) {
+    this.name = worldName;
+  }
 }

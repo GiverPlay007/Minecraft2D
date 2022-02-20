@@ -8,124 +8,107 @@ import java.awt.Rectangle;
 import java.util.Comparator;
 import java.util.Random;
 
-public abstract class Entity
-{
-	protected static final Random RANDOM = new Random();
+public abstract class Entity {
 
-	protected final Game game;
-	protected final World world;
+  protected static final Random RANDOM = new Random();
 
-	protected static Random random = new Random();
-	
-	protected double x;
-	protected double y;
+  protected final Game game;
+  protected final World world;
 
-	protected int maskX = 0;
-	protected int maskY = 0;
-	protected int maskWidth = 0;
-	protected int maskHeight = 0;
+  protected static Random random = new Random();
 
-	protected final int width;
-	protected final int height;
-	protected int depth;
-	
-	public Entity(Game game, double x, double y, int width, int height)
-	{
-		this.game = game;
-		this.world = game.getWorld();
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.depth = 0;
-	}
-	
-	public abstract void tick();
+  protected double x;
+  protected double y;
 
-	public abstract void render(Graphics g);
-	
-	public void destroy()
-	{
-		game.removeEntity(this);
-	}
+  protected int maskX = 0;
+  protected int maskY = 0;
+  protected int maskWidth = 0;
+  protected int maskHeight = 0;
 
-	public boolean isColliding(Entity entity)
-	{
-		Rectangle e1m = new Rectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
-		Rectangle e2m = new Rectangle(getX(), getY(), getWidth(), getHeight());
-		
-		return e1m.intersects(e2m);
-	}
+  protected final int width;
+  protected final int height;
+  protected int depth;
 
-	public Game getGame()
-	{
-		return game;
-	}
+  public Entity(Game game, double x, double y, int width, int height) {
+    this.game = game;
+    this.world = game.getWorld();
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.depth = 0;
+  }
 
-	public World getWorld()
-	{
-		return world;
-	}
+  public abstract void tick();
 
-	public void setX(int x)
-	{
-		this.x = x;
-	}
+  public abstract void render(Graphics g);
 
-	public void setY(int y)
-	{
-		this.y = y;
-	}
+  public void destroy() {
+    game.removeEntity(this);
+  }
 
-	public void setDepth(int toSet)
-	{
-		this.depth = toSet;
-	}
+  public boolean isColliding(Entity entity) {
+    Rectangle e1m = new Rectangle(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
+    Rectangle e2m = new Rectangle(getX(), getY(), getWidth(), getHeight());
 
-	public int getX()
-	{
-		return (int) this.x;
-	}
+    return e1m.intersects(e2m);
+  }
 
-	public int getY()
-	{
-		return (int) this.y;
-	}
+  public Game getGame() {
+    return game;
+  }
 
-	public int getWidth()
-	{
-		return this.width;
-	}
+  public World getWorld() {
+    return world;
+  }
 
-	public int getHeight()
-	{
-		return this.height;
-	}
+  public void setX(int x) {
+    this.x = x;
+  }
 
-	public int getDepth()
-	{
-		return this.depth;
-	}
+  public void setY(int y) {
+    this.y = y;
+  }
 
-	public int getMaskX()
-	{
-		return this.maskX;
-	}
+  public void setDepth(int toSet) {
+    this.depth = toSet;
+  }
 
-	public int getMaskY()
-	{
-		return this.maskY;
-	}
+  public int getX() {
+    return (int) this.x;
+  }
 
-	public int getMaskWidth()
-	{
-		return this.maskWidth;
-	}
+  public int getY() {
+    return (int) this.y;
+  }
 
-	public int getMaskHeight()
-	{
-		return this.maskHeight;
-	}
+  public int getWidth() {
+    return this.width;
+  }
 
-	public static Comparator<Entity> depthSorter = Comparator.comparingInt(Entity::getDepth);
+  public int getHeight() {
+    return this.height;
+  }
+
+  public int getDepth() {
+    return this.depth;
+  }
+
+  public int getMaskX() {
+    return this.maskX;
+  }
+
+  public int getMaskY() {
+    return this.maskY;
+  }
+
+  public int getMaskWidth() {
+    return this.maskWidth;
+  }
+
+  public int getMaskHeight() {
+    return this.maskHeight;
+  }
+
+  public static Comparator<Entity> depthSorter = Comparator.comparingInt(Entity::getDepth);
 }

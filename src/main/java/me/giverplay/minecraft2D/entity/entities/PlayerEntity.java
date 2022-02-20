@@ -1,8 +1,8 @@
 package me.giverplay.minecraft2D.entity.entities;
 
-import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.entity.EntityMob;
 import me.giverplay.minecraft2D.game.Camera;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.GameInput;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.graphics.Animation;
@@ -13,85 +13,76 @@ import me.giverplay.minecraft2D.world.Tile;
 
 import java.awt.Graphics;
 
-public class PlayerEntity extends EntityMob
-{
-	private final Animation animation;
-	private final GameInput input;
-	private final Camera camera;
+public class PlayerEntity extends EntityMob {
 
-	private Inventory inv;
-	private GameMode mode;
+  private final Animation animation;
+  private final GameInput input;
+  private final Camera camera;
 
-	public PlayerEntity(Game game, int x, int y)
-	{
-		super(game, x, y, Tile.SIZE, Tile.SIZE, 10, 2);
-		
-		setGameMode(GameMode.SURVIVAL);
+  private Inventory inv;
+  private GameMode mode;
 
-		animation = new Animation(Sprites.SPRITE_PLAYER_RIGHT, 300);
-		camera = game.getCamera();
-		input = game.getInput();
-		inv = new PlayerInventory(this, 36);
+  public PlayerEntity(Game game, int x, int y) {
+    super(game, x, y, Tile.SIZE, Tile.SIZE, 10, 2);
 
-		((PlayerInventory) inv).resetDefaults();
-		
-		setDepth(2);
+    setGameMode(GameMode.SURVIVAL);
 
-		maskX = 5;
-		maskY = 2;
-		maskWidth = 10;
-		maskHeight = 2;
-	}
-	
-	@Override
-	public void tick()
-	{
-		super.tick();
+    animation = new Animation(Sprites.SPRITE_PLAYER_RIGHT, 300);
+    camera = game.getCamera();
+    input = game.getInput();
+    inv = new PlayerInventory(this, 36);
 
-		if (getLife() <= 0)
-		{
-			game.doGameOver();
-			return;
-		}
+    ((PlayerInventory) inv).resetDefaults();
 
-		movingRight = input.right.down;
-		movingLeft = input.left.down;
+    setDepth(2);
 
-		if(input.jump.down || input.up.down)
-			jump();
-		
-		updateCamera();
-	}
-	
-	public void updateCamera()
-	{
-		camera.setX(Camera.clamp(getX() - (Game.WIDTH / 2), 0, world.getWidth() * Tile.SIZE - Game.WIDTH));
-		camera.setY(Camera.clamp(getY() - (Game.HEIGHT / 2), 0, world.getHeight() * Tile.SIZE - Game.HEIGHT));
-	}
-	
-	@Override
-	public void render(Graphics g)
-	{
-		g.drawImage(animation.getFrame(), getX() - camera.getX(), getY() - camera.getY(), getWidth(), getHeight(), null);
-	}
-	
-	public Inventory getInventory()
-	{
-		return this.inv;
-	}
-	
-	public GameMode getGameMode()
-	{
-		return mode;
-	}
-	
-	public void setGameMode(GameMode mode)
-	{
-		this.mode = mode;
-	}
-	
-	public void setInventory(PlayerInventory inv)
-	{
-		this.inv = inv;
-	}
+    maskX = 5;
+    maskY = 2;
+    maskWidth = 10;
+    maskHeight = 2;
+  }
+
+  @Override
+  public void tick() {
+    super.tick();
+
+    if(getLife() <= 0) {
+      game.doGameOver();
+      return;
+    }
+
+    movingRight = input.right.down;
+    movingLeft = input.left.down;
+
+    if(input.jump.down || input.up.down)
+      jump();
+
+    updateCamera();
+  }
+
+  public void updateCamera() {
+    camera.setX(Camera.clamp(getX() - (Game.WIDTH / 2), 0, world.getWidth() * Tile.SIZE - Game.WIDTH));
+    camera.setY(Camera.clamp(getY() - (Game.HEIGHT / 2), 0, world.getHeight() * Tile.SIZE - Game.HEIGHT));
+  }
+
+  @Override
+  public void render(Graphics g) {
+    g.drawImage(animation.getFrame(), getX() - camera.getX(), getY() - camera.getY(), getWidth(), getHeight(), null);
+  }
+
+  public Inventory getInventory() {
+    return this.inv;
+  }
+
+  public GameMode getGameMode() {
+    return mode;
+  }
+
+  public void setGameMode(GameMode mode) {
+    this.mode = mode;
+  }
+
+  public void setInventory(PlayerInventory inv) {
+    this.inv = inv;
+  }
 }

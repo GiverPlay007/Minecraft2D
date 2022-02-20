@@ -2,69 +2,62 @@ package me.giverplay.minecraft2D.game;
 
 import me.giverplay.minecraft2D.utils.ThreadUtils;
 
-public class GameTask extends Thread implements Runnable
-{
-	private final Game game;
+public class GameTask extends Thread implements Runnable {
 
-	private int fps;
-	private int tps;
+  private final Game game;
 
-	public GameTask(Game game)
-	{
-		this.game = game;
-	}
-	
-	@Override
-	public void run()
-	{
-		game.getWindow().requestFocus();
+  private int fps;
+  private int tps;
 
-		long timer = System.currentTimeMillis();
-		long lastTime = System.nanoTime();
-		long now;
+  public GameTask(Game game) {
+    this.game = game;
+  }
 
-		double nsPerTick = 1_000_000_000 / 60.0D;
-		double unprocessed = 0.0D;
+  @Override
+  public void run() {
+    game.getWindow().requestFocus();
 
-		int fps = 0;
-		int tps = 0;
+    long timer = System.currentTimeMillis();
+    long lastTime = System.nanoTime();
+    long now;
 
-		while(game.isRunning())
-		{
-			now = System.nanoTime();
-			unprocessed += (now -lastTime) / nsPerTick;
-			lastTime = now;
+    double nsPerTick = 1_000_000_000 / 60.0D;
+    double unprocessed = 0.0D;
 
-			while(unprocessed >= 1)
-			{
-				game.tick();
-				++tps;
-				--unprocessed;
-			}
+    int fps = 0;
+    int tps = 0;
 
-			game.render();
-			fps++;
+    while (game.isRunning()) {
+      now = System.nanoTime();
+      unprocessed += (now - lastTime) / nsPerTick;
+      lastTime = now;
 
-			if(System.currentTimeMillis() - timer >= 1000)
-			{
-				this.tps = tps;
-				this.fps = fps;
-				tps = 0;
-				fps = 0;
-				timer += 1000;
-			}
+      while (unprocessed >= 1) {
+        game.tick();
+        ++tps;
+        --unprocessed;
+      }
 
-			ThreadUtils.sleep(5);
-		}
-	}
+      game.render();
+      fps++;
 
-	public int getFps()
-	{
-		return fps;
-	}
+      if(System.currentTimeMillis() - timer >= 1000) {
+        this.tps = tps;
+        this.fps = fps;
+        tps = 0;
+        fps = 0;
+        timer += 1000;
+      }
 
-	public int getTps()
-	{
-		return tps;
-	}
+      ThreadUtils.sleep(5);
+    }
+  }
+
+  public int getFps() {
+    return fps;
+  }
+
+  public int getTps() {
+    return tps;
+  }
 }

@@ -1,120 +1,106 @@
 package me.giverplay.minecraft2D.world;
 
-import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.Camera;
+import me.giverplay.minecraft2D.game.Game;
 
 import java.awt.Graphics;
 
-public class World
-{
-	private final Tile[] tiles;
-	
-	private final Camera camera;
-	private final Generator generator;
-	
-	private final int width;
-	private final int height;
+public class World {
 
-	private long gameTime;
+  private final Tile[] tiles;
 
-	public World(Game game, int width, int height, double seed)
-	{
-		this(game, width, height, null, seed);
-	}
-	
-	public World(Game game, int width, int height, Tile[] tiles, double seed)
-	{
-		this.width = width;
-		this.height = height;
+  private final Camera camera;
+  private final Generator generator;
 
-		this.camera = game.getCamera();
-		this.generator = new Generator(width, height, seed);
+  private final int width;
+  private final int height;
 
-		if(tiles != null) {
-			this.generator.getProceduralTiles();
-			this.tiles = generator.update(tiles);
-		}
-		else {
-			this.tiles = generator.getProceduralTiles();
-		}
-	}
-	
-	public void render(Graphics g)
-	{
-		int xs = camera.getX() >> 4;
-		int ys = camera.getY() >> 4;
-		int xf = (camera.getX() + Game.WIDTH) >> 4;
-		int yf = (camera.getY() + Game.HEIGHT) >> 4;
-			
-			for (int xx = xs; xx <= xf; xx++)
-			{
-				for (int yy = ys; yy <= yf; yy++)
-				{
-					Tile tile = tiles[xx + yy * width];
-					tile.render(g, camera);
-				}
-			}
-	}
+  private long gameTime;
 
-	public boolean moveAllowed(int xn, int yn, int width, int height)
-	{
-		if(xn < 0 || (xn + width -1) / Tile.SIZE >= getWidth() || yn < 0 || (yn + height -1) / Tile.SIZE >= getHeight())
-			return false;
+  public World(Game game, int width, int height, double seed) {
+    this(game, width, height, null, seed);
+  }
 
-		int x1 = xn / Tile.SIZE;
-		int y1 = yn / Tile.SIZE;
+  public World(Game game, int width, int height, Tile[] tiles, double seed) {
+    this.width = width;
+    this.height = height;
 
-		int x2 = (xn + width - 1) / Tile.SIZE;
-		int y2 = yn / Tile.SIZE;
+    this.camera = game.getCamera();
+    this.generator = new Generator(width, height, seed);
 
-		int x3 = xn / Tile.SIZE;
-		int y3 = (yn + height - 1) / Tile.SIZE;
+    if(tiles != null) {
+      this.generator.getProceduralTiles();
+      this.tiles = generator.update(tiles);
+    } else {
+      this.tiles = generator.getProceduralTiles();
+    }
+  }
 
-		int x4 = (xn + width - 1) / Tile.SIZE;
-		int y4 = (yn + height - 1) / Tile.SIZE;
+  public void render(Graphics g) {
+    int xs = camera.getX() >> 4;
+    int ys = camera.getY() >> 4;
+    int xf = (camera.getX() + Game.WIDTH) >> 4;
+    int yf = (camera.getY() + Game.HEIGHT) >> 4;
 
-		int index1 = x1 + (y1 * getWidth());
-		int index2 = x2 + (y2 * getWidth());
-		int index3 = x3 + (y3 * getWidth());
-		int index4 = x4 + (y4 * getWidth());
+    for (int xx = xs; xx <= xf; xx++) {
+      for (int yy = ys; yy <= yf; yy++) {
+        Tile tile = tiles[xx + yy * width];
+        tile.render(g, camera);
+      }
+    }
+  }
 
-		return !(tiles[index1].isRigid() || tiles[index2].isRigid() || tiles[index3].isRigid()
-						|| tiles[index4].isRigid());
+  public boolean moveAllowed(int xn, int yn, int width, int height) {
+    if(xn < 0 || (xn + width - 1) / Tile.SIZE >= getWidth() || yn < 0 || (yn + height - 1) / Tile.SIZE >= getHeight())
+      return false;
 
-	}
+    int x1 = xn / Tile.SIZE;
+    int y1 = yn / Tile.SIZE;
 
-	public boolean moveAllowed(int xn, int yn)
-	{
-		return moveAllowed(xn, yn, Tile.SIZE, Tile.SIZE);
-	}
+    int x2 = (xn + width - 1) / Tile.SIZE;
+    int y2 = yn / Tile.SIZE;
 
-	public int getWidth()
-	{
-		return this.width;
-	}
+    int x3 = xn / Tile.SIZE;
+    int y3 = (yn + height - 1) / Tile.SIZE;
 
-	public int getHeight()
-	{
-		return this.height;
-	}
+    int x4 = (xn + width - 1) / Tile.SIZE;
+    int y4 = (yn + height - 1) / Tile.SIZE;
 
-	public Tile[] getTiles()
-	{
-		return tiles;
-	}
+    int index1 = x1 + (y1 * getWidth());
+    int index2 = x2 + (y2 * getWidth());
+    int index3 = x3 + (y3 * getWidth());
+    int index4 = x4 + (y4 * getWidth());
 
-	public double getSeed()
-	{
-		return generator.getSeed();
-	}
+    return !(tiles[index1].isRigid() || tiles[index2].isRigid() || tiles[index3].isRigid()
+      || tiles[index4].isRigid());
 
-	public long getGameTime()
-	{
-		return gameTime;
-	}
+  }
 
-	public void setGameTime(long gameTime)
-	{
-		this.gameTime = gameTime;
-	}
+  public boolean moveAllowed(int xn, int yn) {
+    return moveAllowed(xn, yn, Tile.SIZE, Tile.SIZE);
+  }
+
+  public int getWidth() {
+    return this.width;
+  }
+
+  public int getHeight() {
+    return this.height;
+  }
+
+  public Tile[] getTiles() {
+    return tiles;
+  }
+
+  public double getSeed() {
+    return generator.getSeed();
+  }
+
+  public long getGameTime() {
+    return gameTime;
+  }
+
+  public void setGameTime(long gameTime) {
+    this.gameTime = gameTime;
+  }
 }

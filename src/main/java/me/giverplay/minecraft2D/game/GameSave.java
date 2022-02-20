@@ -6,55 +6,49 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-public final class GameSave
-{
-	private final File saveFolder;
-	private final File worldsFolder;
-	private final Game game;
+public final class GameSave {
 
-	protected GameSave(Game game)
-	{
-		this.saveFolder = new File(System.getProperty("user.home") + File.separator + ".craftzinho");
-		this.worldsFolder = new File(saveFolder, "worlds");
-		this.game = game;
+  private final File saveFolder;
+  private final File worldsFolder;
+  private final Game game;
 
-		if(!worldsFolder.exists())
-			worldsFolder.mkdirs();
-	}
+  protected GameSave(Game game) {
+    this.saveFolder = new File(System.getProperty("user.home") + File.separator + ".craftzinho");
+    this.worldsFolder = new File(saveFolder, "worlds");
+    this.game = game;
 
-	protected void saveGame(GameData data) throws Throwable
-	{
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(saveFolder, data.getName() + ".dat")));
-		writer.write(data.serialize());
-		writer.flush();
-		writer.close();
-	}
+    if(!worldsFolder.exists())
+      worldsFolder.mkdirs();
+  }
 
-	protected void loadGame(String worldName) throws Throwable
-	{
-		BufferedReader reader = new BufferedReader(new FileReader(new File(saveFolder, worldName + ".dat")));
+  protected void saveGame(GameData data) throws Throwable {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(new File(saveFolder, data.getName() + ".dat")));
+    writer.write(data.serialize());
+    writer.flush();
+    writer.close();
+  }
 
-		StringBuilder saveString = new StringBuilder();
-		String line;
+  protected void loadGame(String worldName) throws Throwable {
+    BufferedReader reader = new BufferedReader(new FileReader(new File(saveFolder, worldName + ".dat")));
 
-		while((line = reader.readLine()) != null)
-		{
-			saveString.append(line);
-		}
+    StringBuilder saveString = new StringBuilder();
+    String line;
 
-		reader.close();
+    while ((line = reader.readLine()) != null) {
+      saveString.append(line);
+    }
 
-		GameData data = new GameData(game);
-		data.deserializeAndApply(saveString.toString());
-	}
+    reader.close();
 
-	protected File getWorldsFolder()
-	{
-		return this.worldsFolder;
-	}
+    GameData data = new GameData(game);
+    data.deserializeAndApply(saveString.toString());
+  }
 
-	protected File getSaveFolder()
-	{
-		return this.saveFolder;
-	}
+  protected File getWorldsFolder() {
+    return this.worldsFolder;
+  }
+
+  protected File getSaveFolder() {
+    return this.saveFolder;
+  }
 }
