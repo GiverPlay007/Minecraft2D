@@ -37,13 +37,16 @@ public class World {
   }
 
   public void render(Graphics g) {
-    int xs = camera.getX() >> 4;
-    int ys = camera.getY() >> 4;
-    int xf = (camera.getX() + Game.WIDTH) >> 4;
-    int yf = (camera.getY() + Game.HEIGHT) >> 4;
+    int xs = camera.getX() / Tile.SIZE;
+    int ys = camera.getY() / Tile.SIZE;
+    int xf = (camera.getX() + Game.WIDTH) / Tile.SIZE;
+    int yf = (camera.getY() + Game.HEIGHT) / Tile.SIZE;
 
     for (int xx = xs; xx <= xf; xx++) {
       for (int yy = ys; yy <= yf; yy++) {
+        if(xx < xs || yy < ys || xx >= width || yy >= height)
+          continue;
+
         Tile tile = tiles[xx + yy * width];
         tile.render(g, camera);
       }
