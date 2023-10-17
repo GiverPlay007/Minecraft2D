@@ -19,9 +19,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Game {
-
-  public static final long serialVersionUID = 1L;
-
   public static final int WIDTH = 512;
   public static final int HEIGHT = 320;
   public static final int SCALE = 2;
