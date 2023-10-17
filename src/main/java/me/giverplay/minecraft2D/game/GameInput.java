@@ -61,7 +61,9 @@ public class GameInput implements KeyListener, MouseListener, MouseWheelListener
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    game.getMenu().updateLoc(e.getX(), e.getY());
+    if(game.getMenu() != null) {
+      game.getMenu().updateLoc(e.getX(), e.getY());
+    }
   }
 
   private void updateSlot(KeyEvent event) {
