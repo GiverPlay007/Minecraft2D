@@ -10,7 +10,7 @@ targetCompatibility = JavaVersion.VERSION_17
 
 jar {
     manifest {
-        attributes "Main-Class": "me.giverplay.minecraft2D.Game"
+        attributes "Main-Class": "me.giverplay.minecraft2D.Main"
     }
 
     from {
