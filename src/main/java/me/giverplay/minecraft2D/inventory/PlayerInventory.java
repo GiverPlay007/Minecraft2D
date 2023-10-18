@@ -1,13 +1,14 @@
 package me.giverplay.minecraft2D.inventory;
 
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-
-import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.entity.entities.PlayerEntity;
+import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.GameMode;
 import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
+import me.giverplay.minecraft2D.world.World;
+
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 
 public class PlayerInventory implements Inventory {
 
@@ -35,7 +36,7 @@ public class PlayerInventory implements Inventory {
 
   @Override
   public Item getItem(int slot) {
-    if(slot < 0 || slot >= items.length)
+    if (slot < 0 || slot >= items.length)
       throw new ArrayIndexOutOfBoundsException("Slot inválido");
 
     return items[slot];
@@ -44,7 +45,7 @@ public class PlayerInventory implements Inventory {
   @Override
   public int firstEmpty() {
     for (int i = 0; i < items.length; i++)
-      if(items[i] == null)
+      if (items[i] == null)
         return i;
 
     return -1;
@@ -53,7 +54,7 @@ public class PlayerInventory implements Inventory {
   @Override
   public boolean hasItem(Material type) {
     for (int i = 0; i < size; i++) {
-      if(getItem(i).getType() == type)
+      if (getItem(i).getType() == type)
         return true;
     }
 
@@ -64,10 +65,10 @@ public class PlayerInventory implements Inventory {
   public void removeItem(int slot, int amount) {
     Item item = getItem(slot);
 
-    if(item.getType() == Material.AIR)
+    if (item.getType() == Material.AIR)
       return;
 
-    if(item.getAmount() - amount <= 0) {
+    if (item.getAmount() - amount <= 0) {
       removeItem(slot);
       return;
     }
@@ -83,15 +84,15 @@ public class PlayerInventory implements Inventory {
     for (int i = 0; i < items.length; i++) {
       Item now = items[i];
 
-      if(now.getType() == Material.AIR) {
+      if (now.getType() == Material.AIR) {
         items[i] = !next ? item : item.setAmount(rest);
         return true;
       }
 
-      if(now.getType() != item.getType() || now.getAmount() >= now.getMaxStack())
+      if (now.getType() != item.getType() || now.getAmount() >= now.getMaxStack())
         continue;
 
-      if(now.getAmount() + rest <= now.getMaxStack()) {
+      if (now.getAmount() + rest <= now.getMaxStack()) {
         now.setAmount(now.getAmount() + rest);
         return true;
       }
@@ -102,7 +103,7 @@ public class PlayerInventory implements Inventory {
       next = true;
     }
 
-    if(rest != 0)
+    if (rest != 0)
       System.out.println("O inventário estava parcialmente cheio, " + rest + " itens se perderam...");
 
     return next;
@@ -110,21 +111,21 @@ public class PlayerInventory implements Inventory {
 
   @Override
   public void removeItem(Material type, int amount) {
-    if(amount <= 0)
+    if (amount <= 0)
       throw new IllegalArgumentException("O número deve ser maior que um");
 
     int buffer = amount;
 
     for (int i = 0; i < size; i++) {
-      if(buffer <= 0)
+      if (buffer <= 0)
         break;
 
       Item item = getItem(i);
 
-      if(item.getType() != type)
+      if (item.getType() != type)
         continue;
 
-      if(item.getAmount() - buffer <= 0) {
+      if (item.getAmount() - buffer <= 0) {
         buffer -= item.getAmount();
         removeItem(i);
       } else {
@@ -136,7 +137,7 @@ public class PlayerInventory implements Inventory {
 
   @Override
   public void removeItem(int slot) {
-    if(slot < 0 || slot >= items.length)
+    if (slot < 0 || slot >= items.length)
       throw new ArrayIndexOutOfBoundsException("Slot inválido");
 
     items[slot] = new Item(Material.AIR, 1);
@@ -144,7 +145,7 @@ public class PlayerInventory implements Inventory {
 
   @Override
   public void setItem(int slot, Item item) {
-    if(slot < 0 || slot >= items.length)
+    if (slot < 0 || slot >= items.length)
       throw new ArrayIndexOutOfBoundsException("Slot inválido");
 
     items[slot] = item;
@@ -170,7 +171,7 @@ public class PlayerInventory implements Inventory {
   @Override
   public void removeItem(Material type) {
     for (int i = 0; i < size; i++) {
-      if(getItem(0).getType() == type) {
+      if (getItem(0).getType() == type) {
         removeItem(i);
       }
     }
@@ -181,7 +182,7 @@ public class PlayerInventory implements Inventory {
   }
 
   public void setFocus(int set) {
-    if(focusedSlot < 0 || focusedSlot > 8)
+    if (focusedSlot < 0 || focusedSlot > 8)
       throw new IllegalArgumentException("Slot deve ser entre 0 e 8");
 
     focusedSlot = set;
@@ -191,7 +192,7 @@ public class PlayerInventory implements Inventory {
     int xx = (x + game.getCamera().getX()) / Tile.SIZE;
     int yy = (y + game.getCamera().getY()) / Tile.SIZE;
 
-    if(button == MouseEvent.BUTTON1) {
+    if (button == MouseEvent.BUTTON1) {
       removeTile(xx, yy);
       return;
     }
@@ -200,73 +201,71 @@ public class PlayerInventory implements Inventory {
     int w = game.getWorld().getWidth();
     int h = game.getWorld().getHeight();
 
-    Tile[] tiles = game.getWorld().getTiles();
+    int[] tiles = game.getWorld().getTiles();
 
-    if(xx > 0)
-      if(tiles[(xx - 1) + yy * w].getType() == Material.AIR)
+    if (xx > 0)
+      if (tiles[(xx - 1) + yy * w] == Material.AIR.getId())
         creative++;
 
-    if(xx < w)
-      if(tiles[(xx + 1) + yy * w].getType() == Material.AIR)
+    if (xx < w)
+      if (tiles[(xx + 1) + yy * w] == Material.AIR.getId())
         creative++;
 
 
-    if(yy > 0)
-      if(tiles[xx + (yy - 1) * w].getType() == Material.AIR)
+    if (yy > 0)
+      if (tiles[xx + (yy - 1) * w] == Material.AIR.getId())
         creative++;
 
-    if(yy < h)
-      if(tiles[xx + (yy + 1) * w].getType() == Material.AIR)
+    if (yy < h)
+      if (tiles[xx + (yy + 1) * w] == Material.AIR.getId())
         creative++;
 
-    if(creative >= 4 && player.getGameMode() != GameMode.CREATIVE)
+    if (creative >= 4 && player.getGameMode() != GameMode.CREATIVE)
       return;
 
-    if(button == MouseEvent.BUTTON3) {
+    if (button == MouseEvent.BUTTON3) {
       placeTile(xx, yy);
     }
   }
 
   private void placeTile(int x, int y) {
-    Tile[] tiles = game.getWorld().getTiles();
-    int index = x + y * game.getWorld().getWidth();
+    World world = game.getWorld();
 
-    Tile tile = tiles[index];
-    Material mat = tile.getType();
+    int[] tiles = world.getTiles();
+    int index = x + y * world.getWidth();
 
-    if(tile.isFinal())
-      return;
+    if (world.isPermanentTile(index)) return;
 
+    Material material = Material.getById(tiles[index]);
     Item item = getItem(getFocusedSlot());
 
-    if(item.getType() == Material.AIR)
+    if (item.getType() == Material.AIR)
       return;
 
-    if(tiles[index].getType() != Material.AIR)
-      return;
+    if (tiles[index] != Material.AIR.getId()) return;
 
     Rectangle playerRect = new Rectangle(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight());
     Rectangle rect = new Rectangle(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
 
-    if(playerRect.intersects(rect)) return;
+    if (playerRect.intersects(rect)) return;
 
-    tiles[index].setType(item.getType());
-    tiles[index].setModified(true);
+    tiles[index] = item.getType().getId();
+    world.makeChangedTile(index);
     removeItem(getFocusedSlot(), 1);
   }
 
   private void removeTile(int x, int y) {
-    Tile[] tiles = game.getWorld().getTiles();
+    World world = game.getWorld();
+    int[] tiles = game.getWorld().getTiles();
     int index = x + y * game.getWorld().getWidth();
 
-    if(tiles[index].isFinal())
-      return;
+    if (world.isPermanentTile(index)) return;
 
-    Material mat = tiles[index].getType();
-    addItem(new Item(mat, 1));
+    Material material = Material.getById(tiles[index]);
+    addItem(new Item(material, 1));
 
-    tiles[index].setType(Material.AIR);
-    tiles[index].setModified(true);
+    tiles[index] = Material.AIR.getId();
+    world.makeChangedTile(index);
   }
 
   public void resetDefaults() {

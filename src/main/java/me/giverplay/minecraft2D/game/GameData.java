@@ -7,7 +7,6 @@ import me.giverplay.minecraft2D.inventory.Item;
 import me.giverplay.minecraft2D.inventory.PlayerInventory;
 import me.giverplay.minecraft2D.utils.ReflectionUtils;
 import me.giverplay.minecraft2D.world.Material;
-import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.World;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,7 +70,7 @@ public class GameData {
     for (int slot = 0; slot < inventory.size(); slot++) {
       Item item = inventory.getItem(slot);
 
-      if(item.getType() == Material.AIR)
+      if (item.getType() == Material.AIR)
         continue;
 
       JSONObject itemJson = new JSONObject();
@@ -97,26 +96,27 @@ public class GameData {
 
   private void saveTiles(JSONObject worldJson) {
     JSONObject tilesJson = new JSONObject();
+    JSONObject tilesDataJson = new JSONObject();
 
-    Tile[] tiles = world.getTiles();
+    int[] tiles = world.getTiles();
+    int[] tilesData = world.getTilesData();
 
     for (int index = 0; index < tiles.length; index++) {
-      Tile tile = tiles[index];
+      if (!world.isTileChanged(index)) continue;
 
-      if(!tile.modified())
-        continue;
-
-      tilesJson.put(Integer.toString(index), tile.getType().name());
+      tilesJson.put(Integer.toString(index), tiles[index]);
+      tilesDataJson.put(Integer.toString(index), tilesData[index]);
     }
 
     worldJson.put("tiles", tilesJson);
+    worldJson.put("tilesData", tilesDataJson);
   }
 
   private void saveEntities(JSONArray entitiesJson) {
     ArrayList<Entity> entities = this.entities;
 
     for (Entity entity : entities) {
-      if(entity == player)
+      if (entity == player)
         continue;
 
       JSONObject entityJson = new JSONObject();
@@ -124,7 +124,7 @@ public class GameData {
       entityJson.put("x", entity.getX());
       entityJson.put("y", entity.getY());
 
-      if(entity instanceof EntityLiving) {
+      if (entity instanceof EntityLiving) {
         entityJson.put("life", ((EntityLiving) entity).getLife());
         entityJson.put("life", ((EntityLiving) entity).getMaxLife());
       }
@@ -180,21 +180,32 @@ public class GameData {
     long gameTime = worldJson.getLong("gameTime");
 
     JSONObject tilesJson = worldJson.getJSONObject("tiles");
-    Tile[] tilesArray = deserializeTiles(tilesJson, width, height);
+    JSONObject tilesDataJson = worldJson.getJSONObject("tilesData");
+    int[] tilesArray = deserializeTiles(tilesJson, width, height);
+    int[] tilesDataArray = deserializeTilesData(tilesDataJson, width, height);
 
-    world = new World(game, width, height, tilesArray, seed);
+    world = new World(game, width, height, tilesArray, tilesDataArray, seed);
     world.setGameTime(gameTime);
   }
 
-  private Tile[] deserializeTiles(JSONObject tilesJson, int width, int height) {
-    Tile[] tilesArray = new Tile[width * height];
+  private int[] deserializeTiles(JSONObject tilesJson, int width, int height) {
+    int[] tilesArray = new int[width * height];
 
     for (String key : tilesJson.keySet()) {
-      Material type = Material.parse(tilesJson.getString(key));
-      tilesArray[Integer.parseInt(key)] = new Tile(type);
+      tilesArray[Integer.parseInt(key)] = tilesJson.getInt(key);
     }
 
     return tilesArray;
+  }
+
+  private int[] deserializeTilesData(JSONObject tilesDataJson, int width, int height) {
+    int[] tilesDataArray = new int[width * height];
+
+    for (String key : tilesDataJson.keySet()) {
+      tilesDataArray[Integer.parseInt(key)] = tilesDataJson.getInt(key);
+    }
+
+    return tilesDataArray;
   }
 
   private void deserializeEntities(JSONArray entitiesJson) {
@@ -216,7 +227,7 @@ public class GameData {
         continue;
       }
 
-      if(entity instanceof EntityLiving) {
+      if (entity instanceof EntityLiving) {
         ((EntityLiving) entity).setLife(entityJson.getInt("life"));
         ((EntityLiving) entity).setMaxLife(entityJson.getInt("maxLife"));
       }

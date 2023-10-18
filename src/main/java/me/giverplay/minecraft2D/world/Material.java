@@ -1,30 +1,32 @@
 package me.giverplay.minecraft2D.world;
 
-import java.awt.image.BufferedImage;
-
 import me.giverplay.minecraft2D.graphics.Sprites;
 
+import java.awt.image.BufferedImage;
+
 public enum Material {
-  STONE("Stone", 64, true, true, false, Sprites.TILE_STONE),
-  GRASS("Grass", 64, true, true, false, Sprites.TILE_GRASS),
-  DIRT("Dirt", 64, true, true, false, Sprites.TILE_DIRT),
-  SAND("Sand", 64, true, true, false, Sprites.TILE_SAND),
-  AIR("Air", 64, true, false, false, null),
-  BEDROCK("Bedrock", 64, true, true, true, Sprites.TILE_BEDROCK),
-  STONE_BRICKS("Stone Bricks", 64, true, true, false, Sprites.TILE_STONE_BRICKS),
-  WOOD("Wood", 64, true, true, false, Sprites.TILE_WOOD),
-  BRICKS("Bricks", 64, true, true, false, Sprites.TILE_BRICKS);
+  AIR(0, "Air", 64, true, false, false, null),
+  STONE(1, "Stone", 64, true, true, false, Sprites.TILE_STONE),
+  GRASS(2, "Grass", 64, true, true, false, Sprites.TILE_GRASS),
+  DIRT(3, "Dirt", 64, true, true, false, Sprites.TILE_DIRT),
+  SAND(4, "Sand", 64, true, true, false, Sprites.TILE_SAND),
+  BEDROCK(5, "Bedrock", 64, true, true, true, Sprites.TILE_BEDROCK),
+  STONE_BRICKS(6, "Stone Bricks", 64, true, true, false, Sprites.TILE_STONE_BRICKS),
+  WOOD(7, "Wood", 64, true, true, false, Sprites.TILE_WOOD),
+  BRICKS(8, "Bricks", 64, true, true, false, Sprites.TILE_BRICKS);
 
-  private final String name;
-  private final BufferedImage sprite;
+  final String name;
+  final BufferedImage sprite;
 
-  private final int maxStack;
+  final int id;
+  final int maxStack;
 
-  private final boolean isStackable;
-  private final boolean isRigid;
-  private final boolean creativeOnly;
+  final boolean isStackable;
+  final boolean isRigid;
+  final boolean creativeOnly;
 
-  Material(String name, int itemMaxSize, boolean itemStackable, boolean tileRigid, boolean creativeOnly, BufferedImage sprite) {
+  Material(int id, String name, int itemMaxSize, boolean itemStackable, boolean tileRigid, boolean creativeOnly, BufferedImage sprite) {
+    this.id = id;
     this.name = name;
     this.maxStack = itemMaxSize;
     this.isStackable = itemStackable;
@@ -65,8 +67,19 @@ public enum Material {
     }
   }
 
-  public static boolean isMaterial(String name) // TODO: Get by name and description name
-  {
+  public int getId() {
+    return id;
+  }
+
+  public static Material getById(int id) {
+    for (Material material : values()) {
+      if (material.id == id) return material;
+    }
+
+    return null;
+  }
+
+  public static boolean isMaterial(String name) {
     try {
       valueOf(name.toUpperCase());
       return true;
