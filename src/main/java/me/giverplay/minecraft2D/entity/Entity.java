@@ -7,13 +7,14 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public abstract class Entity {
 
   protected static final Random RANDOM = new Random();
 
   protected final Game game;
-  protected final World world;
+  protected final Supplier<World> world;
 
   protected static Random random = new Random();
 
@@ -31,7 +32,7 @@ public abstract class Entity {
 
   public Entity(Game game, double x, double y, int width, int height) {
     this.game = game;
-    this.world = game.getWorld();
+    this.world = game::getWorld;
     this.x = x;
     this.y = y;
     this.width = width;
@@ -59,7 +60,7 @@ public abstract class Entity {
   }
 
   public World getWorld() {
-    return world;
+    return world.get();
   }
 
   public void setX(int x) {

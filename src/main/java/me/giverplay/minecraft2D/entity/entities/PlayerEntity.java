@@ -61,8 +61,8 @@ public class PlayerEntity extends EntityMob {
   }
 
   public void updateCamera() {
-    camera.setX(Camera.clamp(getX() - (Game.WIDTH / 2), 0, world.getWidth() * Tile.SIZE - Game.WIDTH));
-    camera.setY(Camera.clamp(getY() - (Game.HEIGHT / 2), 0, world.getHeight() * Tile.SIZE - Game.HEIGHT));
+    camera.setX(Camera.clamp(getX() - (Game.WIDTH / 2), 0, getWorld().getWidth() * Tile.SIZE - Game.WIDTH));
+    camera.setY(Camera.clamp(getY() - (Game.HEIGHT / 2), 0, getWorld().getHeight() * Tile.SIZE - Game.HEIGHT));
   }
 
   @Override

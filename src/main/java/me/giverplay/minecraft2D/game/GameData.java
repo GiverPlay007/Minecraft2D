@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameData {
 
@@ -190,6 +191,7 @@ public class GameData {
 
   private int[] deserializeTiles(JSONObject tilesJson, int width, int height) {
     int[] tilesArray = new int[width * height];
+    Arrays.fill(tilesArray, -1);
 
     for (String key : tilesJson.keySet()) {
       tilesArray[Integer.parseInt(key)] = tilesJson.getInt(key);
@@ -237,6 +239,7 @@ public class GameData {
   }
 
   private void apply() {
+    entities.add(player);
     game.world = this.world;
     game.player = this.player;
     game.entities.clear();

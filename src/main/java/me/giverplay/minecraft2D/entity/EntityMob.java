@@ -132,7 +132,7 @@ public abstract class EntityMob extends EntityLiving {
   }
 
   public boolean isMoveAllowed(int nextX, int nextY) {
-    return world.moveAllowed(nextX + getMaskX(), nextY + getMaskY(), getWidth() - getMaskWidth(), getHeight() - getMaskHeight());
+    return getWorld().moveAllowed(nextX + getMaskX(), nextY + getMaskY(), getWidth() - getMaskWidth(), getHeight() - getMaskHeight());
   }
 
   public void moveX(double d) {
