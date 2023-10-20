@@ -48,8 +48,6 @@ public class Generator {
         }
       }
     }
-
-    validateTileBounds();
   }
 
   private void generateTiles() {
@@ -119,7 +117,7 @@ public class Generator {
   }
 
   public void validateTileBounds() {
-    Random rand = new Random();
+    Random rand = new Random((long) seed);
 
     for (int xx = 0; xx < width; xx++) {
       for (int yy = 0; yy < height; yy++) {

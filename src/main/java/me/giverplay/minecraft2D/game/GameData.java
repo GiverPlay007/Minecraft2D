@@ -79,7 +79,10 @@ public class GameData {
       itemJson.put("type", item.getType().name());
       itemJson.put("amount", item.getAmount());
 
-      itemJson.put(Integer.toString(slot), itemJson);
+      JSONObject slotItemJson = new JSONObject();
+      slotItemJson.put("slot", slot);
+      slotItemJson.put("item", itemJson);
+      items.put(slotItemJson);
     }
 
     inventoryJson.put("size", inventory.size());
@@ -162,12 +165,13 @@ public class GameData {
     JSONArray itemsArray = inventoryJson.getJSONArray("items");
 
     for (int index = 0; index < itemsArray.length(); index++) {
-      JSONObject item = itemsArray.getJSONObject(index);
+      JSONObject slotItem = itemsArray.getJSONObject(index);
+      int slot = slotItem.getInt("slot");
+
+      JSONObject item = slotItem.getJSONObject("item");
       Material type = Material.parse(item.getString("type"));
 
       int amount = item.getInt("amount");
-      int slot = item.getInt("slot");
-
       inventory.setItem(slot, new Item(type, amount));
     }
 
@@ -177,7 +181,7 @@ public class GameData {
   private void deserializeWorld(JSONObject worldJson) {
     int width = worldJson.getInt("width");
     int height = worldJson.getInt("height");
-    long seed = worldJson.getLong("seed");
+    double seed = worldJson.getDouble("seed");
     long gameTime = worldJson.getLong("gameTime");
 
     JSONObject tilesJson = worldJson.getJSONObject("tiles");
