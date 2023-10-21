@@ -81,6 +81,8 @@ public class Generator {
   }
 
   private void validateSurfaceTiles() {
+    Random random = new Random((long) seed);
+
     for (int xx = 0; xx < width; xx++) {
       for (int yy = 0; yy < height; yy++) {
         int index = xx + yy * width;
@@ -92,7 +94,7 @@ public class Generator {
 
             int c = 0;
 
-            while (c < 3) {
+            while (c < 1 + random.nextInt(2)) {
               c++;
 
               tiles[xx + (yy + c) * width] = Material.DIRT.id;
