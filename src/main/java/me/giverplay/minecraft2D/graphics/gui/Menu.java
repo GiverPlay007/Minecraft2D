@@ -85,8 +85,10 @@ public class Menu {
   }
 
   public void tick() {
-    if(game.getInput().menu.down)
+    if(game.getInput().menu.down) {
       game.setState(State.PAUSED);
+      Main.discordRichPresence.update("No menu", "");
+    }
 
     if(press) {
       press = false;
