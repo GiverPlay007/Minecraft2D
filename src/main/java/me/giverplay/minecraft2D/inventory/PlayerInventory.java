@@ -236,7 +236,6 @@ public class PlayerInventory implements Inventory {
 
     if (world.isPermanentTile(index)) return;
 
-    Material material = Material.getById(tiles[index]);
     Item item = getItem(getFocusedSlot());
 
     if (item.getType() == Material.AIR)
