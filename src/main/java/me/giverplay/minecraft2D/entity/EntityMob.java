@@ -135,6 +135,14 @@ public abstract class EntityMob extends EntityLiving {
     return getWorld().moveAllowed(nextX + getMaskX(), nextY + getMaskY(), getWidth() - getMaskWidth(), getHeight() - getMaskHeight());
   }
 
+  public void moveToTopBlock() {
+    y = Tile.SIZE;
+
+    while(isMoveAllowed(getX(), getY() +1)) {
+      y++;
+    }
+  }
+
   public void moveX(double d) {
     x += d;
   }

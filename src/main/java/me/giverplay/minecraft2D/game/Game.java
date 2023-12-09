@@ -70,6 +70,7 @@ public class Game {
 
     world = new World(this, 250, 250, 53.4331);
     player = new PlayerEntity(this, 150, 160 * 16);
+    player.moveToTopBlock();
     entities.add(player);
     save = new GameSave(this);
 
@@ -83,6 +84,7 @@ public class Game {
     world = new World(this, 240, 240, 0.293);
     entities.clear();
     player = new PlayerEntity(this, 50, 170 * 16);
+    player.moveToTopBlock();
     entities.add(player);
 
     setState(State.NORMAL);
