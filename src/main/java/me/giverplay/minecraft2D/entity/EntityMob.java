@@ -21,13 +21,11 @@ public abstract class EntityMob extends EntityLiving {
   protected boolean jumping;
   protected boolean jump;
   protected boolean moving;
-  protected boolean fallen;
 
-  protected int maxFallingFrames = 20;
   protected int fallingFrames = 0;
   protected int direction;
 
-  protected double fallingCoefficient = 0.24;
+  protected double damageCoefficient = 0.028;
   protected double take = 0D;
 
   protected double lastX;
@@ -91,18 +89,15 @@ public abstract class EntityMob extends EntityLiving {
 
     if(vspd > 0) {
       fallingFrames++;
-
-      if(fallingFrames >= maxFallingFrames) {
-        fallen = true;
-        take = (vspd * fallingCoefficient);
-      }
+      take += vspd * damageCoefficient;
+      System.out.println(take);
     } else {
-      fallingFrames = 0;
-
-      if(fallen) {
-        fallen = false;
+      if(take >= 1) {
         damage((int) take);
       }
+
+      take = 0;
+      fallingFrames = 0;
     }
 
     y = y + vspd;
