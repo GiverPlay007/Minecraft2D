@@ -90,7 +90,6 @@ public abstract class EntityMob extends EntityLiving {
     if(vspd > 0) {
       fallingFrames++;
       take += vspd * damageCoefficient;
-      System.out.println(take);
     } else {
       if(take >= 1) {
         damage((int) take);
