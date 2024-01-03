@@ -49,7 +49,7 @@ public class GameTask extends Thread implements Runnable {
         timer += 1000;
       }
 
-      ThreadUtils.sleep(5);
+      ThreadUtils.sleep(2);
     }
   }
 
