@@ -10,6 +10,7 @@ public class GameTask extends Thread implements Runnable {
   private int tps;
 
   public GameTask(Game game) {
+    super("Game Main Thread");
     this.game = game;
   }
 

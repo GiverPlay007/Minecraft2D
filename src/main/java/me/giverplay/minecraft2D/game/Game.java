@@ -9,7 +9,6 @@ import me.giverplay.minecraft2D.graphics.gui.Menu;
 import me.giverplay.minecraft2D.graphics.gui.UI;
 import me.giverplay.minecraft2D.sound.Sound;
 import me.giverplay.minecraft2D.utils.FontUtils;
-import me.giverplay.minecraft2D.utils.ThreadUtils;
 import me.giverplay.minecraft2D.world.World;
 
 import java.awt.Color;
@@ -23,7 +22,7 @@ public class Game {
   public static final int HEIGHT = 320;
   public static final int SCALE = 2;
 
-  protected final ArrayList<Entity> entities = new ArrayList<>();
+  protected ArrayList<Entity> entities = new ArrayList<>();
 
   protected PlayerEntity player;
   protected World world;
@@ -69,6 +68,7 @@ public class Game {
     camera = new Camera(0, 0);
 
     world = new World(this, 250, 250, 53.4331);
+    entities = new ArrayList<>();
     player = new PlayerEntity(this, 150, 160 * 16);
     player.moveToTopBlock();
     entities.add(player);
@@ -78,20 +78,12 @@ public class Game {
   }
 
   public void restart() {
-    if(isRunning)
-      stop();
-
-    world = new World(this, 240, 240, 0.293);
-    entities.clear();
-    player = new PlayerEntity(this, 50, 170 * 16);
-    player.moveToTopBlock();
-    entities.add(player);
-
+    initGame();
     setState(State.NORMAL);
-    start();
+    Main.discordRichPresence.update("Em jogo", "Sobrevivendo");
   }
 
-  public synchronized void start() {
+  public void start() {
     isRunning = true;
 
     gameTask = new GameTask(this);
@@ -101,14 +93,6 @@ public class Game {
     cmdTask.start();
 
     Main.discordRichPresence.update("No menu", "");
-  }
-
-  public synchronized void stop() {
-    new Thread(() -> {
-      isRunning = false;
-      ThreadUtils.join(gameTask);
-      ThreadUtils.join(cmdTask);
-    }, "Killer Thread").start();
   }
 
   public void loadSave(String worldName) {

@@ -9,6 +9,7 @@ public class CommandTask extends Thread implements Runnable {
   private final Game game;
 
   public CommandTask(Game game) {
+    super("Game Command Thread");
     this.game = game;
   }
 
