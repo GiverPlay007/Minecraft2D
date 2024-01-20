@@ -67,6 +67,10 @@ public class PlayerEntity extends EntityMob {
 
   @Override
   public void render(Graphics g) {
+    if(moving) {
+      animation.nextFrame();
+    }
+
     g.drawImage(animation.getFrame(), getX() - camera.getX(), getY() - camera.getY(), getWidth(), getHeight(), null);
   }
 

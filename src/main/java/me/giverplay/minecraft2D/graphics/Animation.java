@@ -16,6 +16,10 @@ public class Animation {
   }
 
   public BufferedImage getFrame() {
+    return frames[index];
+  }
+
+  public void nextFrame() {
     if(System.currentTimeMillis() - lastFrame >= period) {
       lastFrame = System.currentTimeMillis();
 
@@ -25,7 +29,5 @@ public class Animation {
         index = 0;
       }
     }
-
-    return frames[index];
   }
 }
