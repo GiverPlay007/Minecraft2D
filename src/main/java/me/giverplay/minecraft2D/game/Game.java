@@ -91,6 +91,7 @@ public class Game {
 
     cmdTask = new CommandTask(this);
     cmdTask.start();
+    player.updateCamera();
 
     Main.discordRichPresence.update("No menu", "");
   }
