@@ -5,6 +5,7 @@ import me.giverplay.minecraft2D.game.Camera;
 import me.giverplay.minecraft2D.game.Game;
 import me.giverplay.minecraft2D.game.GameInput;
 import me.giverplay.minecraft2D.game.GameMode;
+import me.giverplay.minecraft2D.game.State;
 import me.giverplay.minecraft2D.graphics.Animation;
 import me.giverplay.minecraft2D.graphics.Sprites;
 import me.giverplay.minecraft2D.inventory.Inventory;
@@ -67,7 +68,7 @@ public class PlayerEntity extends EntityMob {
 
   @Override
   public void render(Graphics g) {
-    if(moving) {
+    if(moving && game.getState() == State.NORMAL) {
       animation.nextFrame();
     }
 
