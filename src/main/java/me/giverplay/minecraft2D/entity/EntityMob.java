@@ -25,7 +25,7 @@ public abstract class EntityMob extends EntityLiving {
   protected int fallingFrames = 0;
   protected int direction;
 
-  protected double damageCoefficient = 0.028;
+  protected double damageCoefficient = 0.0022;
   protected double take = 0D;
 
   protected double lastX;
@@ -89,7 +89,7 @@ public abstract class EntityMob extends EntityLiving {
 
     if(vspd > 0) {
       fallingFrames++;
-      take += vspd * damageCoefficient;
+      take += vspd * damageCoefficient * fallingFrames;
     } else {
       if(take >= 1) {
         damage((int) take);
