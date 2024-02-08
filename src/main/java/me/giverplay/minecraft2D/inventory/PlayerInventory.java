@@ -250,7 +250,10 @@ public class PlayerInventory implements Inventory {
 
     tiles[index] = item.getType().getId();
     world.makeChangedTile(index);
-    removeItem(getFocusedSlot(), 1);
+
+    if(player.getGameMode() != GameMode.CREATIVE) {
+      removeItem(getFocusedSlot(), 1);
+    }
   }
 
   private void removeTile(int x, int y) {
@@ -261,7 +264,10 @@ public class PlayerInventory implements Inventory {
     if (world.isPermanentTile(index)) return;
 
     Material material = Material.getById(tiles[index]);
-    addItem(new Item(material, 1));
+
+    if(player.getGameMode() != GameMode.CREATIVE) {
+      addItem(new Item(material, 1));
+    }
 
     tiles[index] = Material.AIR.getId();
     world.makeChangedTile(index);
