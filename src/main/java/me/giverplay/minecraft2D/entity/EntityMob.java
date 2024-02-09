@@ -54,7 +54,7 @@ public abstract class EntityMob extends EntityLiving {
       moveX(-speed);
 
     direction = lastX > x ? DIR_LEFT : DIR_RIGHT;
-    moving = movingRight || movingLeft;
+    moving = x != lastX || y != lastY;
 
     lastX = x;
     lastY = y;
