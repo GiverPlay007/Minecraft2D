@@ -77,6 +77,7 @@ public class Menu {
         game.loadSave("world"); // TODO: Get name from new world screen
         game.setState(State.NORMAL);
         game.getUI().addToast(new Toast("Jogo Carregado", 10, 10));
+        start.setText("Continuar");
       }
 
     });
