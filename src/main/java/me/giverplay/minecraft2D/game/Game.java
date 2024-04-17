@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
   public static final int WIDTH = 512;
@@ -67,7 +68,9 @@ public class Game {
     layer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
     camera = new Camera(0, 0);
 
-    world = new World(this, 250, 250, 53.4331);
+    Random random = new Random();
+
+    world = new World(this, 250, 250, random.nextDouble());
     entities = new ArrayList<>();
     player = new PlayerEntity(this, 150, 160 * 16);
     player.moveToTopBlock();
