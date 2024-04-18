@@ -30,6 +30,8 @@ public class Menu {
   private boolean press = false;
   private boolean savable = false;
 
+  private long lastInputCheck;
+
   private int x = 0;
   private int y = 0;
 
@@ -86,7 +88,27 @@ public class Menu {
   }
 
   public void tick() {
+    boolean checkMenuPressed = false;
+
+    long now = System.currentTimeMillis();
+
     if(game.getInput().menu.down) {
+      if(now - lastInputCheck > 500) {
+        lastInputCheck = now;
+        checkMenuPressed = true;
+      }
+    }
+
+    if(checkMenuPressed) {
+      if(game.getState() == State.PAUSED) {
+        if(!savable) {
+          start.setText("Continuar");
+        }
+
+        game.setState(State.NORMAL);
+        return;
+      }
+
       game.setState(State.PAUSED);
       Main.discordRichPresence.update("No menu", "");
     }
