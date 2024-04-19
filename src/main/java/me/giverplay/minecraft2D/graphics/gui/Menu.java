@@ -29,6 +29,7 @@ public class Menu {
 
   private boolean press = false;
   private boolean savable = false;
+  private boolean mouseMoved = false;
 
   private long lastInputCheck;
 
@@ -88,6 +89,11 @@ public class Menu {
   }
 
   public void tick() {
+    if(mouseMoved) {
+      mouseMoved = false;
+      updateMouseLocation();
+    }
+
     boolean checkMenuPressed = false;
 
     long now = System.currentTimeMillis();
@@ -128,10 +134,7 @@ public class Menu {
     buttons.forEach(button -> button.render(g));
   }
 
-  public void updateLoc(int x, int y) {
-    this.x = x;
-    this.y = y;
-
+  private void updateMouseLocation() {
     for (Button but : buttons) {
       if(x >= but.getY() && y >= but.getY() && y <= but.getY() + but.getHeight() && x <= but.getX() + but.getWidth()) {
         focusedButton = but;
@@ -140,6 +143,12 @@ public class Menu {
     }
 
     focusedButton = null;
+  }
+
+  public void onMouseMove(int x, int y) {
+    mouseMoved = true;
+    this.x = x;
+    this.y = y;
   }
 
   public int getY() {
