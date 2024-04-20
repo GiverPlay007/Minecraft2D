@@ -136,7 +136,7 @@ public class Menu {
 
   private void updateMouseLocation() {
     for (Button but : buttons) {
-      if(x >= but.getY() && y >= but.getY() && y <= but.getY() + but.getHeight() && x <= but.getX() + but.getWidth()) {
+      if(x >= but.getX() && y >= but.getY() && y <= but.getY() + but.getHeight() && x <= but.getX() + but.getWidth()) {
         focusedButton = but;
         return;
       }
