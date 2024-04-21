@@ -4,6 +4,7 @@ import me.giverplay.minecraft2D.world.tiles.AirTile;
 import me.giverplay.minecraft2D.world.tiles.BedrockTile;
 import me.giverplay.minecraft2D.world.tiles.BricksTile;
 import me.giverplay.minecraft2D.world.tiles.DirtTile;
+import me.giverplay.minecraft2D.world.tiles.GrassBushTile;
 import me.giverplay.minecraft2D.world.tiles.GrassTile;
 import me.giverplay.minecraft2D.world.tiles.SandTile;
 import me.giverplay.minecraft2D.world.tiles.StoneBricksTile;
@@ -25,6 +26,7 @@ public class Tiles {
   public static final StoneBricksTile STONE_BRICKS = (StoneBricksTile) registerTile(new StoneBricksTile());
   public static final WoodTile WOOD = (WoodTile) registerTile(new WoodTile());
   public static final BricksTile BRICKS = (BricksTile) registerTile(new BricksTile());
+  public static final GrassBushTile GRASS_BUSH = (GrassBushTile) registerTile(new GrassBushTile());
 
 
   private static Tile registerTile(Tile tile) {

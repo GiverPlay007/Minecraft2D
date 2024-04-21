@@ -16,6 +16,7 @@ public final class Sprites {
   public static BufferedImage TILE_STONE_BRICKS;
   public static BufferedImage TILE_WOOD;
   public static BufferedImage TILE_BRICKS;
+  public static BufferedImage TILE_GRASS_BUSH;
 
   public static BufferedImage[] SPRITE_PLAYER_RIGHT;
   public static BufferedImage[] SPRITE_PLAYER_LEFT;
@@ -43,6 +44,7 @@ public final class Sprites {
     TILE_STONE_BRICKS = getSprite(SIZE * 5, 0, SIZE, SIZE);
     TILE_WOOD = getSprite(SIZE * 6, 0, SIZE, SIZE);
     TILE_BRICKS = getSprite(SIZE * 7, 0, SIZE, SIZE);
+    TILE_GRASS_BUSH = getSprite(SIZE * 8, 0, SIZE, SIZE);
 
     SPRITE_PLAYER_RIGHT = new BufferedImage[3];
     SPRITE_PLAYER_LEFT = new BufferedImage[3];

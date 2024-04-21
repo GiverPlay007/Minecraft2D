@@ -13,7 +13,8 @@ public enum Material {
   BEDROCK(5, "Bedrock", 64, true, true, true, Sprites.TILE_BEDROCK),
   STONE_BRICKS(6, "Stone Bricks", 64, true, true, false, Sprites.TILE_STONE_BRICKS),
   WOOD(7, "Wood", 64, true, true, false, Sprites.TILE_WOOD),
-  BRICKS(8, "Bricks", 64, true, true, false, Sprites.TILE_BRICKS);
+  BRICKS(8, "Bricks", 64, true, true, false, Sprites.TILE_BRICKS),
+  GRASS_BUSH(9, "Grass Bush", 64, true, false, false, Sprites.TILE_GRASS_BUSH);
 
   final String name;
   final BufferedImage sprite;

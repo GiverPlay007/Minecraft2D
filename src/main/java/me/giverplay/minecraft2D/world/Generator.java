@@ -17,6 +17,7 @@ public class Generator {
   private int[] data;
 
   private PerlinNoise perlin;
+  private Random random;
 
   public Generator(World world, int width, int height, double seed) {
     this.world = world;
@@ -52,6 +53,7 @@ public class Generator {
 
   private void generateTiles() {
     perlin = new PerlinNoise(seed);
+    random = new Random((long) seed);
     tiles = new int[width * height];
     data = new int[width * height];
 
@@ -81,8 +83,6 @@ public class Generator {
   }
 
   private void validateSurfaceTiles() {
-    Random random = new Random((long) seed);
-
     for (int xx = 0; xx < width; xx++) {
       for (int yy = 0; yy < height; yy++) {
         int index = xx + yy * width;
@@ -115,12 +115,24 @@ public class Generator {
   }
 
   private void generateFurniture() {
-    // TODO
+    for (int xx = 0; xx < width; xx++) {
+      for(int yy = 0; yy < height; yy++) {
+        int index = xx + yy * width;
+
+        if(tiles[index] != Material.GRASS.id) continue;
+
+        if(random.nextInt(100) > random.nextInt(100)) {
+          int bushIndex = xx + (yy -1) * width;
+
+          if(bushIndex > 0 && bushIndex < tiles.length) {
+            tiles[bushIndex] = Material.GRASS_BUSH.getId();
+          }
+        }
+      }
+    }
   }
 
   public void validateTileBounds() {
-    Random rand = new Random((long) seed);
-
     for (int xx = 0; xx < width; xx++) {
       for (int yy = 0; yy < height; yy++) {
         int index = xx + yy * width;
@@ -128,7 +140,7 @@ public class Generator {
         if (yy == height - 1) {
           tiles[index] = Material.BEDROCK.id;
 
-          if (rand.nextInt(101) < 30) {
+          if (random.nextInt(101) < 30) {
             tiles[xx + (yy - 1) * width] = Material.BEDROCK.id;
           }
         }
