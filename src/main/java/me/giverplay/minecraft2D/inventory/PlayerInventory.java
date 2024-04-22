@@ -271,6 +271,16 @@ public class PlayerInventory implements Inventory {
 
     tiles[index] = Material.AIR.getId();
     world.makeChangedTile(index);
+
+    if(y -1 > 0) {
+      Tile above = world.getTile(x, y-1);
+
+      if(above.getMaterial() == Material.GRASS_BUSH) {
+        int aboveIndex = x + (y -1) * world.getWidth();
+        tiles[aboveIndex] = Material.AIR.getId();
+        world.makeChangedTile(aboveIndex);
+      }
+    }
   }
 
   public void resetDefaults() {
