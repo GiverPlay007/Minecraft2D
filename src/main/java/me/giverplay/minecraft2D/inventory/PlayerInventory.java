@@ -299,5 +299,6 @@ public class PlayerInventory implements Inventory {
     setItem(5, new Item(Material.DIRT, 64));
     setItem(6, new Item(Material.SAND, 64));
     setItem(7, new Item(Material.WOOD, 64));
+    setItem(8, new Item(Material.GRASS_BUSH, 64));
   }
 }
