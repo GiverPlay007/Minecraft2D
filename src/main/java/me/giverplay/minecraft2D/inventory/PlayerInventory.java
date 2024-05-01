@@ -249,6 +249,8 @@ public class PlayerInventory implements Inventory {
 
     if (playerRect.intersects(rect)) return;
 
+    if(!item.getType().isRigid() && y + 1 < world.getHeight() && !world.getTile(x, y + 1).getMaterial().isRigid()) return;
+
     tiles[index] = item.getType().getId();
     world.makeChangedTile(index);
 
