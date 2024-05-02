@@ -9,7 +9,6 @@ import me.giverplay.minecraft2D.world.World;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 public class PlayerInventory implements Inventory {
 
@@ -276,18 +275,13 @@ public class PlayerInventory implements Inventory {
     world.makeChangedTile(index);
 
     if(y -1 > 0) {
-      Tile above = world.getTile(x, y-1);
+      Material aboveMaterial = world.getTile(x, y -1).getMaterial();
 
-      if(above.getMaterial() == Material.GRASS_BUSH) {
+      if(aboveMaterial != Material.AIR && !aboveMaterial.isRigid()) {
         int aboveIndex = x + (y -1) * world.getWidth();
         tiles[aboveIndex] = Material.AIR.getId();
         world.makeChangedTile(aboveIndex);
-
-        Random random = new Random();
-
-        if(random.nextInt(100) < 25) {
-          addItem(new Item(Material.GRASS_BUSH, 1));
-        }
+        addItem(new Item(aboveMaterial, 1));
       }
     }
   }
