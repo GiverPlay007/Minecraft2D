@@ -26,7 +26,8 @@ public class CommandManager {
 
   public void runCommand(String cmd, String[] args) {
     if(!commands.containsKey(cmd)) {
-      throw new IllegalArgumentException("Comando " + cmd + " não existe.");
+      System.out.println("Comando '" + cmd + "' não existe.");
+      return;
     }
 
     commands.get(cmd).execute(args);
