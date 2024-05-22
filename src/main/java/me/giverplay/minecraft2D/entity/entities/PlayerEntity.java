@@ -75,6 +75,13 @@ public class PlayerEntity extends EntityMob {
     g.drawImage(animation.getFrame(), getX() - camera.getX(), getY() - camera.getY(), getWidth(), getHeight(), null);
   }
 
+  @Override
+  public void damage(int damage) {
+    if(getGameMode() != GameMode.CREATIVE) {
+      super.damage(damage);
+    }
+  }
+
   public Inventory getInventory() {
     return this.inv;
   }
