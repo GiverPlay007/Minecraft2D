@@ -58,6 +58,7 @@ public class PlayerEntity extends EntityMob {
     if(input.jump.down || input.up.down)
       jump();
 
+    ((PlayerInventory) inv).handleClick();
     updateCamera();
   }
 

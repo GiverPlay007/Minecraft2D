@@ -20,6 +20,11 @@ public class PlayerInventory implements Inventory {
 
   private int focusedSlot = 0;
 
+  private boolean mClicked = false;
+  private int mButton;
+  private int mx = 0;
+  private int my = 0;
+
   public PlayerInventory(PlayerEntity holder, int size) {
     this.size = size;
     this.items = new Item[size];
@@ -189,11 +194,19 @@ public class PlayerInventory implements Inventory {
   }
 
   public void handleClick(int x, int y, int button) {
-    int xx = (x + game.getCamera().getX()) / Tile.SIZE;
-    int yy = (y + game.getCamera().getY()) / Tile.SIZE;
+    mx = (x + game.getCamera().getX()) / Tile.SIZE;
+    my = (y + game.getCamera().getY()) / Tile.SIZE;
+    mButton = button;
+    mClicked = true;
+  }
 
-    if (button == MouseEvent.BUTTON1) {
-      removeTile(xx, yy);
+  public void handleClick() {
+    if(mClicked) {
+      mClicked = false;
+    } else return;
+
+    if (mButton == MouseEvent.BUTTON1) {
+      removeTile(mx, my);
       return;
     }
 
@@ -203,28 +216,28 @@ public class PlayerInventory implements Inventory {
 
     int[] tiles = game.getWorld().getTiles();
 
-    if (xx > 0)
-      if (tiles[(xx - 1) + yy * w] == Material.AIR.getId())
+    if (mx > 0)
+      if (tiles[(mx - 1) + my * w] == Material.AIR.getId())
         creative++;
 
-    if (xx < w)
-      if (tiles[(xx + 1) + yy * w] == Material.AIR.getId())
+    if (mx < w)
+      if (tiles[(mx + 1) + my * w] == Material.AIR.getId())
         creative++;
 
 
-    if (yy > 0)
-      if (tiles[xx + (yy - 1) * w] == Material.AIR.getId())
+    if (my > 0)
+      if (tiles[mx + (my - 1) * w] == Material.AIR.getId())
         creative++;
 
-    if (yy < h)
-      if (tiles[xx + (yy + 1) * w] == Material.AIR.getId())
+    if (my < h)
+      if (tiles[mx + (my + 1) * w] == Material.AIR.getId())
         creative++;
 
     if (creative >= 4 && player.getGameMode() != GameMode.CREATIVE)
       return;
 
-    if (button == MouseEvent.BUTTON3) {
-      placeTile(xx, yy);
+    if (mButton == MouseEvent.BUTTON3) {
+      placeTile(mx, my);
     }
   }
 
