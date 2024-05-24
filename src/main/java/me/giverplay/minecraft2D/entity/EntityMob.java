@@ -71,7 +71,7 @@ public abstract class EntityMob extends EntityLiving {
       }
     }
 
-    if(!isMoveAllowed(getX(), (int) (y + vspd))) {
+    if(!checkGravityMoveAllowed()) {
       int signVsp;
 
       if(vspd >= 0) {
@@ -100,6 +100,10 @@ public abstract class EntityMob extends EntityLiving {
     }
 
     y = y + vspd;
+  }
+
+  public boolean checkGravityMoveAllowed() {
+    return isMoveAllowed(getX(), (int) (y + vspd));
   }
 
   public void followPath(List<Node> path) {

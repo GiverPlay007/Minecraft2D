@@ -45,13 +45,6 @@ public class PlayerEntity extends EntityMob {
 
   @Override
   public void tick() {
-    super.tick();
-
-    if(getLife() <= 0) {
-      game.doGameOver();
-      return;
-    }
-
     movingRight = input.right.down;
     movingLeft = input.left.down;
 
@@ -59,6 +52,14 @@ public class PlayerEntity extends EntityMob {
       jump();
 
     ((PlayerInventory) inv).handleClick();
+
+    super.tick();
+
+    if(getLife() <= 0) {
+      game.doGameOver();
+      return;
+    }
+
     updateCamera();
   }
 

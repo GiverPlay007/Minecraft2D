@@ -7,7 +7,6 @@ import me.giverplay.minecraft2D.world.Material;
 import me.giverplay.minecraft2D.world.Tile;
 import me.giverplay.minecraft2D.world.World;
 
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 public class PlayerInventory implements Inventory {
@@ -256,14 +255,15 @@ public class PlayerInventory implements Inventory {
 
     if (tiles[index] != Material.AIR.getId()) return;
 
-    Rectangle playerRect = new Rectangle(player.getX() + player.getMaskX(), player.getY() + player.getMaskY(), player.getMaskWidth(), player.getMaskHeight());
-    Rectangle rect = new Rectangle(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+    int lastId = tiles[index];
+    tiles[index] = item.getType().getId();
 
-    if (playerRect.intersects(rect)) return;
+    if(!player.checkGravityMoveAllowed()) {
+      tiles[index] = lastId;
+    }
 
     if(!item.getType().isRigid() && y + 1 < world.getHeight() && !world.getTile(x, y + 1).getMaterial().isRigid()) return;
 
-    tiles[index] = item.getType().getId();
     world.makeChangedTile(index);
 
     if(player.getGameMode() != GameMode.CREATIVE) {
