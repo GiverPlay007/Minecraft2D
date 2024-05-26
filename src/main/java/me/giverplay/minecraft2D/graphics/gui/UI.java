@@ -93,7 +93,7 @@ public class UI {
   public void advanceToast(Graphics g) {
     int time = 50;
     if(!showingToast) {
-      if(toasts.size() == 0)
+      if(toasts.isEmpty())
         return;
 
       toast = toasts.get(0);
