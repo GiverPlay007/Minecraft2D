@@ -54,13 +54,11 @@ public class PlayerEntity extends EntityMob {
     ((PlayerInventory) inv).handleClick();
 
     super.tick();
+    updateCamera();
 
     if(getLife() <= 0) {
       game.doGameOver();
-      return;
     }
-
-    updateCamera();
   }
 
   public void updateCamera() {
