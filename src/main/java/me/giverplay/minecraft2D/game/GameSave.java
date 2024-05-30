@@ -12,7 +12,7 @@ public final class GameSave {
   private final File worldsFolder;
   private final Game game;
 
-  protected GameSave(Game game) {
+  GameSave(Game game) {
     this.saveFolder = new File(System.getProperty("user.home") + File.separator + ".craftzinho");
     this.worldsFolder = new File(saveFolder, "worlds");
     this.game = game;
@@ -21,14 +21,14 @@ public final class GameSave {
       worldsFolder.mkdirs();
   }
 
-  protected void saveGame(GameData data) throws Throwable {
+  void saveGame(GameData data) throws Throwable {
     BufferedWriter writer = new BufferedWriter(new FileWriter(new File(saveFolder, data.getName() + ".dat")));
     writer.write(data.serialize());
     writer.flush();
     writer.close();
   }
 
-  protected void loadGame(String worldName) throws Throwable {
+  void loadGame(String worldName) throws Throwable {
     BufferedReader reader = new BufferedReader(new FileReader(new File(saveFolder, worldName + ".dat")));
 
     StringBuilder saveString = new StringBuilder();
@@ -44,11 +44,11 @@ public final class GameSave {
     data.deserializeAndApply(saveString.toString());
   }
 
-  protected File getWorldsFolder() {
+  private File getWorldsFolder() {
     return this.worldsFolder;
   }
 
-  protected File getSaveFolder() {
+  private File getSaveFolder() {
     return this.saveFolder;
   }
 }
