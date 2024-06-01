@@ -1,8 +1,7 @@
 package me.giverplay.minecraft2D.game;
 
 public enum GameMode {
-  SURVIVAL("Survival"),
-  CREATIVE("Creative");
+  SURVIVAL("Survival"), CREATIVE("Creative");
 
   private final String descName;
 
@@ -14,22 +13,46 @@ public enum GameMode {
     return descName;
   }
 
-  public static GameMode parse(String name) // TODO: Parse by desc name and number
-  {
+  public static GameMode parse(String name) {
     try {
-      return valueOf(name.toUpperCase());
+      return parseByName(name);
     } catch (IllegalArgumentException e) {
-      return SURVIVAL;
+      return parseByOrdinal(name);
     }
   }
 
-  public static boolean isGameMode(String name) // TODO: New check
-  {
+  public static boolean isGameMode(String name) {
     try {
-      valueOf(name.toUpperCase());
+      parse(name.toUpperCase());
       return true;
     } catch (IllegalArgumentException e) {
       return false;
     }
+  }
+
+  private static GameMode parseByName(String name) {
+    return valueOf(name.toUpperCase());
+  }
+
+  private static GameMode parseByOrdinal(String name) {
+    int ordinal;
+
+    try {
+      ordinal = Integer.parseInt(name);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException("Not a number");
+    }
+
+    return parseByOrdinal(ordinal);
+  }
+
+  private static GameMode parseByOrdinal(int order) {
+    GameMode[] values = values();
+
+    for (int i = 0; i < values.length; i++) {
+      if(values[i].ordinal() == order) return values[i];
+    }
+
+    throw new IllegalArgumentException("Unknown gamemode");
   }
 }

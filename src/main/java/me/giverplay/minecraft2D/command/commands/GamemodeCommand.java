@@ -23,7 +23,15 @@ public class GamemodeCommand extends Command {
       return;
     }
 
-    GameMode mode = GameMode.parse(args[0]);
+    GameMode mode;
+
+    try {
+      mode = GameMode.parse(args[0]);
+    } catch (IllegalArgumentException e) {
+      System.out.println("Esse modo de jogo não existe (" + args[0] + ").");
+      return;
+    }
+
     PlayerEntity player = game.getPlayer();
 
     if(player.getGameMode() == mode) {
